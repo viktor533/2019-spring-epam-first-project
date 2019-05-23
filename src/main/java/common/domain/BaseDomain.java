@@ -1,4 +1,4 @@
-package model.common.domain;
+package main.java.common.domain;
 
 public abstract class BaseDomain<ID> {
     protected ID id;

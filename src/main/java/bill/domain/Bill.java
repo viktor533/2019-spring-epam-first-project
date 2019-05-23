@@ -1,8 +1,8 @@
-package model.bill.domain;
+package main.java.bill.domain;
 
-import model.common.domain.BaseDomain;
-import model.order.domain.Order;
-import model.room.domain.Room;
+import main.java.common.domain.BaseDomain;
+import main.java.order.domain.Order;
+import main.java.room.domain.Room;
 
 import java.util.Objects;
 
@@ -52,8 +52,8 @@ public class Bill extends BaseDomain<Long> {
     @Override
     public String toString() {
         return "Bill{" +
-                "model.order=" + order +
-                ", model.room=" + room +
+                "java.order=" + order +
+                ", java.room=" + room +
                 ", totalPrice=" + totalPrice +
                 ", id=" + id +
                 '}';

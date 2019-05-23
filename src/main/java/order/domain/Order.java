@@ -1,7 +1,7 @@
-package model.order.domain;
+package main.java.order.domain;
 
-import model.common.domain.BaseDomain;
-import model.user.domain.User;
+import main.java.user.domain.User;
+import main.java.common.domain.BaseDomain;
 
 import java.time.LocalTime;
 import java.util.Objects;

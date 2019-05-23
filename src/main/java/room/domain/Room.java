@@ -1,13 +1,13 @@
-package model.room.domain;
+package main.java.room.domain;
 
-import model.common.domain.BaseDomain;
-import model.common.domain.RoomClass;
-import model.roomMonitor.domain.RoomMonitor;
+import main.java.common.domain.RoomClass;
+import main.java.common.domain.BaseDomain;
+import main.java.roomMonitor.domain.RoomMonitor;
 
 import java.util.Objects;
 
 public class Room extends BaseDomain<Long> {
-    // private Hotel model.hotel; If update to many hotels
+    // private Hotel java.hotel; If update to many hotels
     private int numOfPlaces;
     private int price;
     private String number;
@@ -72,7 +72,7 @@ public class Room extends BaseDomain<Long> {
                 ", price=" + price +
                 ", number='" + number + '\'' +
                 ", roomClass=" + roomClass +
-                ", model.roomMonitor=" + roomMonitor +
+                ", java.roomMonitor=" + roomMonitor +
                 ", id=" + id +
                 '}';
     }

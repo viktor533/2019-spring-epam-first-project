@@ -1,6 +1,6 @@
-package model.hotel.domain;
+package main.java.hotel.domain;
 
-import model.common.domain.BaseDomain;
+import main.java.common.domain.BaseDomain;
 
 import java.util.Objects;
 

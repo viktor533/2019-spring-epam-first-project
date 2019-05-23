@@ -1,4 +1,4 @@
-package model.roomMonitor.domain;
+package main.java.roomMonitor.domain;
 
 import java.time.LocalDate;
 import java.util.LinkedList;

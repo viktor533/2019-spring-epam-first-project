@@ -1,4 +1,4 @@
-package model.common.domain;
+package main.java.common.domain;
 
 public enum Role {
     ADMIN,

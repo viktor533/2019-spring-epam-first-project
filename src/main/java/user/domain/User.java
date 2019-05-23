@@ -1,8 +1,8 @@
-package model.user.domain;
+package main.java.user.domain;
 
-import model.common.domain.BaseDomain;
-import model.common.domain.Role;
-import model.order.domain.Order;
+import main.java.common.domain.BaseDomain;
+import main.java.common.domain.Role;
+import main.java.order.domain.Order;
 
 import java.util.ArrayList;
 import java.util.List;
