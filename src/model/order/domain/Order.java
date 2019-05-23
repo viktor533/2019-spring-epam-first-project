@@ -1,14 +1,14 @@
 package model.order.domain;
 
 import model.common.domain.BaseDomain;
-import model.user.domain.Client;
+import model.user.domain.User;
 
 import java.time.LocalTime;
 import java.util.Objects;
 
 public class Order extends BaseDomain<Long> {
     private int numOfPersons;
-    private Client client;
+    private User client;
     private LocalTime startDay;
     private LocalTime finishDay;
 
@@ -16,7 +16,7 @@ public class Order extends BaseDomain<Long> {
 
     }
 
-    public Order(int numOfPersons, Client client, LocalTime startDay, LocalTime finishDay) {
+    public Order(int numOfPersons, User client, LocalTime startDay, LocalTime finishDay) {
         this.numOfPersons = numOfPersons;
         this.client = client;
         this.startDay = startDay;
@@ -31,11 +31,11 @@ public class Order extends BaseDomain<Long> {
         this.numOfPersons = numOfPersons;
     }
 
-    public Client getClient() {
+    public User getClient() {
         return client;
     }
 
-    public void setClient(Client client) {
+    public void setClient(User client) {
         this.client = client;
     }
 

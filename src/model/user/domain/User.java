@@ -2,7 +2,10 @@ package model.user.domain;
 
 import model.common.domain.BaseDomain;
 import model.common.domain.Role;
+import model.order.domain.Order;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class User extends BaseDomain<Long> {
@@ -10,6 +13,7 @@ public class User extends BaseDomain<Long> {
     private String login;
     private long passHash;
     private Role role;
+    private List<Order> orders;
 
     public User() {
 
@@ -20,6 +24,20 @@ public class User extends BaseDomain<Long> {
         this.login = login;
         this.passHash = passHash;
         this.role = role;
+        if (Role.CLIENT.equals(role)) {
+            this.orders = new ArrayList<>();
+        } else {
+            this.orders = null;
+        }
+
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     public String getName() {
