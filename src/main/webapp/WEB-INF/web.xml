@@ -6,6 +6,6 @@
   <display-name>Archetype Created Web Application</display-name>
   <servlet>
 <servlet-name>EPAM PLAZA</servlet-name>
-    <servlet-class>DemoServlet</servlet-class>
+    <servlet-class>com.epam.hotel.controller.DemoServlet</servlet-class>
   </servlet>
 </web-app>
