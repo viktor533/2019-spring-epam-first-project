@@ -1,4 +1,4 @@
-package com.epam.helloWorld;
+package com.epam.helloworld;
 
 public class HelloWorld {
 
