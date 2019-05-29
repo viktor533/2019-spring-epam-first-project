@@ -9,7 +9,6 @@ import java.util.List;
 
 @Data
 @Builder(toBuilder=true)
-@NoArgsConstructor
 public class Room {
     private int numOfGuests;
     @Singular private List<Booking> bookings;

@@ -9,7 +9,6 @@ import java.util.List;
 
 @Data
 @Builder(toBuilder=true)
-@NoArgsConstructor
 public class Hotel {
     private long id;
     private String name;

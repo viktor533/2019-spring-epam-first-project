@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder(toBuilder=true)
-@NoArgsConstructor
 public class Bill {
     private long id;
     private long bookingId;

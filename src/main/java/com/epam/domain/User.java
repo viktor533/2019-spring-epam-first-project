@@ -9,7 +9,6 @@ import java.util.List;
 
 @Data
 @Builder(toBuilder=true)
-@NoArgsConstructor
 public class User {
     private long id;
     private UserRole role;

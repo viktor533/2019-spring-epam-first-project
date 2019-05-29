@@ -8,7 +8,6 @@ import java.time.LocalDate;
 
 @Data
 @Builder(toBuilder=true)
-@NoArgsConstructor
 public class Booking {
     private long id;
     private LocalDate start;
