@@ -8,9 +8,9 @@ import java.sql.SQLException;
 
 @Slf4j
 public class DBConnectionUtils {
-    public static final String JDBC_DRIVER = "org.h2.Driver";
     private static DBConnectionUtils instance;
     private static Connection connection;
+    static final String JDBC_DRIVER = "org.h2.Driver";
 
     private DBConnectionUtils(String dbUrl, String user, String password) {
         try {
