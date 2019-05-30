@@ -1,8 +1,11 @@
 package com.epam.utils;
 
-import java.util.ResourceBundle;
-import java.util.Locale;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+@Slf4j
 public class LocaleUtils {
     private static LocaleUtils instance;
     private static ResourceBundle messages;
@@ -18,8 +21,9 @@ public class LocaleUtils {
     public static LocaleUtils getInstance(String property, Locale locale) {
         if (instance == null) {
             synchronized (LocaleUtils.class) {
-                if(instance == null) {
+                if (instance == null) {
                     instance = new LocaleUtils(property, locale);
+                    log.info("Logger was instantiated.");
                 }
             }
         }
