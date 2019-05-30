@@ -9,5 +9,6 @@ import lombok.Data;
 public class Bill {
     private long id;
     private long bookingId;
+    private long userId;
     private BillStatus status;
 }

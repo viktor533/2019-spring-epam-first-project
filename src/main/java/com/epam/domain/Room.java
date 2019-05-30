@@ -10,6 +10,8 @@ import java.util.List;
 @Data
 @Builder(toBuilder = true)
 public class Room {
+    private long id;
+    private long hotelId;
     private int numOfGuests;
     @Singular
     private List<Booking> bookings;
