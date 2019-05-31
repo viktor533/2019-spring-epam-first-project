@@ -10,7 +10,7 @@ public class HelloWorld {
     public static void main(String[] args) {
         System.out.println("Hello, World!");
 
-        LocaleUtils localeUtils = LocaleUtils.getInstance("labels_dog_DOG", Locale.getDefault());
+        LocaleUtils localeUtils = LocaleUtils.getInstance("labels_cat_CAT", Locale.getDefault());
         System.out.println(LocaleUtils.getByKey("someKey"));
 
         log.trace("Trace log message");
