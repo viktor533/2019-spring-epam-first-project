@@ -6,10 +6,10 @@
 	
 	<title>Bill</title>
 	
-	<link rel='stylesheet' type='text/css' href='/css/style.css' />
-	<link rel='stylesheet' type='text/css' href='/css/print.css' media="print" />
-	<script type='text/javascript' src='/scripts/jqueryBill.js'></script>
-	<script type='text/javascript' src='/scripts/BillJS.js'></script>
+	<link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/css/style.css' />
+	<link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/css/print.css' media="print" />
+	<script type='text/javascript' src='${pageContext.request.contextPath}/scripts/jqueryBill.js'></script>
+	<script type='text/javascript' src='${pageContext.request.contextPath}/scripts/BillJS.js'></script>
 
 </head>
 
