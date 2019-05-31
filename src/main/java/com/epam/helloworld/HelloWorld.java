@@ -1,8 +1,10 @@
 package com.epam.helloworld;
 
+import com.epam.utils.DBConnectionUtils;
 import com.epam.utils.LocaleUtils;
 import lombok.extern.slf4j.Slf4j;
 
+import java.sql.Connection;
 import java.util.Locale;
 
 @Slf4j
@@ -18,5 +20,7 @@ public class HelloWorld {
         log.info("Info log message");
         log.warn("Warn log message");
         log.error("Error log message");
+
+        Connection connection = DBConnectionUtils.getConnection("jdbc:h2:~/test", "sa", "");
     }
 }
