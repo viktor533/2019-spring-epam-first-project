@@ -7,27 +7,21 @@ import java.util.ResourceBundle;
 
 @Slf4j
 public class LocaleUtils {
-    private static LocaleUtils instance;
-    private static ResourceBundle messages;
+    private static final String BUNDLE_NAME = "labels";
+    private static final LocaleUtils instance = new LocaleUtils();
+    private static ResourceBundle messages = ResourceBundle.getBundle(BUNDLE_NAME, Locale.getDefault());
 
-    private LocaleUtils(String property, Locale locale) {
-        messages = ResourceBundle.getBundle(property, locale);
-    }
+    private LocaleUtils() {}
 
     public static String getByKey(String key) {
         return messages.getString(key);
     }
 
-    public static LocaleUtils getInstance(String property, Locale locale) {
-        if (instance == null) {
-            synchronized (LocaleUtils.class) {
-                if (instance == null) {
-                    instance = new LocaleUtils(property, locale);
-                    log.info("Logger was instantiated.");
-                }
-            }
-        }
-
+    public static LocaleUtils getInstance() {
         return instance;
+    }
+
+    public static void setLocale(Locale locale) {
+        messages = ResourceBundle.getBundle(BUNDLE_NAME, locale);
     }
 }
