@@ -18,7 +18,7 @@ public class DBConnectionUtils {
 
     @SneakyThrows
     private DBConnectionUtils() {
-        connection = DriverManager.getConnection("jdbc:h2:mem:default", "sa", "");
+        connection = DriverManager.getConnection("jdbc:h2:./db/test", "sa", "");
         log.debug("connection with name " + connection.toString() + " was established");
         RunScript.execute(connection, new FileReader(Objects
             .requireNonNull(getClass().getClassLoader().getResource("db/schema.sql")).getFile()));
