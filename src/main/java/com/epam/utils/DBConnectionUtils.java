@@ -23,7 +23,8 @@ public class DBConnectionUtils {
         RunScript.execute(connection, new FileReader(Objects
             .requireNonNull(getClass().getClassLoader().getResource("db/schema.sql")).getFile()));
         log.debug("init schema was created");
-        RunScript.execute(connection, new FileReader(new File("C:\\Users\\1\\IdeaProjects\\2019-spring-epam-first-project\\src\\main\\resources\\db\\test-data.sql")));
+        RunScript.execute(connection, new FileReader(Objects
+            .requireNonNull(getClass().getClassLoader().getResource("db/test-data.sql")).getFile()));
         log.debug("test data were added");
     }
 
