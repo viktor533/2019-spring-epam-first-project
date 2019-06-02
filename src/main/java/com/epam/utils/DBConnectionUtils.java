@@ -1,5 +1,6 @@
 package com.epam.utils;
 
+import java.io.File;
 import java.io.FileReader;
 import java.util.Objects;
 import lombok.SneakyThrows;
@@ -22,7 +23,8 @@ public class DBConnectionUtils {
         RunScript.execute(connection, new FileReader(Objects
             .requireNonNull(getClass().getClassLoader().getResource("db/schema.sql")).getFile()));
         log.debug("init schema was created");
-//        RunScript.execute(connection, new FileReader(new File("db/test-data.sql")));
+        RunScript.execute(connection, new FileReader(Objects
+            .requireNonNull(getClass().getClassLoader().getResource("db/test-data.sql")).getFile()));
         log.debug("test data were added");
     }
 
