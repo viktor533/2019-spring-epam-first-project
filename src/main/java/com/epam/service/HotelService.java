@@ -10,53 +10,49 @@ public class HotelService {
     /**
      * Saves hotel into the database
      *
-     * @param hotel
+     * @param hotel that we want to save in the database
      * @return Hotel object that has been saved into the database
-     * @throws IllegalArgumentException
      */
     @SneakyThrows
-    public Hotel save(Hotel hotel) throws IllegalArgumentException {
+    public Hotel save(Hotel hotel) {
         return hotelRepository.save(hotel);
     }
 
     /**
-     * Removes Hotel from the database by its id
+     * Removes hotel from the database by its id
      *
-     * @param id
+     * @param id of the hotel that want to delete from the database
      * @return Hotel object that has been removed from the database
-     * @throws IllegalArgumentException
      */
     @SneakyThrows
-    public Hotel removeById(Long id) throws IllegalArgumentException {
+    public Hotel removeById(Long id) {
         return hotelRepository.removeById(id);
     }
 
     /**
-     * Returns Hotel from the database by its id
+     * Returns hotel from the database by its id
      *
-     * @param id
+     * @param id of the hotel that want to find from the database
      * @return Hotel object from the database by its id
-     * @throws IllegalArgumentException
      */
     @SneakyThrows
-    public Hotel findById(Long id) throws IllegalArgumentException {
+    public Hotel findById(Long id) {
         return hotelRepository.findById(id);
     }
 
     /**
-     * Updates Hotel in the database
+     * Updates hotel in the database
      *
-     * @param hotel
+     * @param hotel that we want to update in the database
      * @return Hotel object that has been updated in the database
-     * @throws IllegalArgumentException
      */
     @SneakyThrows
-    public Hotel update(Hotel hotel) throws IllegalArgumentException {
+    public Hotel update(Hotel hotel) {
         return hotelRepository.update(hotel);
     }
 
     /**
-     * Finds all Hotels from database
+     * Finds all hotels from the database
      *
      * @return Iterable of all Hotel objects in the database
      */
@@ -66,9 +62,9 @@ public class HotelService {
     }
 
     /**
-     * Saves the array of Hotels into the database
+     * Saves the array of hotels into the database
      *
-     * @param hotels
+     * @param hotels that we want to save in the database
      * @return Iterable of all Hotel objects that have been saved in the database
      */
     public Iterable<Hotel> saveAll(Hotel... hotels) {
@@ -76,9 +72,9 @@ public class HotelService {
     }
 
     /**
-     * Removes all Hotels from the database by their ids
+     * Removes all hotels from the database by their ids
      *
-     * @param ids
+     * @param ids of the hotels that want to remove from the database
      * @return Iterable of all Hotel objects that have been removed from the database by their ids
      */
     public Iterable<Hotel> removeAllById(Long... ids) {
@@ -86,9 +82,9 @@ public class HotelService {
     }
 
     /**
-     * Finds all Hotels from the database by their ids
+     * Finds all hotels from the database by their ids
      *
-     * @param ids
+     * @param ids of the hotels that want to find in the database
      * @return Iterable of all Hotel objects by their ids
      */
     public Iterable<Hotel> findAllById(Long... ids) {
@@ -96,10 +92,10 @@ public class HotelService {
     }
 
     /**
-     * Updates all Hotel that have been passed into the method in the database
+     * Updates all hotel that have been passed into the method in the database
      *
-     * @param hotels
-     * @return Iterable of all Hotels that have been updated in the database
+     * @param hotels that we want to update in the database
+     * @return Iterable of all Hotel objects that have been updated in the database
      */
     public Iterable<Hotel> updateAll(Hotel... hotels) {
         return hotelRepository.updateAll(hotels);

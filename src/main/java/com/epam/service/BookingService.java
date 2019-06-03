@@ -2,61 +2,62 @@ package com.epam.service;
 
 import com.epam.domain.Booking;
 import com.epam.repo.BookingRepositoryImpl;
+import com.epam.repo.Repository;
 import lombok.SneakyThrows;
 
 public class BookingService {
-    BookingRepositoryImpl bookingRepository = new BookingRepositoryImpl();
+    private final Repository<Booking, Long> bookingRepository;
+
+    public BookingService(BookingRepositoryImpl bookingRepository) {
+        this.bookingRepository = bookingRepository;
+    }
 
     /**
      * Saves booking into the database
      *
-     * @param booking
+     * @param booking that we want to save in the database
      * @return Booking object that has been saved into the database
-     * @throws IllegalArgumentException
      */
     @SneakyThrows
-    public Booking save(Booking booking) throws IllegalArgumentException {
+    public Booking save(Booking booking) {
         return bookingRepository.save(booking);
     }
 
     /**
-     * Removes Booking from the database by its id
+     * Removes booking from the database by its id
      *
-     * @param id
+     * @param id of the booking that want to delete from the database
      * @return Booking object that has been removed from the database
-     * @throws IllegalArgumentException
      */
     @SneakyThrows
-    public Booking removeById(Long id) throws IllegalArgumentException {
+    public Booking removeById(Long id) {
         return bookingRepository.removeById(id);
     }
 
     /**
-     * Returns Booking from the database by its id
+     * Returns booking from the database by its id
      *
-     * @param id
+     * @param id of the booking that want to find from the database
      * @return Booking object from the database by its id
-     * @throws IllegalArgumentException
      */
     @SneakyThrows
-    public Booking findById(Long id) throws IllegalArgumentException {
+    public Booking findById(Long id)  {
         return bookingRepository.findById(id);
     }
 
     /**
-     * Updates Booking in the database
+     * Updates booking in the database
      *
-     * @param booking
+     * @param booking that we want to update in the database
      * @return Booking object that has been updated in the database
-     * @throws IllegalArgumentException
      */
     @SneakyThrows
-    public Booking update(Booking booking) throws IllegalArgumentException {
+    public Booking update(Booking booking)  {
         return bookingRepository.update(booking);
     }
 
     /**
-     * Finds all Bookings from database
+     * Finds all bookings from the database
      *
      * @return Iterable of all Booking objects in the database
      */
@@ -66,19 +67,19 @@ public class BookingService {
     }
 
     /**
-     * Saves the array of Bookings into the database
+     * Saves the array of bookings into the database
      *
-     * @param items
+     * @param bookings that we want to save in the database
      * @return Iterable of all Booking objects that have been saved in the database
      */
-    public Iterable<Booking> saveAll(Booking... items) {
-        return bookingRepository.saveAll(items);
+    public Iterable<Booking> saveAll(Booking... bookings) {
+        return bookingRepository.saveAll(bookings);
     }
 
     /**
-     * Removes all Bookings from the database by their ids
+     * Removes all bookings from the database by their ids
      *
-     * @param ids
+     * @param ids of the bookings that want to remove from the database
      * @return Iterable of all Booking objects that have been removed from the database by their ids
      */
     public Iterable<Booking> removeAllById(Long... ids) {
@@ -86,9 +87,9 @@ public class BookingService {
     }
 
     /**
-     * Finds all Bookings from the database by their ids
+     * Finds all bookings from the database by their ids
      *
-     * @param ids
+     * @param ids of the bookings that want to find in the database
      * @return Iterable of all Booking objects by their ids
      */
     public Iterable<Booking> findAllById(Long... ids) {
@@ -96,10 +97,10 @@ public class BookingService {
     }
 
     /**
-     * Updates all Bookings that have been passed into the method in the database
+     * Updates all bookings that have been passed into the method in the database
      *
-     * @param bookings
-     * @return Iterable of all Bookings that have been updated in the database
+     * @param bookings that we want to update in the database
+     * @return Iterable of all Booking objects that have been updated in the database
      */
     public Iterable<Booking> updateAll(Booking... bookings) {
         return bookingRepository.updateAll(bookings);
