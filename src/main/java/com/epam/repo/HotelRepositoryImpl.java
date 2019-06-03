@@ -3,6 +3,7 @@ package com.epam.repo;
 import com.epam.domain.Hotel;
 import com.epam.domain.Room;
 import com.epam.utils.DBConnectionUtils;
+import lombok.Cleanup;
 import lombok.SneakyThrows;
 
 import java.sql.Connection;
@@ -22,7 +23,10 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
     @Override
     @SneakyThrows
     public Hotel save(Hotel hotel) {
-        if (hotel != null) {
+        if (hotel == null) {
+            return null;
+        } else {
+            @Cleanup
             Statement statement = getStatement();
 
             id = hotel.getId();
@@ -39,15 +43,15 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
                     id + ", " + name + ", " + location + ", " + luxury + ")");
 
             return hotel;
-        } else {
-            return null;
         }
     }
 
     @Override
     @SneakyThrows
     public Hotel removeById(Long id) {
-        if (id != null) {
+        if (id == null) {
+            return null;
+        } else {
             Hotel hotel = findById(id);
             rooms = hotel.getRooms();
 
@@ -55,19 +59,21 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
 //                roomRepository.removeById(room.getId());
 //            }
 
+            @Cleanup
             Statement statement = getStatement();
             statement.execute("DELETE FROM HOTEL WHERE ID = " + id);
 
             return hotel;
-        } else {
-            return null;
         }
     }
 
     @Override
     @SneakyThrows
     public Hotel findById(Long id) {
-        if (id != null) {
+        if (id == null) {
+            return null;
+        } else {
+            @Cleanup
             Statement statement = getStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM HOTEL WHERE ID = " + id);
 
@@ -87,15 +93,16 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
             hotel.setRooms(rooms);
 
             return hotel;
-        } else {
-            return null;
         }
     }
 
     @Override
     @SneakyThrows
     public Hotel update(Hotel hotel) {
-        if (hotel != null) {
+        if (hotel == null) {
+            return null;
+        } else {
+            @Cleanup
             Statement statement = getStatement();
 
             id = hotel.getId();
@@ -111,8 +118,6 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
             statement.execute("UPDATE HOTEL SET NAME \'" + name + "\', LOCATION \'" + location + "\', LUXURY = \'" + luxury + "\' WHERE ID = " + id);
 
             return hotel;
-        } else {
-            return null;
         }
     }
 
