@@ -9,35 +9,42 @@ import lombok.SneakyThrows;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.epam.domain.Hotel.builder;
+
 public class HotelRepositoryImpl implements Repository<Hotel, Long> {
-//todo    Repository <Room, Long> roomRepository = new RoomRepositoryImpl();
+    private Repository <Room, Long> roomRepository = new RoomRepositoryImpl();
 
     private final String SAVE_SQL_REQUEST = "INSERT INTO HOTEL (NAME, LOCATION, LUXURY) VALUES (?, ?, ?)";
     private final String DELETE_SQL_REQUEST = "DELETE FROM HOTEL WHERE ID = ?";
     private final String FIND_SQL_REQUEST = "SELECT * FROM HOTEL WHERE ID = ?";
     private final String UPDATE_SQL_REQUEST = "UPDATE HOTEL SET NAME = ?, LOCATION = ?, LUXURY = ? WHERE ID = ?";
     private final String FIND_ALL_SQL_REQUEST = "SELECT * FROM HOTEL";
+
     private final String ID_COLUMN_NAME = "ID";
     private final String NAME_COLUMN_NAME = "NAME";
     private final String LOCATION_DATE_COLUMN_NAME = "LOCATION";
     private final String LUXURY_COLUMN_NAME = "LUXURY";
 
+    private final String SAVE_EXCEPTION_MESSAGE = "Passing empty hotel field to save";
+    private final String REMOVE_EXCEPTION_MESSAGE = "Passing empty id field to remove";
+    private final String FIND_EXCEPTION_MESSAGE = "Passing empty id field to find";
+    private final String UPDATE_EXCEPTION_MESSAGE = "Passing empty hotel field to update";
+
     @Override
     @SneakyThrows
-    public Hotel save(Hotel hotel) {
+    public Hotel save(Hotel hotel) throws IllegalArgumentException {
         if (hotel == null) {
-            return null;
+            throw new IllegalArgumentException(SAVE_EXCEPTION_MESSAGE);
         } else {
             @Cleanup
             PreparedStatement statement = getPreparedStatement(SAVE_SQL_REQUEST);
             List<Room> roomList = hotel.getRooms();
             for (Room room : roomList) {
-//todo                roomRepository.save(room);
+                roomRepository.save(room);
             }
 
             statement.setString(1, hotel.getName());
@@ -51,9 +58,9 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
 
     @Override
     @SneakyThrows
-    public Hotel removeById(Long id) {
+    public Hotel removeById(Long id) throws IllegalArgumentException {
         if (id == null) {
-            return null;
+            throw new IllegalArgumentException(REMOVE_EXCEPTION_MESSAGE);
         } else {
             Hotel hotel = findById(id);
 
@@ -68,9 +75,9 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
 
     @Override
     @SneakyThrows
-    public Hotel findById(Long id) {
+    public Hotel findById(Long id) throws IllegalArgumentException {
         if (id == null) {
-            return null;
+            throw new IllegalArgumentException(FIND_EXCEPTION_MESSAGE);
         } else {
             Hotel hotel = null;
 
@@ -93,9 +100,9 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
 
     @Override
     @SneakyThrows
-    public Hotel update(Hotel hotel) {
+    public Hotel update(Hotel hotel) throws IllegalArgumentException {
         if (hotel == null) {
-            return null;
+            throw new IllegalArgumentException(UPDATE_EXCEPTION_MESSAGE);
         } else {
             @Cleanup
             PreparedStatement statement = getPreparedStatement(UPDATE_SQL_REQUEST);
@@ -121,7 +128,7 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
         ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-            hotel = Hotel.builder().id(resultSet.getLong(ID_COLUMN_NAME))
+            hotel = builder().id(resultSet.getLong(ID_COLUMN_NAME))
                                    .name(resultSet.getString(NAME_COLUMN_NAME))
                                    .location(resultSet.getString(LOCATION_DATE_COLUMN_NAME))
                                    .luxury(resultSet.getInt(LUXURY_COLUMN_NAME))
@@ -135,17 +142,17 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
 
     private void addRoomsToHotel(Hotel hotel) {
         List<Room> roomList = null;
-//todo        Iterable<Room> allRooms =  roomRepository.findAll();
-//        if (allRooms != null) {
-//            roomList = new ArrayList<>();
-//            for (Room room : allRooms) {
-//                if (room.getHotelId() == hotel.getId()) {
-//                    roomList.add(room);
-//                }
-//            }
-//        } else {
-//            roomList = Collections.emptyList();
-//        }
+        Iterable<Room> allRooms =  roomRepository.findAll();
+        if (allRooms != null) {
+            roomList = new ArrayList<>();
+            for (Room room : allRooms) {
+                if (room.getHotelId() == hotel.getId()) {
+                    roomList.add(room);
+                }
+            }
+        } else {
+            roomList = Collections.emptyList();
+        }
 
         hotel.setRooms(roomList);
     }

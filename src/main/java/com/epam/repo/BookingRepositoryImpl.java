@@ -22,12 +22,16 @@ public class BookingRepositoryImpl implements Repository<Booking, Long> {
     private final String ROOM_ID_COLUMN_NAME = "ROOM_ID";
     private final String START_DATE_COLUMN_NAME = "START_DATE";
     private final String END_DATE_COLUMN_NAME = "END_DATE";
+    private final String SAVE_EXCEPTION_MESSAGE = "Passing empty booking field to save";
+    private final String REMOVE_EXCEPTION_MESSAGE = "Passing empty id field to remove";
+    private final String FIND_EXCEPTION_MESSAGE = "Passing empty id field to find";
+    private final String UPDATE_EXCEPTION_MESSAGE = "Passing empty booking field to update";
 
     @Override
     @SneakyThrows
-    public Booking save(Booking booking) {
+    public Booking save(Booking booking) throws IllegalArgumentException {
         if (booking == null) {
-            return null;
+            throw new IllegalArgumentException(SAVE_EXCEPTION_MESSAGE);
         } else {
             @Cleanup
             PreparedStatement statement = getPreparedStatement(SAVE_SQL_REQUEST);
@@ -43,9 +47,9 @@ public class BookingRepositoryImpl implements Repository<Booking, Long> {
 
     @Override
     @SneakyThrows
-    public Booking removeById(Long id) {
+    public Booking removeById(Long id) throws IllegalArgumentException {
         if (id == null) {
-            return null;
+            throw new IllegalArgumentException(REMOVE_EXCEPTION_MESSAGE);
         } else {
             Booking booking = findById(id);
 
@@ -60,9 +64,9 @@ public class BookingRepositoryImpl implements Repository<Booking, Long> {
 
     @Override
     @SneakyThrows
-    public Booking findById(Long id) {
+    public Booking findById(Long id) throws IllegalArgumentException {
         if (id == null) {
-            return null;
+            throw new IllegalArgumentException(FIND_EXCEPTION_MESSAGE);
         } else {
             Booking booking = null;
 
@@ -84,9 +88,9 @@ public class BookingRepositoryImpl implements Repository<Booking, Long> {
 
     @Override
     @SneakyThrows
-    public Booking update(Booking booking) {
+    public Booking update(Booking booking) throws IllegalArgumentException {
         if (booking == null) {
-            return null;
+            throw new IllegalArgumentException(UPDATE_EXCEPTION_MESSAGE);
         } else {
             @Cleanup
             PreparedStatement statement = getPreparedStatement(UPDATE_SQL_REQUEST);
