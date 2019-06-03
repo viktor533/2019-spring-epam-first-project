@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Builder(toBuilder=true)
 public class Booking {
     private long id;
+    private long roomId;
     private LocalDate start;
     private LocalDate end;
 }
