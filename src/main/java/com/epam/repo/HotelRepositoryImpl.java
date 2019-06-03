@@ -13,11 +13,11 @@ import java.util.List;
 public class HotelRepositoryImpl implements Repository<Hotel, Long> {
 //    RoomRepositoryImpl roomRepository = new RoomRepositoryImpl();
 
-    long id;
-    String name;
-    String location;
-    int luxury;
-    List<Room> rooms;
+    private long id;
+    private String name;
+    private String location;
+    private int luxury;
+    private List<Room> rooms;
 
     @Override
     @SneakyThrows
@@ -75,7 +75,7 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
 
             while (resultSet.next()) {
                 name = resultSet.getString("NAME");
-                location = resultSet.getNString("LOCATION");
+                location = resultSet.getString("LOCATION");
                 luxury = resultSet.getInt("LUXURY");
                 rooms = null;
             }
