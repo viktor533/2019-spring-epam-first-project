@@ -1,13 +1,10 @@
 package com.epam;
 
 import com.epam.domain.Booking;
-import com.epam.domain.Hotel;
 import com.epam.repo.BookingRepositoryImpl;
-import com.epam.repo.HotelRepositoryImpl;
 import com.epam.utils.DBConnectionUtils;
 import org.h2.store.fs.FileUtils;
 
-import java.io.File;
 import java.time.LocalDate;
 
 public class Demo {
@@ -18,15 +15,22 @@ public class Demo {
 
         BookingRepositoryImpl bookingRepository = new BookingRepositoryImpl();
 
-        Booking booking = bookingRepository.findById((long) 1);
+        Booking booking;
+
+        for (Booking b : bookingRepository.findAll()) {
+            System.out.println(b);
+        }
+
+        bookingRepository.save(Booking.builder().roomId(2).start(LocalDate.now()). end(LocalDate.now()).build());
+        booking = bookingRepository.findById((long) 4);
+
         System.out.println(booking);
+        bookingRepository.update(Booking.builder().id(2).roomId(2).start(LocalDate.now()). end(LocalDate.now()).build());
         booking = bookingRepository.findById((long) 2);
         System.out.println(booking);
-        booking = bookingRepository.findById((long) 3);
-        System.out.println(booking);
-        bookingRepository.removeById((long) 1);
-        booking = bookingRepository.findById((long) 2);
-        System.out.println(booking);
+        for (Booking b : bookingRepository.findAll()) {
+            System.out.println(b);
+        }
 
     }
 }

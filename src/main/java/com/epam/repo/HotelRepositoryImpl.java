@@ -1,5 +1,6 @@
 package com.epam.repo;
 
+import com.epam.domain.Booking;
 import com.epam.domain.Hotel;
 import com.epam.domain.Room;
 import com.epam.utils.DBConnectionUtils;
@@ -7,18 +8,26 @@ import lombok.Cleanup;
 import lombok.SneakyThrows;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
-public class HotelRepositoryImpl implements Repository<Hotel, Long> {
-//    RoomRepositoryImpl roomRepository = new RoomRepositoryImpl();
+import static com.epam.domain.Hotel.builder;
 
-    private long id;
-    private String name;
-    private String location;
-    private int luxury;
-    private List<Room> rooms;
+public class HotelRepositoryImpl implements Repository<Hotel, Long> {
+//todo    Repository <Room, Long> roomRepository = new RoomRepositoryImpl();
+
+    private final String SAVE_SQL_REQUEST = "INSERT INTO HOTEL (NAME, LOCATION, LUXURY) VALUES (?, ?, ?)";
+    private final String DELETE_SQL_REQUEST = "DELETE FROM HOTEL WHERE ID = ?";
+    private final String FIND_SQL_REQUEST = "SELECT * FROM HOTEL WHERE ID = ?";
+    private final String UPDATE_SQL_REQUEST = "UPDATE HOTEL SET NAME = ?, LOCATION = ?, LUXURY = ? WHERE ID = ?";
+    private final String FIND_ALL_SQL_REQUEST = "SELECT * FROM HOTEL";
+    private final String ID_COLUMN_NAME = "ID";
+    private final String NAME_COLUMN_NAME = "NAME";
+    private final String LOCATION_DATE_COLUMN_NAME = "LOCATION";
+    private final String LUXURY_COLUMN_NAME = "LUXURY";
 
     @Override
     @SneakyThrows
@@ -27,20 +36,16 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
             return null;
         } else {
             @Cleanup
-            Statement statement = getStatement();
+            PreparedStatement statement = getPreparedStatement(SAVE_SQL_REQUEST);
+            List<Room> roomList = hotel.getRooms();
+            for (Room room : roomList) {
+//todo                roomRepository.save(room);
+            }
 
-            id = hotel.getId();
-            name = hotel.getName();
-            location = hotel.getLocation();
-            luxury = hotel.getLuxury();
-            rooms = hotel.getRooms();
-
-//            for (Room room : rooms) {
-//                roomRepository.save(room);
-//            }
-
-            statement.execute("INSERT INTO HOTEL (ID, NAME, LOCATION, LUXURY) VALUES (" +
-                    id + ", " + name + ", " + location + ", " + luxury + ")");
+            statement.setString(1, hotel.getName());
+            statement.setString(2, hotel.getLocation());
+            statement.setInt(3, hotel.getLuxury());
+            statement.executeUpdate();
 
             return hotel;
         }
@@ -53,15 +58,11 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
             return null;
         } else {
             Hotel hotel = findById(id);
-            rooms = hotel.getRooms();
-
-//            for (Room room : rooms) {
-//                roomRepository.removeById(room.getId());
-//            }
 
             @Cleanup
-            Statement statement = getStatement();
-            statement.execute("DELETE FROM HOTEL WHERE ID = " + id);
+            PreparedStatement statement = getPreparedStatement(DELETE_SQL_REQUEST);
+            statement.setLong(1, id);
+            statement.executeUpdate();
 
             return hotel;
         }
@@ -73,24 +74,20 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
         if (id == null) {
             return null;
         } else {
-            @Cleanup
-            Statement statement = getStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM HOTEL WHERE ID = " + id);
+            Hotel hotel = null;
 
-            Hotel hotel = Hotel.builder().build();
+            @Cleanup
+            PreparedStatement statement = getPreparedStatement(FIND_SQL_REQUEST);
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                name = resultSet.getString("NAME");
-                location = resultSet.getString("LOCATION");
-                luxury = resultSet.getInt("LUXURY");
-                rooms = null;
-            }
+                String name = resultSet.getString(NAME_COLUMN_NAME);
+                String location = resultSet.getString(LOCATION_DATE_COLUMN_NAME);
+                int luxury = resultSet.getInt(LUXURY_COLUMN_NAME);
 
-            hotel.setId(id);
-            hotel.setName(name);
-            hotel.setLocation(location);
-            hotel.setLuxury(luxury);
-            hotel.setRooms(rooms);
+                hotel = Hotel.builder().id(id).name(name).location(location).luxury(luxury).build();
+            }
 
             return hotel;
         }
@@ -103,35 +100,44 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
             return null;
         } else {
             @Cleanup
-            Statement statement = getStatement();
+            PreparedStatement statement = getPreparedStatement(UPDATE_SQL_REQUEST);
 
-            id = hotel.getId();
-            name = hotel.getName();
-            location = hotel.getLocation();
-            luxury = hotel.getLuxury();
-            rooms = hotel.getRooms();
-
-//            for (Room room : rooms) {
-//                roomRepository.update(room);
-//            }
-
-            statement.execute("UPDATE HOTEL SET NAME \'" + name + "\', LOCATION \'" + location + "\', LUXURY = \'" + luxury + "\' WHERE ID = " + id);
+            statement.setString(1, hotel.getName());
+            statement.setString(2, hotel.getLocation());
+            statement.setInt(3, hotel.getLuxury());
+            statement.setLong(4, hotel.getId());
+            statement.executeUpdate();
 
             return hotel;
         }
     }
 
     @Override
+    @SneakyThrows
     public Iterable<Hotel> findAll() {
-        Statement statement = getStatement();
+        List<Hotel> hotelList = new ArrayList<>();
+        Hotel hotel;
 
-        return null;
+        @Cleanup
+        PreparedStatement statement = getPreparedStatement(FIND_ALL_SQL_REQUEST);
+        ResultSet resultSet = statement.executeQuery();
+
+//todo        while (resultSet.next()) {
+//            hotel = Hotel.builder().id(resultSet.getLong(ID_COLUMN_NAME))
+//                                    .name(resultSet.getLong(ROOM_ID_COLUMN_NAME))
+//                                    .start(LocalDate.parse(resultSet.getString(START_DATE_COLUMN_NAME)))
+//                                    .end(LocalDate.parse(resultSet.getString(END_DATE_COLUMN_NAME)))
+//                                    .build();
+//
+//            hotelList.add(room);
+//        }
+
+        return hotelList;
     }
 
     @SneakyThrows
-    private Statement getStatement() {
+    private PreparedStatement getPreparedStatement(String sql) {
         Connection connection = DBConnectionUtils.getConnection();
-        Statement statement = connection.createStatement();
-        return statement;
+        return connection.prepareStatement(sql);
     }
 }
