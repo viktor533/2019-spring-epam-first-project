@@ -16,25 +16,25 @@ public interface Repository<T, K> {
 
     default Iterable<T> saveAll(T... items) {
         return Arrays.stream(items)
-                .map(item -> save(item))
+                .map(this::save)
                 .collect(Collectors.toList());
     }
 
     default Iterable<T> removeAllById(K... ids) {
         return Arrays.stream(ids)
-                .map(id -> removeById(id))
+                .map(this::removeById)
                 .collect(Collectors.toList());
     }
 
     default Iterable<T> findAllById(K... ids) {
         return Arrays.stream(ids)
-                .map(id -> findById(id))
+                .map(this::findById)
                 .collect(Collectors.toList());
     }
 
     default Iterable<T> updateAll(T... items) {
         return Arrays.stream(items)
-                .map(item -> update(item))
+                .map(this::update)
                 .collect(Collectors.toList());
     }
 }
