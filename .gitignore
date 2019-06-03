@@ -23,11 +23,7 @@
 ######################
 2019-spring-epam-first-project.iml
 .idea/
-<<<<<<< HEAD
-out/
-=======
 
 # Maven targen files #
 ######################
 target/
->>>>>>> 4bfcb3216ecdcb007837194d1aad243151e0abe7
