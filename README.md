@@ -1,4 +1,4 @@
-# Epam stedeut project Hotel
+# Epam stedeut's project Hotel
 
 ## Техническое задание:
 
@@ -37,12 +37,19 @@
     * Connection type: URL only
     * user: sa
     * password: 
+
+* Set H2 properties:
+    * name: H2 - test
+    * Connection type: URL only
+    * user: sa
+    * password:
     * URL: jdbc:h2:./db/test
 * Run schema.sql
 * Run test-data.sql
 * Build Tomcat project
 * Profit! 
-    
+* Profit!
+
 ## Ссылки:
 * [model](https://drive.google.com/file/d/1yCnp8RrrslvOphUdVbeMQfNYsUUmlh57/view?usp=sharing)
 * [trello](https://trello.com/b/M5towI6a/epam-first-project-spring-2019)
