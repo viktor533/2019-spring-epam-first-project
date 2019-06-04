@@ -15,16 +15,16 @@ import java.util.List;
 @Slf4j
 public class RoomRepositoryImpl implements Repository<Room, Long> {
 
-    private static final String saveSQLRequest = "INSERT INTO ROOM (ID, HOTEL_ID, NUM_OF_GUESTS, PRICE_PER_NIGHT, CLASS) VALUES(?, ?, ?, ?, ?);";
-    private static final String deleteSQLRequest = "DELETE FROM ROOM WHERE ID = ?;";
-    private static final String findSQLRequest = "SELECT * FROM HOTEL WHERE ID = ?;";
-    private static final String updateSQLRequest = "UPDATE ROOM SET ID \'?\', HOTEL_ID \'?\', NUM_OF_GUESTS = \'?\', PRICE_PER_NIGHT \'?\', CLASS = \'?\' WHERE ID = ?;";
-    private static final String findAllSQLRequest = "SELECT * FROM HOTEL;";
+    private static final String SAVE_SQL_REQUEST = "INSERT INTO ROOM (ID, HOTEL_ID, NUM_OF_GUESTS, PRICE_PER_NIGHT, CLASS) VALUES(?, ?, ?, ?, ?);";
+    private static final String DELETE_SQL_REQUEST = "DELETE FROM ROOM WHERE ID = ?;";
+    private static final String FIND_SQL_REQUEST = "SELECT * FROM HOTEL WHERE ID = ?;";
+    private static final String UPDATE_SQL_REQUEST = "UPDATE ROOM SET ID \'?\', HOTEL_ID \'?\', NUM_OF_GUESTS = \'?\', PRICE_PER_NIGHT \'?\', CLASS = \'?\' WHERE ID = ?;";
+    private static final String FIND_ALL_SQL_REQUEST = "SELECT * FROM HOTEL;";
 
-    private static final String hotelIdColumnName = "HOTEL_ID";
-    private static final String numOfGuestsColumnName = "NUM_OF_GUESTS";
-    private static final String pricePerNightColumnName = "PRICE_PER_NIGHT";
-    private static final String classColumnName = "CLASS";
+    private static final String HOTEL_ID_COLUMN_NAME = "HOTEL_ID";
+    private static final String NUM_OF_GUESTS_COLUMN_NAME = "NUM_OF_GUESTS";
+    private static final String PRICE_PER_NIGHT_COLUMN_NAME = "PRICE_PER_NIGHT";
+    private static final String CLASS_COLUMN_NAME = "CLASS";
 
     @SneakyThrows
     private PreparedStatement getPreparedStatement(String sql) {
@@ -40,7 +40,7 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
         }
 
         @Cleanup
-        PreparedStatement statement = getPreparedStatement(saveSQLRequest);
+        PreparedStatement statement = getPreparedStatement(SAVE_SQL_REQUEST);
         setRoomToPreparedStatement(room, statement);
         statement.execute();
 
@@ -68,7 +68,7 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
 //        }
 
         @Cleanup
-        PreparedStatement statement = getPreparedStatement(deleteSQLRequest);
+        PreparedStatement statement = getPreparedStatement(DELETE_SQL_REQUEST);
         statement.setLong(1, id);
         statement.execute();
 
@@ -85,17 +85,17 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
         Room room = null;
 
         @Cleanup
-        PreparedStatement statement = getPreparedStatement(findSQLRequest);
+        PreparedStatement statement = getPreparedStatement(FIND_SQL_REQUEST);
 
         try {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 room = Room.builder()
-                        .hotelId(resultSet.getLong(hotelIdColumnName))
-                        .numOfGuests(resultSet.getInt(numOfGuestsColumnName))
-                        .pricePerNight(resultSet.getInt(pricePerNightColumnName))
-                        .roomClass(RoomClass.valueOf(resultSet.getString(classColumnName)))
+                        .hotelId(resultSet.getLong(HOTEL_ID_COLUMN_NAME))
+                        .numOfGuests(resultSet.getInt(NUM_OF_GUESTS_COLUMN_NAME))
+                        .pricePerNight(resultSet.getInt(PRICE_PER_NIGHT_COLUMN_NAME))
+                        .roomClass(RoomClass.valueOf(resultSet.getString(CLASS_COLUMN_NAME)))
                         .build();
             }
         } catch (SQLException e) {
@@ -125,7 +125,7 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
         }
 
         @Cleanup
-        PreparedStatement statement = getPreparedStatement(updateSQLRequest);
+        PreparedStatement statement = getPreparedStatement(UPDATE_SQL_REQUEST);
         setRoomToPreparedStatement(room, statement);
         statement.setLong(6, room.getId());
         statement.execute();
@@ -151,15 +151,15 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
     @SneakyThrows
     public Iterable<Room> findAll() {
         @Cleanup
-        PreparedStatement statement = getPreparedStatement(findAllSQLRequest);
+        PreparedStatement statement = getPreparedStatement(FIND_ALL_SQL_REQUEST);
         ResultSet resultSet = statement.executeQuery();
         List<Room> roomsList = new ArrayList<>();
         while (resultSet.next()) {
             Room room = Room.builder()
-                    .hotelId(resultSet.getLong(hotelIdColumnName))
-                    .numOfGuests(resultSet.getInt(numOfGuestsColumnName))
-                    .pricePerNight(resultSet.getInt(pricePerNightColumnName))
-                    .roomClass(RoomClass.valueOf(resultSet.getString(classColumnName)))
+                    .hotelId(resultSet.getLong(HOTEL_ID_COLUMN_NAME))
+                    .numOfGuests(resultSet.getInt(NUM_OF_GUESTS_COLUMN_NAME))
+                    .pricePerNight(resultSet.getInt(PRICE_PER_NIGHT_COLUMN_NAME))
+                    .roomClass(RoomClass.valueOf(resultSet.getString(CLASS_COLUMN_NAME)))
                     .build();
 
             List<Booking> bookings = null;
