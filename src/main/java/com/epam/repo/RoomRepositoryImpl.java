@@ -8,20 +8,23 @@ import lombok.Cleanup;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 public class RoomRepositoryImpl implements Repository<Room, Long> {
 
+    private static final String saveSQLRequest = "INSERT INTO ROOM (ID, HOTEL_ID, NUM_OF_GUESTS, PRICE_PER_NIGHT, CLASS) VALUES(?, ?, ?, ?, ?);";
+    private static final String deleteSQLRequest = "DELETE FROM ROOM WHERE ID = ?;";
+    private static final String findSQLRequest = "SELECT * FROM HOTEL WHERE ID = ?;";
+    private static final String updateSQLRequest = "UPDATE ROOM SET ID \'?\', HOTEL_ID \'?\', NUM_OF_GUESTS = \'?\', PRICE_PER_NIGHT \'?\', CLASS = \'?\' WHERE ID = ?;";
+    private static final String findAllSQLRequest = "SELECT * FROM HOTEL;";
+
     @SneakyThrows
-    private Statement getStatement() {
+    private PreparedStatement getPreparedStatement(String sql) {
         Connection connection = DBConnectionUtils.getConnection();
-        return connection.createStatement();
+        return connection.prepareStatement(sql);
     }
 
     @Override
@@ -31,16 +34,10 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
             return null;
         }
 
-        long id = room.getId();
-        long hotelId = room.getHotelId();
-        int numOfGuests = room.getNumOfGuests();
-        int pricePerNight = room.getPricePerNight();
-        String roomClass = room.getRoomClass().toString();
-
         @Cleanup
-        Statement statement = getStatement();
-        statement.execute("INSERT INTO ROOM (ID, HOTEL_ID, NUM_OF_GUESTS, PRICE_PER_NIGHT, CLASS) VALUES (" +
-                id + ", " + hotelId + ", " + numOfGuests + ", " + pricePerNight + ", " + roomClass + ");");
+        PreparedStatement statement = getPreparedStatement(saveSQLRequest);
+        setRoomToPreparedStatement(room, statement);
+        statement.execute();
 
 //        TODO: bookingRepositoryImp
 //        for (Booking booking : room.getBookings()) {
@@ -66,8 +63,9 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
 //        }
 
         @Cleanup
-        Statement statement = getStatement();
-        statement.execute("DELETE FROM ROOM WHERE ID = " + id + ";");
+        PreparedStatement statement = getPreparedStatement(deleteSQLRequest);
+        statement.setLong(1, room.getId());
+        statement.execute();
 
         return room;
     }
@@ -77,19 +75,15 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
         if (id == null) {
             return null;
         }
-        @Cleanup
-        Statement statement = getStatement();
+
         Room room = null;
 
-/*
-        .roomId(roomId)
-                .start(start)
-                .end(end)
-                .build();
-*/
+        @Cleanup
+        PreparedStatement statement = getPreparedStatement(findSQLRequest);
 
         try {
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM HOTEL WHERE ID = " + id + ";");
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 room = Room.builder()
                         .hotelId(resultSet.getLong("HOTEL_ID"))
@@ -130,10 +124,12 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
         int pricePerNight = room.getPricePerNight();
         String roomClass = room.getRoomClass().toString();
 
+
         @Cleanup
-        Statement statement = getStatement();
-        statement.execute("UPDATE ROOM SET ID \'" + id + "\', HOTEL_ID \'" + hotelId + "\', NUM_OF_GUESTS = \'" + numOfGuests + "\', " +
-                "PRICE_PER_NIGHT \'" + pricePerNight + "\', CLASS = \'" + roomClass + "\' WHERE ID = " + id + ";");
+        PreparedStatement statement = getPreparedStatement(updateSQLRequest);
+        setRoomToPreparedStatement(room, statement);
+        statement.setLong(6, room.getId());
+        statement.execute();
 
 //        TODO: bookingRepositoryImp
 //        for (Booking booking : room.getBookings()) {
@@ -143,13 +139,21 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
         return room;
     }
 
+    @SneakyThrows
+    private static void setRoomToPreparedStatement(Room room, PreparedStatement statement) {
+        statement.setLong(1, room.getId());
+        statement.setLong(2, room.getHotelId());
+        statement.setInt(3, room.getNumOfGuests());
+        statement.setInt(4, room.getPricePerNight());
+        statement.setString(5, room.getRoomClass().toString());
+    }
+
     @Override
     @SneakyThrows
     public Iterable<Room> findAll() {
         @Cleanup
-        Statement statement = getStatement();
-
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM HOTEL;");
+        PreparedStatement statement = getPreparedStatement(findAllSQLRequest);
+        ResultSet resultSet = statement.executeQuery();
         List<Room> roomsList = new ArrayList<>();
         while (resultSet.next()) {
             Room room = Room.builder()
