@@ -71,6 +71,7 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
     }
 
     @Override
+    @SneakyThrows
     public Room findById(Long id) {
         if (id == null) {
             return null;
