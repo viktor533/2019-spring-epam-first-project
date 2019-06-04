@@ -1,6 +1,5 @@
 package com.epam.repo;
 
-import com.epam.domain.Booking;
 import com.epam.domain.Hotel;
 import com.epam.domain.Room;
 import com.epam.utils.DBConnectionUtils;
@@ -12,9 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
-import static com.epam.domain.Hotel.builder;
 
 public class HotelRepositoryImpl implements Repository<Hotel, Long> {
 //todo    Repository <Room, Long> roomRepository = new RoomRepositoryImpl();
@@ -122,17 +120,34 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
         PreparedStatement statement = getPreparedStatement(FIND_ALL_SQL_REQUEST);
         ResultSet resultSet = statement.executeQuery();
 
-//todo        while (resultSet.next()) {
-//            hotel = Hotel.builder().id(resultSet.getLong(ID_COLUMN_NAME))
-//                                    .name(resultSet.getLong(ROOM_ID_COLUMN_NAME))
-//                                    .start(LocalDate.parse(resultSet.getString(START_DATE_COLUMN_NAME)))
-//                                    .end(LocalDate.parse(resultSet.getString(END_DATE_COLUMN_NAME)))
-//                                    .build();
-//
-//            hotelList.add(room);
-//        }
+            while (resultSet.next()) {
+            hotel = Hotel.builder().id(resultSet.getLong(ID_COLUMN_NAME))
+                                   .name(resultSet.getString(NAME_COLUMN_NAME))
+                                   .location(resultSet.getString(LOCATION_DATE_COLUMN_NAME))
+                                   .luxury(resultSet.getInt(LUXURY_COLUMN_NAME))
+                                   .build();
+            addRoomsToHotel(hotel);
+            hotelList.add(hotel);
+        }
 
         return hotelList;
+    }
+
+    private void addRoomsToHotel(Hotel hotel) {
+        List<Room> roomList = null;
+//todo        Iterable<Room> allRooms =  roomRepository.findAll();
+//        if (allRooms != null) {
+//            roomList = new ArrayList<>();
+//            for (Room room : allRooms) {
+//                if (room.getHotelId() == hotel.getId()) {
+//                    roomList.add(room);
+//                }
+//            }
+//        } else {
+//            roomList = Collections.emptyList();
+//        }
+
+        hotel.setRooms(roomList);
     }
 
     @SneakyThrows
