@@ -64,7 +64,7 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
 
         @Cleanup
         PreparedStatement statement = getPreparedStatement(deleteSQLRequest);
-        statement.setLong(1, room.getId());
+        statement.setLong(1, id);
         statement.execute();
 
         return room;
@@ -117,13 +117,6 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
         if (room == null) {
             return null;
         }
-
-        long id = room.getId();
-        long hotelId = room.getHotelId();
-        int numOfGuests = room.getNumOfGuests();
-        int pricePerNight = room.getPricePerNight();
-        String roomClass = room.getRoomClass().toString();
-
 
         @Cleanup
         PreparedStatement statement = getPreparedStatement(updateSQLRequest);
