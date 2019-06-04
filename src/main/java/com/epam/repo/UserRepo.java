@@ -34,7 +34,8 @@ public class UserRepo implements Repository<User, Long> {
             String password = item.getPassword();
             UserRole role = item.getRole();
 
-            PreparedStatement preparedStatement = getPreparedStatement("INSERT INTO USER (LOGIN, PASSWORD, ROLE) VALUES(?, ?, ?)");
+            PreparedStatement preparedStatement = getPreparedStatement(
+                "INSERT INTO USER (LOGIN, PASSWORD, ROLE) VALUES(?, ?, ?)");
 
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
@@ -46,6 +47,8 @@ public class UserRepo implements Repository<User, Long> {
         return item;
     }
 
+
+    // TODO
     @Override
     public User removeById(Long id) {
         return null;
@@ -106,6 +109,7 @@ public class UserRepo implements Repository<User, Long> {
 
     }
 
+    //TODO
     @Override
     public Iterable<User> findAll() {
         return null;

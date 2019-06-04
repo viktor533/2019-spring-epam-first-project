@@ -6,9 +6,7 @@ import com.epam.utils.DBConnectionUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-import lombok.Cleanup;
 import lombok.SneakyThrows;
 
 public class BillRepo implements Repository<Bill, Long> {
@@ -27,7 +25,6 @@ public class BillRepo implements Repository<Bill, Long> {
         if (item == null) {
             return null;
         } else {
-
 
             Long userId = item.getUserId();
             Long bookingId = item.getBookingId();
@@ -50,7 +47,7 @@ public class BillRepo implements Repository<Bill, Long> {
     // TODO
     @Override
     public Bill removeById(Long id) {
-        Bill bill =null;
+        Bill bill = null;
 
         if (id == null) {
             return null;
@@ -71,25 +68,26 @@ public class BillRepo implements Repository<Bill, Long> {
             return null;
         } else {
 
-                PreparedStatement preparedStatement = getPreparedStatement("SELECT * FROM BILL WHERE ID = ?");
-                preparedStatement.setLong(1, id);
-                resultSet = preparedStatement.executeQuery();
+            PreparedStatement preparedStatement = getPreparedStatement(
+                "SELECT * FROM BILL WHERE ID = ?");
+            preparedStatement.setLong(1, id);
+            resultSet = preparedStatement.executeQuery();
 
-                while (resultSet.next()) {
-                    Long tmpId = Long.parseLong(resultSet.getString("ID"));
-                    if (tmpId.equals(id)) {
+            while (resultSet.next()) {
+                Long tmpId = Long.parseLong(resultSet.getString("ID"));
+                if (tmpId.equals(id)) {
 
-                        long bookingId = Long.parseLong(resultSet.getString("BOOKING_ID"));
-                        long userId = Long.parseLong(resultSet.getString("USER_ID"));
+                    long bookingId = Long.parseLong(resultSet.getString("BOOKING_ID"));
+                    long userId = Long.parseLong(resultSet.getString("USER_ID"));
 
-                        String status = resultSet.getString("STATUS");
+                    String status = resultSet.getString("STATUS");
 
-                        bill = Bill.builder().id(tmpId).bookingId(bookingId).userId(userId)
-                            .status(Enum.valueOf(BillStatus.class, status)).build();
-
-                    }
+                    bill = Bill.builder().id(tmpId).bookingId(bookingId).userId(userId)
+                        .status(Enum.valueOf(BillStatus.class, status)).build();
 
                 }
+
+            }
         }
         return bill;
     }
@@ -103,19 +101,17 @@ public class BillRepo implements Repository<Bill, Long> {
             return null;
         } else {
 
-
             Long id = item.getId();
             Long userId = item.getUserId();
             Long bookingId = item.getBookingId();
             BillStatus billStatus = item.getStatus();
 
-
-            PreparedStatement preparedStatement = getPreparedStatement(" UPDATE BILL SET USER_ID = ?,  BOOKING_ID = ? , STATUS = ?, WHERE ID = ?");
+            PreparedStatement preparedStatement = getPreparedStatement(
+                " UPDATE BILL SET USER_ID = ?,  BOOKING_ID = ? , STATUS = ?, WHERE ID = ?");
             preparedStatement.setLong(1, userId);
             preparedStatement.setLong(2, bookingId);
-            preparedStatement.setString(3,billStatus.name());
+            preparedStatement.setString(3, billStatus.name());
             preparedStatement.setLong(4, id);
-
 
             preparedStatement.execute();
         }
