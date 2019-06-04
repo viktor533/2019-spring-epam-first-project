@@ -3,6 +3,7 @@ package com.epam.repo;
 import com.epam.domain.Booking;
 import com.epam.domain.Room;
 import com.epam.domain.enums.RoomClass;
+import com.epam.state.RepositoryState;
 import com.epam.utils.DBConnectionUtils;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -25,6 +27,8 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
     private static final String NUM_OF_GUESTS_COLUMN_NAME = "NUM_OF_GUESTS";
     private static final String PRICE_PER_NIGHT_COLUMN_NAME = "PRICE_PER_NIGHT";
     private static final String CLASS_COLUMN_NAME = "CLASS";
+
+    private Repository<Booking, Long> bookingRepository = RepositoryState.getBookingRepositoryInstance();
 
     @SneakyThrows
     private PreparedStatement getPreparedStatement(String sql) {
@@ -44,10 +48,9 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
         setRoomToPreparedStatement(room, statement);
         statement.execute();
 
-//        TODO: bookingRepositoryImp
-//        for (Booking booking : room.getBookings()) {
-//            bookingRepositoryImp.removeById(booking.getId());
-//        }
+        for (Booking booking : room.getBookings()) {
+            bookingRepository.removeById(booking.getId());
+        }
         return room;
     }
 
@@ -62,10 +65,9 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
             return null;
         }
 
-//        TODO: bookingRepositoryImp
-//        for (Booking booking : room.getBookings()) {
-//            bookingRepositoryImp.removeById(booking.getId());
-//        }
+        for (Booking booking : room.getBookings()) {
+            bookingRepository.removeById(booking.getId());
+        }
 
         @Cleanup
         PreparedStatement statement = getPreparedStatement(DELETE_SQL_REQUEST);
@@ -103,15 +105,7 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
             return null;
         }
         if (room != null) {
-            List<Booking> bookings = null;
-//            TODO: bookingRepositoryImp
-//            for (Booking booking : bookingRepositoryImp.findAll()) {
-//                if (booking.getRoomId() == id) {
-//                    bookings.add(booking);
-//                }
-//              bookingRepositoryImp.removeById(booking.getId());
-//            }
-            room.setBookings(bookings);
+            addBookingsToRoom(room);
         }
 
         return room;
@@ -130,21 +124,11 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
         statement.setLong(6, room.getId());
         statement.execute();
 
-//        TODO: bookingRepositoryImp
-//        for (Booking booking : room.getBookings()) {
-//            bookingRepositoryImp.update(booking);
-//        }
+        for (Booking booking : room.getBookings()) {
+            bookingRepository.update(booking);
+        }
 
         return room;
-    }
-
-    @SneakyThrows
-    private static void setRoomToPreparedStatement(Room room, PreparedStatement statement) {
-        statement.setLong(1, room.getId());
-        statement.setLong(2, room.getHotelId());
-        statement.setInt(3, room.getNumOfGuests());
-        statement.setInt(4, room.getPricePerNight());
-        statement.setString(5, room.getRoomClass().toString());
     }
 
     @Override
@@ -162,17 +146,35 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
                     .roomClass(RoomClass.valueOf(resultSet.getString(CLASS_COLUMN_NAME)))
                     .build();
 
-            List<Booking> bookings = null;
-//            TODO: bookingRepositoryImp
-//            for (Booking booking : bookingRepositoryImp.findAll()) {
-//                if (booking.getRoomId() == id) {
-//                    bookings.add(booking);
-//                }
-//              bookingRepositoryImp.removeById(booking.getId());
-//            }
-            room.setBookings(bookings);
+            addBookingsToRoom(room);
             roomsList.add(room);
         }
         return roomsList;
+    }
+
+    private void addBookingsToRoom(Room room) {
+        List<Booking> bookings = null;
+        Iterable<Booking> allBookings =  bookingRepository.findAll();
+        if (allBookings != null) {
+            bookings = new ArrayList<>();
+            for (Booking booking : allBookings) {
+                if (booking.getRoomId() == room.getId()) {
+                    bookings.add(booking);
+                }
+                bookingRepository.removeById(booking.getId());
+            }
+        } else {
+            bookings = Collections.emptyList();
+        }
+        room.setBookings(bookings);
+    }
+
+    @SneakyThrows
+    private static void setRoomToPreparedStatement(Room room, PreparedStatement statement) {
+        statement.setLong(1, room.getId());
+        statement.setLong(2, room.getHotelId());
+        statement.setInt(3, room.getNumOfGuests());
+        statement.setInt(4, room.getPricePerNight());
+        statement.setString(5, room.getRoomClass().toString());
     }
 }
