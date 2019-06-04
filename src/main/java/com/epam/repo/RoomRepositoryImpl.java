@@ -21,6 +21,11 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
     private static final String updateSQLRequest = "UPDATE ROOM SET ID \'?\', HOTEL_ID \'?\', NUM_OF_GUESTS = \'?\', PRICE_PER_NIGHT \'?\', CLASS = \'?\' WHERE ID = ?;";
     private static final String findAllSQLRequest = "SELECT * FROM HOTEL;";
 
+    private static final String hotelIdColumnName = "HOTEL_ID";
+    private static final String numOfGuestsColumnName = "NUM_OF_GUESTS";
+    private static final String pricePerNightColumnName = "PRICE_PER_NIGHT";
+    private static final String classColumnName = "CLASS";
+
     @SneakyThrows
     private PreparedStatement getPreparedStatement(String sql) {
         Connection connection = DBConnectionUtils.getConnection();
@@ -87,10 +92,10 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 room = Room.builder()
-                        .hotelId(resultSet.getLong("HOTEL_ID"))
-                        .numOfGuests(resultSet.getInt("NUM_OF_GUESTS"))
-                        .pricePerNight(resultSet.getInt("NUM_OF_GUESTS"))
-                        .roomClass(RoomClass.valueOf(resultSet.getString("CLASS")))
+                        .hotelId(resultSet.getLong(hotelIdColumnName))
+                        .numOfGuests(resultSet.getInt(numOfGuestsColumnName))
+                        .pricePerNight(resultSet.getInt(pricePerNightColumnName))
+                        .roomClass(RoomClass.valueOf(resultSet.getString(classColumnName)))
                         .build();
             }
         } catch (SQLException e) {
@@ -151,10 +156,10 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
         List<Room> roomsList = new ArrayList<>();
         while (resultSet.next()) {
             Room room = Room.builder()
-                    .hotelId(resultSet.getLong("HOTEL_ID"))
-                    .numOfGuests(resultSet.getInt("NUM_OF_GUESTS"))
-                    .pricePerNight(resultSet.getInt("NUM_OF_GUESTS"))
-                    .roomClass(RoomClass.valueOf(resultSet.getString("CLASS")))
+                    .hotelId(resultSet.getLong(hotelIdColumnName))
+                    .numOfGuests(resultSet.getInt(numOfGuestsColumnName))
+                    .pricePerNight(resultSet.getInt(pricePerNightColumnName))
+                    .roomClass(RoomClass.valueOf(resultSet.getString(classColumnName)))
                     .build();
 
             List<Booking> bookings = null;
