@@ -32,12 +32,6 @@
 * Set folder with tomcat
 * Add build war artifact
 * Add H2 to Project database source
-* Set H2 properties: 
-    * name: H2 - test
-    * Connection type: URL only
-    * user: sa
-    * password: 
-
 * Set H2 properties:
     * name: H2 - test
     * Connection type: URL only
