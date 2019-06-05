@@ -26,9 +26,9 @@ public class BillRepoImpl implements Repository<Bill, Long> {
 
     @SneakyThrows
     @Override
-    public Bill save(Bill item) {
+    public Bill save(Bill item) throws IllegalArgumentException{
         if (item == null) {
-            return null;
+            throw new IllegalArgumentException();
         } else {
 
             Long userId = item.getUserId();
@@ -50,11 +50,11 @@ public class BillRepoImpl implements Repository<Bill, Long> {
 
     @SneakyThrows
     @Override
-    public Bill removeById(Long id) {
+    public Bill removeById(Long id) throws IllegalArgumentException{
         Bill bill = null;
 
         if (id == null) {
-            return null;
+            throw new IllegalArgumentException();
         } else {
             bill = findById(id);
 
@@ -70,12 +70,12 @@ public class BillRepoImpl implements Repository<Bill, Long> {
 
     @SneakyThrows
     @Override
-    public Bill findById(Long id) {
+    public Bill findById(Long id) throws IllegalArgumentException {
         ResultSet resultSet = null;
         Bill bill = null;
 
         if (id == null) {
-            return null;
+            throw new IllegalArgumentException();
         } else {
 
             PreparedStatement preparedStatement = getPreparedStatement(
@@ -104,11 +104,11 @@ public class BillRepoImpl implements Repository<Bill, Long> {
 
     @SneakyThrows
     @Override
-    public Bill update(Bill item) {
+    public Bill update(Bill item) throws IllegalArgumentException {
         ResultSet resultSet = null;
 
         if (item == null) {
-            return null;
+            throw new IllegalArgumentException();
         } else {
 
             Long id = item.getId();

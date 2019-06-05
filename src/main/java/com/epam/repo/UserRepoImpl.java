@@ -24,9 +24,9 @@ public class UserRepoImpl implements Repository<User, Long> {
 
     @SneakyThrows
     @Override
-    public User save(User item) {
+    public User save(User item) throws IllegalArgumentException{
         if (item == null) {
-            return null;
+            throw new IllegalArgumentException();
         } else {
             String login = item.getLogin();
             String password = item.getPassword();
@@ -48,11 +48,11 @@ public class UserRepoImpl implements Repository<User, Long> {
 
     @SneakyThrows
     @Override
-    public User removeById(Long id) {
+    public User removeById(Long id) throws IllegalArgumentException {
         User user = null;
 
         if (id == null) {
-            return null;
+            throw new IllegalArgumentException();
         } else {
             user = findById(id);
 
@@ -68,12 +68,12 @@ public class UserRepoImpl implements Repository<User, Long> {
 
     @SneakyThrows
     @Override
-    public User findById(Long id) {
+    public User findById(Long id) throws IllegalArgumentException{
         ResultSet resultSet = null;
         User user = null;
 
         if (id == null) {
-            return null;
+            throw new IllegalArgumentException();
         } else {
 
             PreparedStatement preparedStatement = getPreparedStatement(
@@ -101,14 +101,13 @@ public class UserRepoImpl implements Repository<User, Long> {
         return user;
 
     }
-
     @SneakyThrows
     @Override
-    public User update(User item) {
+    public User update(User item) throws IllegalArgumentException {
         ResultSet resultSet = null;
 
         if (item == null) {
-            return null;
+            throw new IllegalArgumentException();
         } else {
 
             Long id = item.getId();
