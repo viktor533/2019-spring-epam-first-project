@@ -11,52 +11,84 @@ public class RoomServiceImpl {
     private Repository<Room, Long> roomRepository = RepositoryState.getRoomRepositoryInstance();
     private Repository<Hotel, Long> hotelRepository = RepositoryState.getHotelRepositoryInstance();
 
-    private void checkNulls(Room room) throws Exception {
+    /**
+     * Check room and room fields by null
+     * @param room to check
+     * @throws IllegalAccessException if accepted room or room fields is null
+     */
+    private void checkNulls(Room room) throws IllegalAccessException {
+        if (room == null) {
+            throw new IllegalAccessException("Accepted room is null!");
+        }
         if (findById(room.getId()) != null) {
-            throw new Exception("Room with same id already exist!");
+            throw new IllegalAccessException("Room with same id already exist!");
         }
         if (hotelRepository.findById(room.getHotelId()) == null) {
-            throw new Exception("Hotel id not correct: not exist!");
+            throw new IllegalAccessException("Hotel id not correct: not exist!");
         }
         if (room.getRoomClass() == null) {
-            throw new Exception("Room must have class!");
+            throw new IllegalAccessException("Room must have class!");
         }
         if (room.getBookings() == null) {
             room.setBookings(Collections.EMPTY_LIST);
         }
     }
 
-    public Room save(Room room) throws Exception {
+    /**
+     * Accept room, check by null and save it in repository
+     * @param room
+     * @return saved room
+     * @throws IllegalAccessException if accepted room or room fields is null
+     */
+    public Room save(Room room) throws IllegalAccessException {
         checkNulls(room);
         return roomRepository.save(room);
     }
 
-    public Room removeById(Long id) {
+    /**
+     * Accepted id and try to delete room with same id
+     * @param id
+     * @return removed room or null, if room with same id not exist
+     * @throws IllegalAccessException if id is null
+     */
+    public Room removeById(Long id) throws IllegalAccessException {
         if (id == null) {
-            return null;
+            throw new IllegalAccessException("Accepted id is null!");
         }
         return roomRepository.removeById(id);
     }
 
-    public Room findById(Long id) {
+    /**
+     * Accept id and try to find room with same id
+     * @param id
+     * @return finded room or null, if room with same id not exist
+     * @throws IllegalAccessException if id is null
+     */
+    public Room findById(Long id) throws IllegalAccessException {
         if (id == null) {
-            return null;
+            throw new IllegalAccessException("Accepted id is null!");
         }
         return roomRepository.findById(id);
     }
 
-    public Room update(Room room) throws Exception {
+    /**
+     * Try to update room
+     * @param room
+     * @return updated room or null if same room not exist in repository
+     * @throws IllegalAccessException if accepted room or room fields is null
+     */
+    public Room update(Room room) throws IllegalAccessException {
+        checkNulls(room);
         if (findById(room.getId()) == null) {
             return null;
         }
-        checkNulls(room);
         return roomRepository.update(room);
     }
 
-    public Iterable<Room> findAll(Long id) {
-        if (id == null) {
-            return null;
-        }
+    /**
+     * @return Iterable by rooms, contained in repository
+     */
+    public Iterable<Room> findAll() {
         return roomRepository.findAll();
     }
 }
