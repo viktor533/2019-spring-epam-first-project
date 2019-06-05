@@ -6,6 +6,7 @@
 <body>
 <a href="pages/login.jsp" target="_self">login</a>|
 <a href="registration.jsp">profile</a>
+<a href="${pageContext.request.contextPath}/hotel">Hotel Page</a>
 
 </body>
 </html>

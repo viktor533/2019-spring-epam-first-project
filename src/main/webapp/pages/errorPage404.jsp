@@ -11,6 +11,6 @@
     </style>
 </head>
 <body>
-    <img src="../resources/error404.jpeg" alt="error404"  class="fullscreen">
+    <img src="/2019_spring_epam_first_project_war/resources/error404.jpeg" alt="error404"  class="fullscreen">
 </body>
 </html>

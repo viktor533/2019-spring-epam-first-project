@@ -8,8 +8,33 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
+    <servlet>
+        <servlet-name>HotelServlet</servlet-name>
+        <servlet-class>com.epam.servlets.HotelServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>HotelServlet</servlet-name>
+        <url-pattern>/hotel</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RoomServlet</servlet-name>
+        <servlet-class>com.epam.servlets.RoomServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>RoomServlet</servlet-name>
+        <url-pattern>/room</url-pattern>
+    </servlet-mapping>
+
+
     <error-page>
         <error-code>404</error-code>
         <location>/pages/errorPage404.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/pages/errorPage500.jsp</location>
     </error-page>
 </web-app>
