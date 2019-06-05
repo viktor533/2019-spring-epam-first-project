@@ -13,7 +13,14 @@ import lombok.Cleanup;
 import lombok.SneakyThrows;
 
 
-public class UserRepo implements Repository<User, Long> {
+public class UserRepoImpl implements Repository<User, Long> {
+
+
+    public static final String INSERT_SQL_REQUEST = "INSERT INTO USER (LOGIN, PASSWORD, ROLE) VALUES(?, ?, ?)";
+    public static final String DELETE_SQL_REQUEST = "DELETE FROM USER WHERE ID = ?";
+    public static final String SELECT_FROM_USER_SQL_REQUEST = "SELECT * FROM USER WHERE ID = ?";
+    public static final String UPDATE_SQL_REQUEST = " UPDATE USER SET LOGIN = ?,  PASSWORD = ? , ROLE = ? WHERE ID = ?";
+    public static final String SELECT_ID_SQL_REQUEST = "SELECT ID FROM USER";
 
     @SneakyThrows
     @Override
@@ -26,7 +33,7 @@ public class UserRepo implements Repository<User, Long> {
             UserRole role = item.getRole();
 
             PreparedStatement preparedStatement = getPreparedStatement(
-                "INSERT INTO USER (LOGIN, PASSWORD, ROLE) VALUES(?, ?, ?)");
+                INSERT_SQL_REQUEST);
 
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
@@ -51,7 +58,7 @@ public class UserRepo implements Repository<User, Long> {
 
             @Cleanup
             PreparedStatement preparedStatement = getPreparedStatement(
-                "DELETE FROM USER WHERE ID = ?");
+                DELETE_SQL_REQUEST);
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         }
@@ -70,7 +77,7 @@ public class UserRepo implements Repository<User, Long> {
         } else {
 
             PreparedStatement preparedStatement = getPreparedStatement(
-                "SELECT * FROM USER WHERE ID = ?");
+                SELECT_FROM_USER_SQL_REQUEST);
             preparedStatement.setLong(1, id);
             resultSet = preparedStatement.executeQuery();
 
@@ -110,7 +117,7 @@ public class UserRepo implements Repository<User, Long> {
             UserRole role = item.getRole();
 
             PreparedStatement preparedStatement = getPreparedStatement(
-                " UPDATE USER SET LOGIN = ?,  PASSWORD = ? , ROLE = ? WHERE ID = ?");
+                UPDATE_SQL_REQUEST);
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
             preparedStatement.setString(3, role.name());
@@ -130,7 +137,7 @@ public class UserRepo implements Repository<User, Long> {
         User user;
 
         @Cleanup
-        PreparedStatement preparedStatement = getPreparedStatement("SELECT ID FROM USER");
+        PreparedStatement preparedStatement = getPreparedStatement(SELECT_ID_SQL_REQUEST);
         preparedStatement.execute();
         ResultSet resultSet = preparedStatement.getResultSet();
 
@@ -153,6 +160,7 @@ public class UserRepo implements Repository<User, Long> {
         Connection connection = DBConnectionUtils.getConnection();
         return connection.createStatement();
     }
+
 
 
 }

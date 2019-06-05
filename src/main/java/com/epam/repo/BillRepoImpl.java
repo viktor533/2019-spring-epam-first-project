@@ -12,7 +12,17 @@ import java.util.List;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
 
-public class BillRepo implements Repository<Bill, Long> {
+public class BillRepoImpl implements Repository<Bill, Long> {
+
+    public static final String INSERT_SQL_REQUEST = "INSERT INTO BILL ( USER_ID, BOOKING_ID, STATUS) VALUES( ?, ?, ?)";
+    public static final String DELETE_SQL_REQUEST = "DELETE FROM BILL WHERE ID = ?";
+    public static final String SELECT_FROM_SQL_REQUEST = "SELECT * FROM BILL WHERE ID = ?";
+    public static final String UPDATE_SQL_REQUEST = " UPDATE BILL SET USER_ID = ?,  BOOKING_ID = ? , STATUS = ?, WHERE ID = ?";
+    public static final String SELECT_ID_SQL_REQUEST = "SELECT ID FROM BILL";
+    public static final String ID = "ID";
+    public static final String BOOKING_ID = "BOOKING_ID";
+    public static final String USER_ID = "USER_ID";
+    public static final String STATUS = "STATUS";
 
     @SneakyThrows
     @Override
@@ -26,7 +36,7 @@ public class BillRepo implements Repository<Bill, Long> {
             BillStatus status = item.getStatus();
 
             PreparedStatement preparedStatement = getPreparedStatement(
-                "INSERT INTO BILL ( USER_ID, BOOKING_ID, STATUS) VALUES( ?, ?, ?)");
+                INSERT_SQL_REQUEST);
             preparedStatement.setLong(1, userId);
             preparedStatement.setLong(2, bookingId);
             preparedStatement.setString(3, status.name());
@@ -50,7 +60,7 @@ public class BillRepo implements Repository<Bill, Long> {
 
             @Cleanup
             PreparedStatement preparedStatement = getPreparedStatement(
-                "DELETE FROM BILL WHERE ID = ?");
+                DELETE_SQL_REQUEST);
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         }
@@ -69,18 +79,18 @@ public class BillRepo implements Repository<Bill, Long> {
         } else {
 
             PreparedStatement preparedStatement = getPreparedStatement(
-                "SELECT * FROM BILL WHERE ID = ?");
+                SELECT_FROM_SQL_REQUEST);
             preparedStatement.setLong(1, id);
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                Long tmpId = Long.parseLong(resultSet.getString("ID"));
+                Long tmpId = Long.parseLong(resultSet.getString(ID));
                 if (tmpId.equals(id)) {
 
-                    long bookingId = Long.parseLong(resultSet.getString("BOOKING_ID"));
-                    long userId = Long.parseLong(resultSet.getString("USER_ID"));
+                    long bookingId = Long.parseLong(resultSet.getString(BOOKING_ID));
+                    long userId = Long.parseLong(resultSet.getString(USER_ID));
 
-                    String status = resultSet.getString("STATUS");
+                    String status = resultSet.getString(STATUS);
 
                     bill = Bill.builder().id(tmpId).bookingId(bookingId).userId(userId)
                         .status(Enum.valueOf(BillStatus.class, status)).build();
@@ -107,7 +117,7 @@ public class BillRepo implements Repository<Bill, Long> {
             BillStatus billStatus = item.getStatus();
 
             PreparedStatement preparedStatement = getPreparedStatement(
-                " UPDATE BILL SET USER_ID = ?,  BOOKING_ID = ? , STATUS = ?, WHERE ID = ?");
+                UPDATE_SQL_REQUEST);
             preparedStatement.setLong(1, userId);
             preparedStatement.setLong(2, bookingId);
             preparedStatement.setString(3, billStatus.name());
@@ -126,12 +136,12 @@ public class BillRepo implements Repository<Bill, Long> {
         Bill bill;
 
         @Cleanup
-        PreparedStatement preparedStatement = getPreparedStatement("SELECT ID FROM BILL");
+        PreparedStatement preparedStatement = getPreparedStatement(SELECT_ID_SQL_REQUEST);
         preparedStatement.execute();
         ResultSet resultSet = preparedStatement.getResultSet();
 
         while (resultSet != null && resultSet.next()) {
-            Long tmpId = resultSet.getLong("ID");
+            Long tmpId = resultSet.getLong(ID);
             billList.add(findById(tmpId));
         }
 
