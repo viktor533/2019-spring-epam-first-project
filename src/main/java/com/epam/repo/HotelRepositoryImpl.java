@@ -2,6 +2,7 @@ package com.epam.repo;
 
 import com.epam.domain.Hotel;
 import com.epam.domain.Room;
+import com.epam.state.RepositoryState;
 import com.epam.utils.DBConnectionUtils;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
@@ -14,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class HotelRepositoryImpl implements Repository<Hotel, Long> {
-//todo    private Repository <Room, Long> roomRepository = new RoomRepositoryImpl();
+    private Repository <Room, Long> roomRepository = RepositoryState.getRoomRepositoryInstance();
 
     private final String SAVE_SQL_REQUEST = "INSERT INTO HOTEL (NAME, LOCATION, LUXURY) VALUES (?, ?, ?)";
     private final String DELETE_SQL_REQUEST = "DELETE FROM HOTEL WHERE ID = ?";
@@ -42,7 +43,7 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
             PreparedStatement statement = getPreparedStatement(SAVE_SQL_REQUEST);
             List<Room> roomList = hotel.getRooms();
             for (Room room : roomList) {
-//todo                roomRepository.save(room);
+                roomRepository.save(room);
             }
 
             statement.setString(1, hotel.getName());
@@ -139,20 +140,20 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
     }
 
     private void addRoomsToHotel(Hotel hotel) {
-//todo        List<Room> roomList = null;
-//        Iterable<Room> allRooms =  roomRepository.findAll();
-//        if (allRooms != null) {
-//            roomList = new ArrayList<>();
-//            for (Room room : allRooms) {
-//                if (room.getHotelId() == hotel.getId()) {
-//                    roomList.add(room);
-//                }
-//            }
-//        } else {
-//            roomList = Collections.emptyList();
-//        }
-//
-//        hotel.setRooms(roomList);
+        List<Room> roomList;
+        Iterable<Room> allRooms =  roomRepository.findAll();
+        if (allRooms != null) {
+            roomList = new ArrayList<>();
+            for (Room room : allRooms) {
+                if (room.getHotelId() == hotel.getId()) {
+                    roomList.add(room);
+                }
+            }
+        } else {
+            roomList = Collections.emptyList();
+        }
+
+        hotel.setRooms(roomList);
     }
 
     @SneakyThrows

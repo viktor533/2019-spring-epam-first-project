@@ -8,7 +8,7 @@ import lombok.SneakyThrows;
 public class BookingService {
     private final Repository<Booking, Long> bookingRepository;
 
-    public BookingService(BookingRepositoryImpl bookingRepository) {
+    public BookingService(Repository<Booking, Long> bookingRepository) {
         this.bookingRepository = bookingRepository;
     }
 

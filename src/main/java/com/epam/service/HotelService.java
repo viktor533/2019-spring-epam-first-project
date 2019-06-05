@@ -1,11 +1,15 @@
 package com.epam.service;
 
 import com.epam.domain.Hotel;
-import com.epam.repo.HotelRepositoryImpl;
+import com.epam.repo.Repository;
 import lombok.SneakyThrows;
 
 public class HotelService {
-    HotelRepositoryImpl hotelRepository = new HotelRepositoryImpl();
+    private final Repository<Hotel, Long> hotelRepository;
+
+    public HotelService(Repository<Hotel, Long> hotelRepository) {
+        this.hotelRepository = hotelRepository;
+    }
 
     /**
      * Saves hotel into the database
