@@ -6,23 +6,14 @@ import com.epam.utils.DBConnectionUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.Cleanup;
 import lombok.SneakyThrows;
 
 
 public class UserRepo implements Repository<User, Long> {
-
-    Statement statement = null;
-    String sql = null;
-
-    public UserRepo(String sql) {
-        this.sql = sql;
-    }
-
-    public UserRepo() {
-        sql = "SELECT * FROM USER WHERE ID = "; // default sql version
-    }
 
     @SneakyThrows
     @Override
@@ -48,71 +39,107 @@ public class UserRepo implements Repository<User, Long> {
     }
 
 
-    // TODO
+    @SneakyThrows
     @Override
     public User removeById(Long id) {
-        return null;
+        User user = null;
+
+        if (id == null) {
+            return null;
+        } else {
+            user = findById(id);
+
+            @Cleanup
+            PreparedStatement preparedStatement = getPreparedStatement(
+                "DELETE FROM USER WHERE ID = ?");
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+        }
+
+        return user;
     }
 
+    @SneakyThrows
     @Override
     public User findById(Long id) {
         ResultSet resultSet = null;
         User user = null;
 
-        try {
-            resultSet = statement.executeQuery(sql + id);
+        if (id == null) {
+            return null;
+        } else {
+
+            PreparedStatement preparedStatement = getPreparedStatement(
+                "SELECT * FROM USER WHERE ID = ?");
+            preparedStatement.setLong(1, id);
+            resultSet = preparedStatement.executeQuery();
+
             while (resultSet.next()) {
                 Long tmpId = Long.parseLong(resultSet.getString("ID"));
 
                 if (tmpId.equals(id)) {
+
                     String login = resultSet.getString("LOGIN");
                     String password = resultSet.getString("PASSWORD");
-
                     String role = resultSet.getString("ROLE");
+                    UserRole userRole = Enum.valueOf(UserRole.class, role);
 
-                    user = User.builder().id(tmpId).login(login).password(password)
-                        .role(Enum.valueOf(UserRole.class, role)).build();
+                    user = User.builder().id(tmpId).login(login).password(password).role(userRole)
+                        .build();
 
                 }
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
         }
 
         return user;
 
     }
 
+    @SneakyThrows
     @Override
     public User update(User item) {
-        ResultSet resultSet;
-        User user;
+        ResultSet resultSet = null;
 
-        Long id = item.getId();
-        String login = item.getLogin();
-        String pass = item.getPassword();
-        UserRole role = item.getRole();
-        String strRole = role.name();
+        if (item == null) {
+            return null;
+        } else {
 
-        String update =
-            "UPDATE USER SET LOGIN = '" + login + "' , PASSWORD = '" + pass + "' , ROLE = '"
-                + strRole + "' WHERE ID = " + id;
-        try {
-            statement.execute(update);
-        } catch (SQLException e) {
-            e.printStackTrace();
+            Long id = item.getId();
+            String login = item.getLogin();
+            String password = item.getPassword();
+            UserRole role = item.getRole();
+
+            PreparedStatement preparedStatement = getPreparedStatement(
+                " UPDATE USER SET LOGIN = ?,  PASSWORD = ? , ROLE = ? WHERE ID = ?");
+            preparedStatement.setString(1, login);
+            preparedStatement.setString(2, password);
+            preparedStatement.setString(3, role.name());
+            preparedStatement.setLong(4, id);
+
+            preparedStatement.execute();
         }
 
-        user = findById(id);
-
-        return user;
+        return item;
 
     }
 
-    //TODO
+    @SneakyThrows
     @Override
     public Iterable<User> findAll() {
-        return null;
+        List<User> userList = new ArrayList<>();
+        User user;
+
+        @Cleanup
+        PreparedStatement preparedStatement = getPreparedStatement("SELECT ID FROM USER");
+        preparedStatement.execute();
+        ResultSet resultSet = preparedStatement.getResultSet();
+
+        while (resultSet != null && resultSet.next()) {
+            Long tmpId = resultSet.getLong("ID");
+            userList.add(findById(tmpId));
+        }
+
+        return userList;
     }
 
     @SneakyThrows

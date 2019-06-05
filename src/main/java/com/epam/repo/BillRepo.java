@@ -7,17 +7,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.Cleanup;
 import lombok.SneakyThrows;
 
 public class BillRepo implements Repository<Bill, Long> {
-
-    Statement statement = null;
-    String sql = null;
-
-    public BillRepo() {
-        sql = "SELECT * FROM BILL WHERE ID = ";
-    }
-
 
     @SneakyThrows
     @Override
@@ -32,7 +27,6 @@ public class BillRepo implements Repository<Bill, Long> {
 
             PreparedStatement preparedStatement = getPreparedStatement(
                 "INSERT INTO BILL ( USER_ID, BOOKING_ID, STATUS) VALUES( ?, ?, ?)");
-//            preparedStatement.setLong(1, id);
             preparedStatement.setLong(1, userId);
             preparedStatement.setLong(2, bookingId);
             preparedStatement.setString(3, status.name());
@@ -44,7 +38,7 @@ public class BillRepo implements Repository<Bill, Long> {
         return item;
     }
 
-    // TODO
+    @SneakyThrows
     @Override
     public Bill removeById(Long id) {
         Bill bill = null;
@@ -52,7 +46,13 @@ public class BillRepo implements Repository<Bill, Long> {
         if (id == null) {
             return null;
         } else {
+            bill = findById(id);
 
+            @Cleanup
+            PreparedStatement preparedStatement = getPreparedStatement(
+                "DELETE FROM BILL WHERE ID = ?");
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
         }
 
         return bill;
@@ -119,10 +119,24 @@ public class BillRepo implements Repository<Bill, Long> {
         return item;
     }
 
-    //TODO
+    @SneakyThrows
     @Override
     public Iterable<Bill> findAll() {
-        return null;
+        List<Bill> billList = new ArrayList<>();
+        Bill bill;
+
+        @Cleanup
+        PreparedStatement preparedStatement = getPreparedStatement("SELECT ID FROM BILL");
+        preparedStatement.execute();
+        ResultSet resultSet = preparedStatement.getResultSet();
+
+        while (resultSet != null && resultSet.next()) {
+            Long tmpId = resultSet.getLong("ID");
+            billList.add(findById(tmpId));
+        }
+
+        return billList;
+
     }
 
     @SneakyThrows
