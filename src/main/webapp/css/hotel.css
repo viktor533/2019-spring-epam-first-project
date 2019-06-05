@@ -1,0 +1,39 @@
+.table_grizzly {
+
+}
+.table_grizzly table {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    border-collapse: collapse;
+    color: #686461;
+}
+
+.table_grizzly caption {
+    padding: 10px;
+    color: white;
+    background: #8FD4C1;
+    font-size: 18px;
+    text-align: left;
+    font-weight: bold;
+}
+
+.table_grizzly th {
+    border-bottom: 3px solid #B9B29F;
+    padding: 10px;
+    text-align: left;
+}
+
+.table_grizzly td {
+    padding: 10px;
+}
+
+.table_grizzly tr:nth-child(odd) {
+    background: white;
+}
+
+.table_grizzly tr:nth-child(even) {
+    background: #E8E6D1;
+}
+
+.table_grizzly tr:hover td {
+    background: #a9a291;
+}
