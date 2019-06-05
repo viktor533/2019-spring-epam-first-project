@@ -40,7 +40,7 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
     @SneakyThrows
     public Room save(Room room) {
         if (room == null) {
-            return null;
+            throw new NullPointerException("Accepted room is null!");
         }
 
         @Cleanup
@@ -58,7 +58,7 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
     @SneakyThrows
     public Room removeById(Long id) {
         if (id == null) {
-            return null;
+            throw new NullPointerException("Accepted id is null!");
         }
         Room room = findById(id);
         if (room == null) {
@@ -81,7 +81,7 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
     @SneakyThrows
     public Room findById(Long id) {
         if (id == null) {
-            return null;
+            throw new NullPointerException("Accepted id is null!");
         }
 
         Room room = null;
@@ -115,7 +115,7 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
     @SneakyThrows
     public Room update(Room room) {
         if (room == null) {
-            return null;
+            throw new NullPointerException("Accepted room is null!");
         }
 
         @Cleanup
