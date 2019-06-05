@@ -32,6 +32,12 @@
 * Set folder with tomcat
 * Add build war artifact
 * Add H2 to Project database source
+* Set H2 properties: 
+    * name: H2 - test
+    * Connection type: URL only
+    * user: sa
+    * password: 
+
 * Set H2 properties:
     * name: H2 - test
     * Connection type: URL only
@@ -41,6 +47,7 @@
 * Run schema.sql
 * Run test-data.sql
 * Build Tomcat project
+* Profit! 
 * Profit!
 
 ## Ссылки:
@@ -48,7 +55,6 @@
 * [trello](https://trello.com/b/M5towI6a/epam-first-project-spring-2019)
 
 ## Авторы:
-* [Алексей Бондарев](https://github.com/alexeyboo)
+* [Алексей Бондарев](https://github.com/alexeyboo) 
 * [Виктор Смирнов](https://github.com/viktor533)
 * [Артем Демченко](https://github.com/Mincer2412)
-
