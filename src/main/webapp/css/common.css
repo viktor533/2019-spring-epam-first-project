@@ -1,0 +1,83 @@
+.table_grizzly {
+}
+.table_grizzly table {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    border-collapse: collapse;
+    color: #686461;
+}
+
+.table_grizzly caption {
+    padding: 10px;
+    color: white;
+    background: #8FD4C1;
+    font-size: 18px;
+    text-align: left;
+    font-weight: bold;
+}
+
+.table_grizzly th {
+    border-bottom: 3px solid #B9B29F;
+    padding: 10px;
+    text-align: left;
+}
+
+.table_grizzly td {
+    padding: 10px;
+}
+
+.table_grizzly tr:nth-child(odd) {
+    background: white;
+}
+
+.table_grizzly tr:nth-child(even) {
+    background: #E8E6D1;
+}
+
+.table_grizzly tr:hover td {
+    background: #a9a291;
+}
+
+
+.descriptionList {
+    list-style: none;
+    padding: 0;
+    width: 400px;
+}
+.descriptionList li {
+    overflow: hidden;
+    padding: 6px 10px;
+    font-size: 20px;
+}
+.descriptionList li:first-child {
+    font-weight: bold;
+    background: white;
+    padding: 15px 0 10px 15px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(0,0,0, .2);
+    border-radius: 10px 10px 10px 10px;
+    color: #679bb7;
+    font-size: 24px;
+    box-shadow: 0 10px 20px -5px rgba(0,0,0, .2);
+}
+.descriptionList span {
+    float: left;
+    width: 50%;
+    color: #7C7D7F;
+}
+.descriptionList em {
+    float: right;
+    color: #9c836e;
+    font-weight: bold;
+}
+
+.centralCard {
+    background: #e8e8e8;
+    border-radius: 40px 40px;
+    border: 15px solid #adc3da;
+    height: auto;
+    width: 400px;
+    margin: 10% 15%;
+    padding: 16px;
+    display: inline-block;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
