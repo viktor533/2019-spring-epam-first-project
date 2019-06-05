@@ -5,6 +5,7 @@ import com.epam.domain.Room;
 import com.epam.domain.enums.RoomClass;
 import com.epam.repo.Repository;
 import com.epam.state.RepositoryState;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class RoomServlet extends BaseServlet  {
     private static Repository<Room, Long> roomService = RepositoryState.getRoomRepositoryInstance();
 
@@ -52,10 +54,11 @@ public class RoomServlet extends BaseServlet  {
         if (roomIdStr != null) {
             roomId = Long.parseLong(roomIdStr);
         }
-        System.err.println("RoomId: " + roomId);
+        log.debug("Accept roomId: " + roomId);
 //        Room room = roomService.findById(roomId);
         Room room = getDemoRoom();
-        System.err.println("Room" + room);
+        log.debug("Send room: " + room);
+
         request.setAttribute("room", room);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/room_page.jsp");
         dispatcher.forward(request, response);

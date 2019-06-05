@@ -28,6 +28,17 @@
         <url-pattern>/room</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>BookingServlet</servlet-name>
+        <servlet-class>com.epam.servlets.BookingServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>BookingServlet</servlet-name>
+        <url-pattern>/booking</url-pattern>
+    </servlet-mapping>
+
+
 
     <error-page>
         <error-code>404</error-code>
