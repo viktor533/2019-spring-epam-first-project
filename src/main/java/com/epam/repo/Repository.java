@@ -6,11 +6,11 @@ import java.util.stream.Collectors;
 public interface Repository<T, K> {
     T save(T item);
 
-    T removeById(K id) throws IllegalArgumentException;
+    T removeById(K id);
 
-    T findById(K id) throws IllegalArgumentException;
+    T findById(K id);
 
-    T update(T item) throws IllegalArgumentException;
+    T update(T item);
 
     Iterable<T> findAll();
 
