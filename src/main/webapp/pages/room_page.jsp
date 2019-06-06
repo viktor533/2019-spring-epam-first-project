@@ -38,6 +38,7 @@
             <c:forEach items="${room.getBookings()}" var ="booking">
                 <tr>
                     <td onclick="goBooking(${booking.getId()});">${booking.getId()}</td>
+                    <td onclick="goBooking(${booking.getId()});">${booking.getRoomClass()}</td>
                     <td onclick="goBooking(${booking.getId()});">${booking.getStart()}</td>
                     <td onclick="goBooking(${booking.getId()});">${booking.getEnd()}</td>
                 </tr>
