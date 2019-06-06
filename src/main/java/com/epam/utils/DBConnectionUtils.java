@@ -40,8 +40,4 @@ public class DBConnectionUtils {
         }
         return connection;
     }
-
-    public static void main(String[] args) {
-        Connection connection = getConnection();
-    }
 }

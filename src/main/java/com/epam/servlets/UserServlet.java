@@ -15,7 +15,7 @@ public class UserServlet extends BaseServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UserService userService = new UserService(RepositoryState.getUserRepositoryInstance());
-        User user = userService.findById(3L);
+        User user = userService.findById(1L);
         request.setAttribute("user", user);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/user_page.jsp");
         dispatcher.forward(request, response);
