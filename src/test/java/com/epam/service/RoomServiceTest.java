@@ -18,12 +18,18 @@ public class RoomServiceTest {
     private RoomService roomService;
 
     @Mock
-    private Repository<Room, Long> repository;
+    private Repository<Room, Long> roomRepository;
+    @Mock
+    private Repository<Hotel, Long> hotelRepository;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        roomService = new RoomService(repository);
+        roomService = new RoomService(roomRepository, hotelRepository);
+    }
+
+    private Hotel getHotel(int id) {
+        return Hotel.builder().id(id).name("Dolphin").location("New York").luxury(4).build();
     }
 
     private Room getDemoRoom() {
@@ -35,7 +41,9 @@ public class RoomServiceTest {
     public void save() {
         Room before = getDemoRoom();
 
-        when(repository.save(before)).thenReturn(before);
+        Long id=1L;
+        when(roomRepository.save(before)).thenReturn(before);
+        when(hotelRepository.findById(id)).thenReturn(getHotel(id.intValue()));
 
         Room after = roomService.save(before);
 
@@ -46,7 +54,7 @@ public class RoomServiceTest {
     public void removeById() {
         Room before = getDemoRoom();
 
-        when(repository.removeById(1L)).thenReturn(before);
+        when(roomRepository.removeById(1L)).thenReturn(before);
 
         Room after = roomService.removeById(1L);
 
@@ -57,7 +65,7 @@ public class RoomServiceTest {
     public void findById() {
         Room before = getDemoRoom();
 
-        when(repository.findById(1L)).thenReturn(before);
+        when(roomRepository.findById(1L)).thenReturn(before);
 
         Room after = roomService.findById(1L);
 
@@ -68,7 +76,10 @@ public class RoomServiceTest {
     public void update() {
         Room before = getDemoRoom();
 
-        when(repository.update(before)).thenReturn(before);
+        Long id=1L;
+        when(roomRepository.update(before)).thenReturn(before);
+        when(roomRepository.findById(id)).thenReturn(before);
+        when(hotelRepository.findById(id)).thenReturn(getHotel(id.intValue()));
 
         Room after = roomService.update(before);
 
@@ -79,7 +90,7 @@ public class RoomServiceTest {
     public void findAll() {
         Iterable<Room> before = new ArrayList<>();
 
-        when(repository.findAll()).thenReturn(before);
+        when(roomRepository.findAll()).thenReturn(before);
 
         Iterable<Room> after = roomService.findAll();
 
@@ -91,7 +102,7 @@ public class RoomServiceTest {
         Iterable<Room> before = new ArrayList<>();
         Room[] rooms = new Room[0];
 
-        when(repository.saveAll(rooms)).thenReturn(before);
+        when(roomRepository.saveAll(rooms)).thenReturn(before);
 
         Iterable<Room> after = roomService.saveAll(rooms);
 
@@ -103,7 +114,7 @@ public class RoomServiceTest {
         Iterable<Room> before = new ArrayList<>();
         Long[] ids = new Long[0];
 
-        when(repository.removeAllById(ids)).thenReturn(before);
+        when(roomRepository.removeAllById(ids)).thenReturn(before);
 
         Iterable<Room> after = roomService.removeAllById(ids);
 
@@ -115,7 +126,7 @@ public class RoomServiceTest {
         Iterable<Room> before = new ArrayList<>();
         Long[] ids = new Long[0];
 
-        when(repository.findAllById(ids)).thenReturn(before);
+        when(roomRepository.findAllById(ids)).thenReturn(before);
 
         Iterable<Room> after = roomService.findAllById(ids);
 
@@ -127,7 +138,7 @@ public class RoomServiceTest {
         Iterable<Room> before = new ArrayList<>();
         Room[] rooms = new Room[0];
 
-        when(repository.updateAll(rooms)).thenReturn(before);
+        when(roomRepository.updateAll(rooms)).thenReturn(before);
 
         Iterable<Room> after = roomService.updateAll(rooms);
 
