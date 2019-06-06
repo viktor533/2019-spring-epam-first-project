@@ -20,10 +20,11 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
 
     private static final String SAVE_SQL_REQUEST = "INSERT INTO ROOM (ID, HOTEL_ID, NUMBER, NUM_OF_GUESTS, PRICE_PER_NIGHT, CLASS) VALUES(?, ?, ?, ?, ?, ?);";
     private static final String DELETE_SQL_REQUEST = "DELETE FROM ROOM WHERE ID = ?;";
-    private static final String FIND_SQL_REQUEST = "SELECT * FROM HOTEL WHERE ID = ?;";
+    private static final String FIND_SQL_REQUEST = "SELECT * FROM ROOM WHERE ID = ?;";
     private static final String UPDATE_SQL_REQUEST = "UPDATE ROOM SET ID \'?\', HOTEL_ID \'?\', NUMBER = \'?\', NUM_OF_GUESTS = \'?\', PRICE_PER_NIGHT \'?\', CLASS = \'?\' WHERE ID = ?;";
-    private static final String FIND_ALL_SQL_REQUEST = "SELECT * FROM HOTEL;";
+    private static final String FIND_ALL_SQL_REQUEST = "SELECT * FROM ROOM;";
 
+    private static final String ID_COLUMN_NAME = "ID";
     private static final String HOTEL_ID_COLUMN_NAME = "HOTEL_ID";
     private static final String NUM_OF_GUESTS_COLUMN_NAME = "NUM_OF_GUESTS";
     private static final String PRICE_PER_NIGHT_COLUMN_NAME = "PRICE_PER_NIGHT";
@@ -50,8 +51,8 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
         setRoomToPreparedStatement(room, statement);
         statement.execute();
 
-        for (Bill bills : room.getBills()) {
-            billRepository.removeById(bills.getId());
+        for (Bill bill : room.getBills()) {
+            billRepository.save(bill);
         }
         return room;
     }
@@ -96,6 +97,7 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 room = Room.builder()
+                        .id(resultSet.getLong(ID_COLUMN_NAME))
                         .hotelId(resultSet.getLong(HOTEL_ID_COLUMN_NAME))
                         .number(resultSet.getInt(NUMBER_COLUMN_NAME))
                         .numOfGuests(resultSet.getInt(NUM_OF_GUESTS_COLUMN_NAME))
@@ -143,6 +145,7 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
         List<Room> roomsList = new ArrayList<>();
         while (resultSet.next()) {
             Room room = Room.builder()
+                    .id(resultSet.getLong(ID_COLUMN_NAME))
                     .hotelId(resultSet.getLong(HOTEL_ID_COLUMN_NAME))
                     .number(resultSet.getInt(NUMBER_COLUMN_NAME))
                     .numOfGuests(resultSet.getInt(NUM_OF_GUESTS_COLUMN_NAME))
@@ -165,9 +168,7 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
                 if (bill.getRoomId() == room.getId()) {
                     bills.add(bill);
                 }
-                billRepository.removeById(bill.getId());
             }
-            bills = Collections.emptyList();
         } else {
             bills = Collections.emptyList();
         }

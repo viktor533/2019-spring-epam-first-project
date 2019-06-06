@@ -1,13 +1,16 @@
 package com.epam.repo;
 
+import com.epam.domain.Bill;
 import com.epam.domain.User;
 import com.epam.domain.enums.UserRole;
+import com.epam.state.RepositoryState;
 import com.epam.utils.DBConnectionUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
@@ -21,6 +24,8 @@ public class UserRepoImpl implements Repository<User, Long> {
     public static final String SELECT_FROM_USER_SQL_REQUEST = "SELECT * FROM USER WHERE ID = ?";
     public static final String UPDATE_SQL_REQUEST = " UPDATE USER SET LOGIN = ?,  PASSWORD = ? , ROLE = ? WHERE ID = ?";
     public static final String SELECT_ID_SQL_REQUEST = "SELECT ID FROM USER";
+
+    private Repository<Bill, Long> billRepository = RepositoryState.getBillRepositoryInstance();
 
     @SneakyThrows
     @Override
@@ -97,6 +102,9 @@ public class UserRepoImpl implements Repository<User, Long> {
                 }
             }
         }
+        if (user != null) {
+            addBillsToUser(user);
+        }
 
         return user;
 
@@ -154,4 +162,19 @@ public class UserRepoImpl implements Repository<User, Long> {
         return connection.prepareStatement(sql);
     }
 
+    private void addBillsToUser(User user) {
+        List<Bill> bills = null;
+        Iterable<Bill> allBookings =  billRepository.findAll();
+        if (allBookings != null) {
+            bills = new ArrayList<>();
+            for (Bill bill : allBookings) {
+                if (bill.getRoomId() == user.getId()) {
+                    bills.add(bill);
+                }
+            }
+        } else {
+            bills = Collections.emptyList();
+        }
+        user.setBills(bills);
+    }
 }

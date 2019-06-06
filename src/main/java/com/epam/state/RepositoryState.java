@@ -1,10 +1,7 @@
 package com.epam.state;
 
 import com.epam.domain.*;
-import com.epam.repo.BookingRepositoryImpl;
-import com.epam.repo.HotelRepositoryImpl;
-import com.epam.repo.Repository;
-import com.epam.repo.RoomRepositoryImpl;
+import com.epam.repo.*;
 
 public class RepositoryState {
     private static Repository<Booking, Long> bookingRepository = null;
@@ -22,8 +19,7 @@ public class RepositoryState {
 
     public static Repository<Bill, Long> getBillRepositoryInstance() {
         if (billRepository == null) {
-//            TODO:
-//            billRepository = new BillRepositoryImpl();
+            billRepository = new BillRepoImpl();
         }
         return billRepository;
     }
@@ -44,8 +40,7 @@ public class RepositoryState {
 
     public static Repository<User, Long> getUserRepositoryInstance() {
         if (userRepository == null) {
-//            TODO:
-//            userRepository = new UserRepositoryImpl();
+            userRepository = new UserRepoImpl();
         }
         return userRepository;
     }
