@@ -29,17 +29,17 @@
 
         <table class="table_grizzly">
             <tr>
-                <th>ID</th>
+                <th>Number</th>
                 <th>Places</th>
                 <th>Price</th>
                 <th>Service</th>
             </tr>
-            <c:forEach items="${hotel.getRooms()}" var = "booking">
+            <c:forEach items="${hotel.getRooms()}" var = "bill">
                 <tr>
-                    <td onclick="goRoom(${booking.getId()});">${booking.getId()}</td>
-                    <td onclick="goRoom(${booking.getId()});">${booking.getNumOfGuests()}</td>
-                    <td onclick="goRoom(${booking.getId()});">${booking.getPricePerNight()}</td>
-                    <td onclick="goRoom(${booking.getId()});">${booking.getRoomClass()}</td>
+                    <td onclick="goRoom(${bill.getId()});">${bill.getNumber()}</td>
+                    <td onclick="goRoom(${bill.getId()});">${bill.getNumOfGuests()}</td>
+                    <td onclick="goRoom(${bill.getId()});">${bill.getPricePerNight()}</td>
+                    <td onclick="goRoom(${bill.getId()});">${bill.getRoomClass()}</td>
                 </tr>
             </c:forEach>
         </table>

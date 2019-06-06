@@ -1,5 +1,6 @@
 package com.epam.repo;
 
+import com.epam.domain.Bill;
 import com.epam.domain.Booking;
 import com.epam.domain.Room;
 import com.epam.domain.enums.RoomClass;
@@ -17,18 +18,19 @@ import java.util.List;
 @Slf4j
 public class RoomRepositoryImpl implements Repository<Room, Long> {
 
-    private static final String SAVE_SQL_REQUEST = "INSERT INTO ROOM (ID, HOTEL_ID, NUM_OF_GUESTS, PRICE_PER_NIGHT, CLASS) VALUES(?, ?, ?, ?, ?);";
+    private static final String SAVE_SQL_REQUEST = "INSERT INTO ROOM (ID, HOTEL_ID, NUMBER, NUM_OF_GUESTS, PRICE_PER_NIGHT, CLASS) VALUES(?, ?, ?, ?, ?, ?);";
     private static final String DELETE_SQL_REQUEST = "DELETE FROM ROOM WHERE ID = ?;";
     private static final String FIND_SQL_REQUEST = "SELECT * FROM HOTEL WHERE ID = ?;";
-    private static final String UPDATE_SQL_REQUEST = "UPDATE ROOM SET ID \'?\', HOTEL_ID \'?\', NUM_OF_GUESTS = \'?\', PRICE_PER_NIGHT \'?\', CLASS = \'?\' WHERE ID = ?;";
+    private static final String UPDATE_SQL_REQUEST = "UPDATE ROOM SET ID \'?\', HOTEL_ID \'?\', NUMBER = \'?\', NUM_OF_GUESTS = \'?\', PRICE_PER_NIGHT \'?\', CLASS = \'?\' WHERE ID = ?;";
     private static final String FIND_ALL_SQL_REQUEST = "SELECT * FROM HOTEL;";
 
     private static final String HOTEL_ID_COLUMN_NAME = "HOTEL_ID";
     private static final String NUM_OF_GUESTS_COLUMN_NAME = "NUM_OF_GUESTS";
     private static final String PRICE_PER_NIGHT_COLUMN_NAME = "PRICE_PER_NIGHT";
     private static final String CLASS_COLUMN_NAME = "CLASS";
+    private static final String NUMBER_COLUMN_NAME = "NUMBER";
 
-    private Repository<Booking, Long> bookingRepository = RepositoryState.getBookingRepositoryInstance();
+    private Repository<Bill, Long> billRepository = RepositoryState.getBillRepositoryInstance();
 
     @SneakyThrows
     private PreparedStatement getPreparedStatement(String sql) {
@@ -48,8 +50,8 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
         setRoomToPreparedStatement(room, statement);
         statement.execute();
 
-        for (Booking booking : room.getBookings()) {
-            bookingRepository.removeById(booking.getId());
+        for (Bill bills : room.getBills()) {
+            billRepository.removeById(bills.getId());
         }
         return room;
     }
@@ -65,8 +67,8 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
             return null;
         }
 
-        for (Booking booking : room.getBookings()) {
-            bookingRepository.removeById(booking.getId());
+        for (Bill bills : room.getBills()) {
+            billRepository.removeById(bills.getId());
         }
 
         @Cleanup
@@ -95,6 +97,7 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
             if (resultSet.next()) {
                 room = Room.builder()
                         .hotelId(resultSet.getLong(HOTEL_ID_COLUMN_NAME))
+                        .number(resultSet.getInt(NUMBER_COLUMN_NAME))
                         .numOfGuests(resultSet.getInt(NUM_OF_GUESTS_COLUMN_NAME))
                         .pricePerNight(resultSet.getInt(PRICE_PER_NIGHT_COLUMN_NAME))
                         .roomClass(RoomClass.valueOf(resultSet.getString(CLASS_COLUMN_NAME)))
@@ -105,7 +108,7 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
             return null;
         }
         if (room != null) {
-            addBookingsToRoom(room);
+            addBillsToRoom(room);
         }
 
         return room;
@@ -124,8 +127,8 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
         statement.setLong(6, room.getId());
         statement.execute();
 
-        for (Booking booking : room.getBookings()) {
-            bookingRepository.update(booking);
+        for (Bill bill : room.getBills()) {
+            billRepository.update(bill);
         }
 
         return room;
@@ -141,40 +144,43 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
         while (resultSet.next()) {
             Room room = Room.builder()
                     .hotelId(resultSet.getLong(HOTEL_ID_COLUMN_NAME))
+                    .number(resultSet.getInt(NUMBER_COLUMN_NAME))
                     .numOfGuests(resultSet.getInt(NUM_OF_GUESTS_COLUMN_NAME))
                     .pricePerNight(resultSet.getInt(PRICE_PER_NIGHT_COLUMN_NAME))
                     .roomClass(RoomClass.valueOf(resultSet.getString(CLASS_COLUMN_NAME)))
                     .build();
 
-            addBookingsToRoom(room);
+            addBillsToRoom(room);
             roomsList.add(room);
         }
         return roomsList;
     }
 
-    private void addBookingsToRoom(Room room) {
-        List<Booking> bookings = null;
-        Iterable<Booking> allBookings =  bookingRepository.findAll();
+    private void addBillsToRoom(Room room) {
+        List<Bill> bills = null;
+        Iterable<Bill> allBookings =  billRepository.findAll();
         if (allBookings != null) {
-            bookings = new ArrayList<>();
-            for (Booking booking : allBookings) {
-                if (booking.getRoomId() == room.getId()) {
-                    bookings.add(booking);
+            bills = new ArrayList<>();
+            for (Bill bill : allBookings) {
+                if (bill.getRoomId() == room.getId()) {
+                    bills.add(bill);
                 }
-                bookingRepository.removeById(booking.getId());
+                billRepository.removeById(bill.getId());
             }
+            bills = Collections.emptyList();
         } else {
-            bookings = Collections.emptyList();
+            bills = Collections.emptyList();
         }
-        room.setBookings(bookings);
+        room.setBills(bills);
     }
 
     @SneakyThrows
     private static void setRoomToPreparedStatement(Room room, PreparedStatement statement) {
         statement.setLong(1, room.getId());
         statement.setLong(2, room.getHotelId());
-        statement.setInt(3, room.getNumOfGuests());
-        statement.setInt(4, room.getPricePerNight());
-        statement.setString(5, room.getRoomClass().toString());
+        statement.setLong(3, room.getNumber());
+        statement.setInt(4, room.getNumOfGuests());
+        statement.setInt(5, room.getPricePerNight());
+        statement.setString(6, room.getRoomClass().toString());
     }
 }

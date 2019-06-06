@@ -21,7 +21,7 @@ public class HotelServiceTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        hotelService = new HotelService(repository);        
+        hotelService = new HotelService(repository);
     }
 
     @Test

@@ -36,6 +36,9 @@ public class BillService {
         if (bill.getUserId() <= 0) {
             throw new IllegalArgumentException("UserId can't be less than 0");
         }
+        if (bill.getRoomId() <= 0) {
+            throw new IllegalArgumentException("UserId can't be less than 0");
+        }
         if (userRepo.findById(bill.getUserId()) == null) {
             throw new IllegalArgumentException("UserID id is not correct: not exist!");
         }

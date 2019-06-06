@@ -13,8 +13,8 @@
     <title>Room</title>
     <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/css/common.css'/>
     <script>
-        function goBooking(id) {
-            location.href = '${pageContext.request.contextPath}/booking?bookingId='+id;
+        function goBill(id) {
+            location.href = '${pageContext.request.contextPath}/bill?billId='+id;
         }
     </script>
 </head>
@@ -24,7 +24,8 @@
 
         <ul class="descriptionList">
             <li> Room ${room.getId()} </li>
-            <li> <span>Location:</span> <em>${room.getNumOfGuests()}</em> </li>
+            <li> <span>Number:</span> <em>${room.getNumber()}</em> </li>
+            <li> <span>Guests:</span> <em>${room.getNumOfGuests()}</em> </li>
             <li> <span>Price:</span> <em>${room.getPricePerNight()}</em> </li>
             <li> <span>Service:</span> <em>${room.getRoomClass()}</em> </li>
         </ul>
@@ -32,14 +33,18 @@
         <table class="table_grizzly">
             <tr>
                 <th>ID</th>
-                <th>Start</th>
-                <th>End</th>
+                <th>BookingId</th>
+                <th>UserId</th>
+                <th>RoomId</th>
+                <th>Status</th>
             </tr>
-            <c:forEach items="${room.getBookings()}" var ="booking">
+            <c:forEach items="${room.getBills()}" var ="bill">
                 <tr>
-                    <td onclick="goBooking(${booking.getId()});">${booking.getId()}</td>
-                    <td onclick="goBooking(${booking.getId()});">${booking.getStart()}</td>
-                    <td onclick="goBooking(${booking.getId()});">${booking.getEnd()}</td>
+                    <td onclick="goBill(${bill.getId()});">${bill.getId()}</td>
+                    <td onclick="goBill(${bill.getId()});">${bill.getBookingId()}</td>
+                    <td onclick="goBill(${bill.getId()});">${bill.getUserId()}</td>
+                    <td onclick="goBill(${bill.getId()});">${bill.getRoomId()}</td>
+                    <td onclick="goBill(${bill.getId()});">${bill.getStatus()}</td>
                 </tr>
             </c:forEach>
         </table>

@@ -1,7 +1,8 @@
 package com.epam.servlets;
 
-import com.epam.domain.Booking;
+import com.epam.domain.Bill;
 import com.epam.domain.Room;
+import com.epam.domain.enums.BillStatus;
 import com.epam.domain.enums.RoomClass;
 import com.epam.repo.Repository;
 import com.epam.state.RepositoryState;
@@ -12,7 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,34 +21,38 @@ public class RoomServlet extends BaseServlet  {
     private static Repository<Room, Long> roomService = RepositoryState.getRoomRepositoryInstance();
 
     private static Room getDemoRoom () {
-        List<Booking> bookings = new ArrayList<>();
-        bookings.add(Booking.builder()
+        List<Bill> bills = new ArrayList<>();
+        bills.add(Bill.builder()
                 .id(1)
+                .bookingId(1)
                 .roomId(1)
-                .start(LocalDate.now())
-                .end(LocalDate.now().plusDays(3))
+                .status(BillStatus.PAID)
+                .userId(1)
                 .build());
 
-        bookings.add(Booking.builder()
+        bills.add(Bill.builder()
                 .id(2)
+                .bookingId(2)
                 .roomId(1)
-                .start(LocalDate.now())
-                .end(LocalDate.now().plusDays(5))
+                .status(BillStatus.PAID)
+                .userId(1)
                 .build());
 
         Room room = Room.builder()
                 .id(1)
                 .hotelId(1)
+                .number(101)
                 .numOfGuests(3)
                 .pricePerNight(2000)
                 .roomClass(RoomClass.STANDART)
-                .bookings(bookings)
+                .bills(bills)
                 .build();
 
         return room;
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         String roomIdStr = request.getParameter("roomId");
         Long roomId = null;
         if (roomIdStr != null) {

@@ -1,6 +1,7 @@
 package com.epam.servlets;
 
 import com.epam.domain.Booking;
+import com.epam.domain.enums.RoomClass;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.RequestDispatcher;
@@ -16,7 +17,7 @@ public class BookingServlet extends BaseServlet  {
     private static Booking getDemoBooking() {
         Booking booking = Booking.builder()
                 .id(1)
-                .roomId(1)
+                .roomClass(RoomClass.STANDART)
                 .start(LocalDate.now())
                 .end(LocalDate.now().plusDays(3))
                 .build();
