@@ -1,6 +1,5 @@
 package com.epam.service;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 import com.epam.domain.Bill;
@@ -19,7 +18,8 @@ public class UserServiceTest {
 
     private UserService userService;
 
-    private static final Bill BILL = Bill.builder().id(1).userId(2).bookingId(3).status(BillStatus.PAID).build();
+    private static final Bill BILL = Bill.builder().id(1).userId(2).bookingId(3)
+        .status(BillStatus.PAID).build();
 
     @Mock
     private UserRepoImpl repo;
@@ -33,7 +33,8 @@ public class UserServiceTest {
 
     @Test
     public void save() {
-        User before = User.builder().id(1).login("lala").password("132").role(UserRole.USER).bill(BILL).build();
+        User before = User.builder().id(1).login("lala").password("132").role(UserRole.USER)
+            .bill(BILL).build();
 
         when(repo.save(before)).thenReturn(before);
 
@@ -44,7 +45,8 @@ public class UserServiceTest {
 
     @Test
     public void removeById() {
-        User before = User.builder().id(1).login("lala").password("132").role(UserRole.USER).bill(BILL).build();
+        User before = User.builder().id(1).login("lala").password("132").role(UserRole.USER)
+            .bill(BILL).build();
         when(repo.removeById(1L)).thenReturn(before);
 
         User after = userService.removeById(1L);
@@ -54,7 +56,8 @@ public class UserServiceTest {
 
     @Test
     public void findById() {
-        User before = User.builder().id(1).login("lala").password("132").role(UserRole.USER).bill(BILL).build();
+        User before = User.builder().id(1).login("lala").password("132").role(UserRole.USER)
+            .bill(BILL).build();
         when(repo.findById(1L)).thenReturn(before);
 
         User after = userService.findById(1L);
@@ -64,7 +67,8 @@ public class UserServiceTest {
 
     @Test
     public void update() {
-        User before = User.builder().id(1).login("lala").password("132").role(UserRole.USER).bill(BILL).build();
+        User before = User.builder().id(1).login("lala").password("132").role(UserRole.USER)
+            .bill(BILL).build();
 
         when(repo.update(before)).thenReturn(before);
 

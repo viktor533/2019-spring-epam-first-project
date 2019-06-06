@@ -1,13 +1,10 @@
 package com.epam.service;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 import com.epam.domain.Bill;
 import com.epam.domain.enums.BillStatus;
 import com.epam.repo.BillRepoImpl;
-import java.math.BigInteger;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Before;
