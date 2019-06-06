@@ -7,9 +7,13 @@ import com.epam.state.RepositoryState;
 
 import java.util.Collections;
 
-public class RoomServiceImpl {
+public class RoomService {
     private Repository<Room, Long> roomRepository = RepositoryState.getRoomRepositoryInstance();
     private Repository<Hotel, Long> hotelRepository = RepositoryState.getHotelRepositoryInstance();
+
+    public RoomService(Repository<Room, Long> roomRepository) {
+        this.roomRepository = roomRepository;
+    }
 
     /**
      * Check room and room fields by null
@@ -90,5 +94,41 @@ public class RoomServiceImpl {
      */
     public Iterable<Room> findAll() {
         return roomRepository.findAll();
+    }
+
+    /**
+     * Saves the array of rooms into the database
+     * @param rooms that we want to save in the database
+     * @return Iterable of all Room objects that have been saved in the database
+     */
+    public Iterable<Room> saveAll(Room... rooms) {
+        return roomRepository.saveAll(rooms);
+    }
+
+    /**
+     * Removes all rooms from the database by their ids
+     * @param ids of the rooms that want to remove from the database
+     * @return Iterable of all Room objects that have been removed from the database by their ids
+     */
+    public Iterable<Room> removeAllById(Long... ids) {
+        return roomRepository.removeAllById(ids);
+    }
+
+    /**
+     * Finds all rooms from the database by their ids
+     * @param ids of the rooms that want to find in the database
+     * @return Iterable of all Room objects by their ids
+     */
+    public Iterable<Room> findAllById(Long... ids) {
+        return roomRepository.findAllById(ids);
+    }
+
+    /**
+     * Updates all rooms that have been passed into the method in the database
+     * @param rooms that we want to update in the database
+     * @return Iterable of all Room objects that have been updated in the database
+     */
+    public Iterable<Room> updateAll(Room... rooms) {
+        return roomRepository.updateAll(rooms);
     }
 }
