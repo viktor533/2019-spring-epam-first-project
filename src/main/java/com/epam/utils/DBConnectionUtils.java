@@ -1,6 +1,5 @@
 package com.epam.utils;
 
-import java.io.File;
 import java.io.FileReader;
 import java.util.Objects;
 import lombok.SneakyThrows;
