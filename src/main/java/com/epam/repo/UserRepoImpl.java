@@ -154,12 +154,4 @@ public class UserRepoImpl implements Repository<User, Long> {
         return connection.prepareStatement(sql);
     }
 
-    @SneakyThrows
-    private Statement getStatement() {
-        Connection connection = DBConnectionUtils.getConnection();
-        return connection.createStatement();
-    }
-
-
-
 }

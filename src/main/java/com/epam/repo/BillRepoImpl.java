@@ -155,9 +155,4 @@ public class BillRepoImpl implements Repository<Bill, Long> {
         return connection.prepareStatement(sql);
     }
 
-    @SneakyThrows
-    private Statement getStatement() {
-        Connection connection = DBConnectionUtils.getConnection();
-        return connection.createStatement();
-    }
 }
