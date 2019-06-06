@@ -7,42 +7,42 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>--%>
+
 <html>
 <head>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/css/hotel.css'/>
     <title>Hotel Page</title>
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/css/common.css'/>
     <script>
         function goRoom(id) {
             location.href = '${pageContext.request.contextPath}/room?roomId='+id;
         }
     </script>
-
 </head>
 <body>
-    <ul>
-        <li> Hotel id: ${hotel.getId()} </li>
-        <li> Hotel name: ${hotel.getName()} </li>
-        <li> Hotel location: ${hotel.getLocation()} </li>
-        <li> Hotel luxury: ${hotel.getLuxury()} </li>
-    </ul>
+    <dev class="centralCard">
 
-    <table class="table_grizzly">
-        <tr>
-            <th>ID</th>
-            <th>Места</th>
-            <th>Стоимость</th>
-            <th>Класс</th>
-        </tr>
+        <ul class="descriptionList">
+            <li> Hotel ${hotel.getName()} </li>
+            <li> <span>Location:</span> <em>${hotel.getLocation()}</em> </li>
+            <li> <span>Stars:</span> <em>${hotel.getLuxury()}</em> </li>
+        </ul>
 
-        <c:forEach items="${hotel.getRooms()}" var = "room">
+        <table class="table_grizzly">
             <tr>
-                <td onclick="goRoom(${room.getId()});">${room.getId()}</td>
-                <td onclick="goRoom(${room.getId()});">${room.getNumOfGuests()}</td>
-                <td onclick="goRoom(${room.getId()});">${room.getPricePerNight()}</td>
-                <td onclick="goRoom(${room.getId()});">${room.getRoomClass()}</td>
+                <th>ID</th>
+                <th>Places</th>
+                <th>Price</th>
+                <th>Service</th>
             </tr>
-        </c:forEach>
-    </table>
+            <c:forEach items="${hotel.getRooms()}" var = "booking">
+                <tr>
+                    <td onclick="goRoom(${booking.getId()});">${booking.getId()}</td>
+                    <td onclick="goRoom(${booking.getId()});">${booking.getNumOfGuests()}</td>
+                    <td onclick="goRoom(${booking.getId()});">${booking.getPricePerNight()}</td>
+                    <td onclick="goRoom(${booking.getId()});">${booking.getRoomClass()}</td>
+                </tr>
+            </c:forEach>
+        </table>
+    </dev>
 </body>
 </html>
