@@ -28,7 +28,7 @@ public class BookingServiceTest {
 
     @Test
     public void save() {
-        Booking before = Booking.builder().id(1).roomId(2).start(LocalDate.parse("2019-04-05")).end(LocalDate.parse("2019-04-07")).build();
+        Booking before = Booking.builder().id(1).start(LocalDate.parse("2019-04-05")).end(LocalDate.parse("2019-04-07")).build();
 
         when(repository.save(before)).thenReturn(before);
 
@@ -39,7 +39,7 @@ public class BookingServiceTest {
 
     @Test
     public void removeById() {
-        Booking before = Booking.builder().id(1).roomId(2).start(LocalDate.parse("2019-04-05")).end(LocalDate.parse("2019-04-07")).build();
+        Booking before = Booking.builder().id(1).start(LocalDate.parse("2019-04-05")).end(LocalDate.parse("2019-04-07")).build();
 
         when(repository.removeById(1L)).thenReturn(before);
 
@@ -50,7 +50,7 @@ public class BookingServiceTest {
 
     @Test
     public void findById() {
-        Booking before = Booking.builder().id(1).roomId(2).start(LocalDate.parse("2019-04-05")).end(LocalDate.parse("2019-04-07")).build();
+        Booking before = Booking.builder().id(1).start(LocalDate.parse("2019-04-05")).end(LocalDate.parse("2019-04-07")).build();
 
         when(repository.findById(1L)).thenReturn(before);
 
@@ -61,7 +61,7 @@ public class BookingServiceTest {
 
     @Test
     public void update() {
-        Booking before = Booking.builder().id(1).roomId(2).start(LocalDate.parse("2019-04-05")).end(LocalDate.parse("2019-04-07")).build();
+        Booking before = Booking.builder().id(1).start(LocalDate.parse("2019-04-05")).end(LocalDate.parse("2019-04-07")).build();
 
         when(repository.update(before)).thenReturn(before);
 
