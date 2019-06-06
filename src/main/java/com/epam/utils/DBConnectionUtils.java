@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+
+import org.h2.store.fs.FileUtils;
 import org.h2.tools.RunScript;
 
 @Slf4j
@@ -18,6 +20,8 @@ public class DBConnectionUtils {
 
     @SneakyThrows
     private DBConnectionUtils() {
+        FileUtils.deleteRecursive("db", true);
+        Class.forName("org.h2.Driver");
         connection = DriverManager.getConnection("jdbc:h2:./db/test", "sa", "");
         log.debug("connection with name " + connection.toString() + " was established");
         RunScript.execute(connection, new FileReader(Objects

@@ -50,8 +50,8 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
         setRoomToPreparedStatement(room, statement);
         statement.execute();
 
-        for (Bill bills : room.getBills()) {
-            billRepository.removeById(bills.getId());
+        for (Bill bill : room.getBills()) {
+            billRepository.save(bill);
         }
         return room;
     }
