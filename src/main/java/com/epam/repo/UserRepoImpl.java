@@ -1,20 +1,24 @@
 package com.epam.repo;
 
+import com.epam.domain.Bill;
+import com.epam.domain.Room;
 import com.epam.domain.User;
 import com.epam.domain.enums.UserRole;
+import com.epam.state.RepositoryState;
 import com.epam.utils.DBConnectionUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
 
 
 public class UserRepoImpl implements Repository<User, Long> {
-
+    private Repository <Bill, Long> billRepository = RepositoryState.getBillRepositoryInstance();
 
     public static final String INSERT_SQL_REQUEST = "INSERT INTO USER (LOGIN, PASSWORD, ROLE) VALUES(?, ?, ?)";
     public static final String DELETE_SQL_REQUEST = "DELETE FROM USER WHERE ID = ?";
@@ -93,7 +97,7 @@ public class UserRepoImpl implements Repository<User, Long> {
 
                     user = User.builder().id(tmpId).login(login).password(password).role(userRole)
                         .build();
-
+                    addBillsToUser(user);
                 }
             }
         }
@@ -101,6 +105,7 @@ public class UserRepoImpl implements Repository<User, Long> {
         return user;
 
     }
+
     @SneakyThrows
     @Override
     public User update(User item) throws IllegalArgumentException {
@@ -148,10 +153,26 @@ public class UserRepoImpl implements Repository<User, Long> {
         return userList;
     }
 
+    private void addBillsToUser(User user) {
+        List<Bill> billList;
+        Iterable<Bill> allBills =  billRepository.findAll();
+        if (allBills != null) {
+            billList = new ArrayList<>();
+            for (Bill bill : allBills) {
+                if (bill.getUserId() == user.getId()) {
+                    billList.add(bill);
+                }
+            }
+        } else {
+            billList = Collections.emptyList();
+        }
+
+        user.setBills(billList);
+    }
+
     @SneakyThrows
     private PreparedStatement getPreparedStatement(String sql) {
         Connection connection = DBConnectionUtils.getConnection();
         return connection.prepareStatement(sql);
     }
-
 }

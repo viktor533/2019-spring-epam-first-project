@@ -91,6 +91,7 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
                 int luxury = resultSet.getInt(LUXURY_COLUMN_NAME);
 
                 hotel = Hotel.builder().id(id).name(name).location(location).luxury(luxury).build();
+                addRoomsToHotel(hotel);
             }
 
             return hotel;

@@ -19,8 +19,7 @@ public class RepositoryState {
 
     public static Repository<Bill, Long> getBillRepositoryInstance() {
         if (billRepository == null) {
-//            TODO:
-//            billRepository = new BillRepositoryImpl();
+            billRepository = new BillRepoImpl();
         }
         return billRepository;
     }
