@@ -24,14 +24,14 @@ public class RoomServlet extends BaseServlet  {
         List<Booking> bookings = new ArrayList<>();
         bookings.add(Booking.builder()
                 .id(1)
-                .roomId(1)
+                .roomClass(RoomClass.LUX)
                 .start(LocalDate.now())
                 .end(LocalDate.now().plusDays(3))
                 .build());
 
         bookings.add(Booking.builder()
                 .id(2)
-                .roomId(1)
+                .roomClass(RoomClass.ECONOMY)
                 .start(LocalDate.now())
                 .end(LocalDate.now().plusDays(5))
                 .build());

@@ -156,13 +156,14 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
         List<Booking> bookings = null;
         Iterable<Booking> allBookings =  bookingRepository.findAll();
         if (allBookings != null) {
-            bookings = new ArrayList<>();
-            for (Booking booking : allBookings) {
-                if (booking.getRoomId() == room.getId()) {
-                    bookings.add(booking);
-                }
-                bookingRepository.removeById(booking.getId());
-            }
+//            bookings = new ArrayList<>();
+//            for (Booking booking : allBookings) {
+//                if (booking.getRoomId() == room.getId()) {
+//                    bookings.add(booking);
+//                }
+//                bookingRepository.removeById(booking.getId());
+//            }
+            bookings = Collections.emptyList();
         } else {
             bookings = Collections.emptyList();
         }
