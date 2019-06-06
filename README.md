@@ -41,6 +41,7 @@
 * Run schema.sql
 * Run test-data.sql
 * Build Tomcat project
+* Profit! 
 * Profit!
 
 ## Ссылки:
@@ -48,7 +49,6 @@
 * [trello](https://trello.com/b/M5towI6a/epam-first-project-spring-2019)
 
 ## Авторы:
-* [Алексей Бондарев](https://github.com/alexeyboo)
+* [Алексей Бондарев](https://github.com/alexeyboo) 
 * [Виктор Смирнов](https://github.com/viktor533)
 * [Артем Демченко](https://github.com/Mincer2412)
-
