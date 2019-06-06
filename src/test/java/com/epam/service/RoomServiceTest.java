@@ -7,10 +7,14 @@ import com.epam.repo.Repository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import static org.mockito.Mockito.when;
+
 
 import java.util.ArrayList;
 
-public class RepoServiceTest {
+public class RoomServiceTest {
     private RoomService roomService;
 
     @Mock
