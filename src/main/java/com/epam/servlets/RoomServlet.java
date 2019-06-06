@@ -22,37 +22,6 @@ import java.util.List;
 public class RoomServlet extends BaseServlet  {
     private static RoomServiceImpl roomService = ServiceState.getRoomServiceInstance();
 
-    private static Room getDemoRoom () {
-        List<Bill> bills = new ArrayList<>();
-        bills.add(Bill.builder()
-                .id(1)
-                .bookingId(1)
-                .roomId(1)
-                .status(BillStatus.PAID)
-                .userId(1)
-                .build());
-
-        bills.add(Bill.builder()
-                .id(2)
-                .bookingId(2)
-                .roomId(1)
-                .status(BillStatus.PAID)
-                .userId(1)
-                .build());
-
-        Room room = Room.builder()
-                .id(1)
-                .hotelId(1)
-                .number(101)
-                .numOfGuests(3)
-                .pricePerNight(2000)
-                .roomClass(RoomClass.STANDART)
-                .bills(bills)
-                .build();
-
-        return room;
-    }
-
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String roomIdStr = request.getParameter("roomId");

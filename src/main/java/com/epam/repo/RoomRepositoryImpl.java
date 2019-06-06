@@ -168,9 +168,7 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
                 if (bill.getRoomId() == room.getId()) {
                     bills.add(bill);
                 }
-//                billRepository.removeById(bill.getId());
             }
-//            bills = Collections.emptyList();
         } else {
             bills = Collections.emptyList();
         }

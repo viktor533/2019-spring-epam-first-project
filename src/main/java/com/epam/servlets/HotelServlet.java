@@ -18,35 +18,6 @@ import javax.servlet.*;
 public class HotelServlet extends BaseServlet {
     HotelService hotelService = ServiceState.getHotelServiceInstance();
 
-    private static Hotel getDemoHotel() {
-        List<Room> rooms = new ArrayList<>();
-        rooms.add(Room.builder()
-                .id(1)
-                .hotelId(1)
-                .number(101)
-                .numOfGuests(3)
-                .pricePerNight(2000)
-                .roomClass(RoomClass.STANDART)
-                .build());
-        rooms.add(Room.builder()
-                .id(2)
-                .hotelId(1)
-                .number(102)
-                .numOfGuests(1)
-                .pricePerNight(5000)
-                .roomClass(RoomClass.LUX)
-                .build());
-
-        Hotel hotel = Hotel.builder()
-                .id(1)
-                .name("Reddison")
-                .location("SPb")
-                .luxury(5)
-                .rooms(rooms)
-                .build();
-        return hotel;
-    }
-
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Hotel hotel = hotelService.findById(1L);
         request.setAttribute("hotel", hotel);
