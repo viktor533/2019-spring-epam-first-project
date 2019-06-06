@@ -30,7 +30,7 @@ public class RoomServiceImpl {
             throw new IllegalArgumentException("Room must have class!");
         }
         if (room.getBills() == null) {
-            room.setBills(Collections.EMPTY_LIST);
+            room.setBills(Collections.emptyList());
         }
     }
 
