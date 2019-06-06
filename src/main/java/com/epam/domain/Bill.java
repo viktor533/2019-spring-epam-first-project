@@ -10,5 +10,6 @@ public class Bill {
     private long id;
     private long bookingId;
     private long userId;
+    private long roomId;
     private BillStatus status;
 }
