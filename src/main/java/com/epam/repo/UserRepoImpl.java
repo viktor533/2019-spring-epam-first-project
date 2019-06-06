@@ -1,7 +1,6 @@
 package com.epam.repo;
 
 import com.epam.domain.Bill;
-import com.epam.domain.Room;
 import com.epam.domain.User;
 import com.epam.domain.enums.UserRole;
 import com.epam.state.RepositoryState;
@@ -18,13 +17,15 @@ import lombok.SneakyThrows;
 
 
 public class UserRepoImpl implements Repository<User, Long> {
-    private Repository <Bill, Long> billRepository = RepositoryState.getBillRepositoryInstance();
+
 
     public static final String INSERT_SQL_REQUEST = "INSERT INTO USER (LOGIN, PASSWORD, ROLE) VALUES(?, ?, ?)";
     public static final String DELETE_SQL_REQUEST = "DELETE FROM USER WHERE ID = ?";
     public static final String SELECT_FROM_USER_SQL_REQUEST = "SELECT * FROM USER WHERE ID = ?";
     public static final String UPDATE_SQL_REQUEST = " UPDATE USER SET LOGIN = ?,  PASSWORD = ? , ROLE = ? WHERE ID = ?";
     public static final String SELECT_ID_SQL_REQUEST = "SELECT ID FROM USER";
+
+    private Repository<Bill, Long> billRepository = RepositoryState.getBillRepositoryInstance();
 
     @SneakyThrows
     @Override
@@ -97,15 +98,17 @@ public class UserRepoImpl implements Repository<User, Long> {
 
                     user = User.builder().id(tmpId).login(login).password(password).role(userRole)
                         .build();
-                    addBillsToUser(user);
+
                 }
             }
+        }
+        if (user != null) {
+            addBillsToUser(user);
         }
 
         return user;
 
     }
-
     @SneakyThrows
     @Override
     public User update(User item) throws IllegalArgumentException {
@@ -153,26 +156,25 @@ public class UserRepoImpl implements Repository<User, Long> {
         return userList;
     }
 
-    private void addBillsToUser(User user) {
-        List<Bill> billList;
-        Iterable<Bill> allBills =  billRepository.findAll();
-        if (allBills != null) {
-            billList = new ArrayList<>();
-            for (Bill bill : allBills) {
-                if (bill.getUserId() == user.getId()) {
-                    billList.add(bill);
-                }
-            }
-        } else {
-            billList = Collections.emptyList();
-        }
-
-        user.setBills(billList);
-    }
-
     @SneakyThrows
     private PreparedStatement getPreparedStatement(String sql) {
         Connection connection = DBConnectionUtils.getConnection();
         return connection.prepareStatement(sql);
+    }
+
+    private void addBillsToUser(User user) {
+        List<Bill> bills = null;
+        Iterable<Bill> allBookings =  billRepository.findAll();
+        if (allBookings != null) {
+            bills = new ArrayList<>();
+            for (Bill bill : allBookings) {
+                if (bill.getRoomId() == user.getId()) {
+                    bills.add(bill);
+                }
+            }
+        } else {
+            bills = Collections.emptyList();
+        }
+        user.setBills(bills);
     }
 }
