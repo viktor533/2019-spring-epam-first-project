@@ -14,15 +14,17 @@ import lombok.SneakyThrows;
 
 public class BillRepoImpl implements Repository<Bill, Long> {
 
-    public static final String INSERT_SQL_REQUEST = "INSERT INTO BILL ( USER_ID, BOOKING_ID, STATUS) VALUES( ?, ?, ?)";
+    public static final String INSERT_SQL_REQUEST = "INSERT INTO BILL ( USER_ID, ROOM_ID, BOOKING_ID, STATUS) VALUES( ?, ?, ?, ?)";
     public static final String DELETE_SQL_REQUEST = "DELETE FROM BILL WHERE ID = ?";
     public static final String SELECT_FROM_SQL_REQUEST = "SELECT * FROM BILL WHERE ID = ?";
-    public static final String UPDATE_SQL_REQUEST = " UPDATE BILL SET USER_ID = ?,  BOOKING_ID = ? , STATUS = ?, WHERE ID = ?";
+    public static final String UPDATE_SQL_REQUEST = " UPDATE BILL SET USER_ID = ?,  ROOM_ID = ?, BOOKING_ID = ? , STATUS = ?, WHERE ID = ?";
     public static final String SELECT_ID_SQL_REQUEST = "SELECT ID FROM BILL";
+
     public static final String ID = "ID";
     public static final String BOOKING_ID = "BOOKING_ID";
     public static final String USER_ID = "USER_ID";
     public static final String STATUS = "STATUS";
+    public static final String ROOM_ID = "ROOM_ID";
 
     @SneakyThrows
     @Override
@@ -32,14 +34,16 @@ public class BillRepoImpl implements Repository<Bill, Long> {
         } else {
 
             Long userId = item.getUserId();
+            Long roomId = item.getRoomId();
             Long bookingId = item.getBookingId();
             BillStatus status = item.getStatus();
 
             PreparedStatement preparedStatement = getPreparedStatement(
                 INSERT_SQL_REQUEST);
             preparedStatement.setLong(1, userId);
-            preparedStatement.setLong(2, bookingId);
-            preparedStatement.setString(3, status.name());
+            preparedStatement.setLong(2, roomId);
+            preparedStatement.setLong(3, bookingId);
+            preparedStatement.setString(4, status.name());
 
             preparedStatement.executeUpdate();
 
@@ -89,11 +93,12 @@ public class BillRepoImpl implements Repository<Bill, Long> {
 
                     long bookingId = Long.parseLong(resultSet.getString(BOOKING_ID));
                     long userId = Long.parseLong(resultSet.getString(USER_ID));
+                    long roomId = Long.parseLong(resultSet.getString(ROOM_ID));
 
                     String status = resultSet.getString(STATUS);
 
-                    bill = Bill.builder().id(tmpId).bookingId(bookingId).userId(userId)
-                        .status(Enum.valueOf(BillStatus.class, status)).build();
+                    bill = Bill.builder().id(tmpId).bookingId(bookingId).roomId(roomId)
+                        .userId(userId).status(Enum.valueOf(BillStatus.class, status)).build();
 
                 }
 
@@ -113,15 +118,17 @@ public class BillRepoImpl implements Repository<Bill, Long> {
 
             Long id = item.getId();
             Long userId = item.getUserId();
+            Long roomId = item.getRoomId();
             Long bookingId = item.getBookingId();
             BillStatus billStatus = item.getStatus();
 
             PreparedStatement preparedStatement = getPreparedStatement(
                 UPDATE_SQL_REQUEST);
             preparedStatement.setLong(1, userId);
-            preparedStatement.setLong(2, bookingId);
-            preparedStatement.setString(3, billStatus.name());
-            preparedStatement.setLong(4, id);
+            preparedStatement.setLong(2, roomId);
+            preparedStatement.setLong(3, bookingId);
+            preparedStatement.setString(4, billStatus.name());
+            preparedStatement.setLong(5, id);
 
             preparedStatement.execute();
         }

@@ -1,16 +1,9 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: viktor
-  Date: 05.06.19
-  Time: 13:53
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
-    <title>Room</title>
+    <title>User</title>
     <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/css/common.css'/>
     <script>
         function goBill(id) {
@@ -23,11 +16,10 @@
     <dev class="centralCard">
 
         <ul class="descriptionList">
-            <li> Room ${room.getId()} </li>
-            <li> <span>Number:</span> <em>${room.getNumber()}</em> </li>
-            <li> <span>Guests:</span> <em>${room.getNumOfGuests()}</em> </li>
-            <li> <span>Price:</span> <em>${room.getPricePerNight()}</em> </li>
-            <li> <span>Service:</span> <em>${room.getRoomClass()}</em> </li>
+            <li> User ${user.getId()} </li>
+            <li> <span>Role:</span> <em>${user.getRole()}</em> </li>
+            <li> <span>Login:</span> <em>${user.getLogin()}</em> </li>
+            <li> <span>Password:</span> <em>${user.getPassword()}</em> </li>
         </ul>
 
         <table class="table_grizzly">
@@ -38,7 +30,7 @@
                 <th>RoomId</th>
                 <th>Status</th>
             </tr>
-            <c:forEach items="${room.getBills()}" var ="bill">
+            <c:forEach items="${user.getBills()}" var ="bill">
                 <tr>
                     <td onclick="goBill(${bill.getId()});">${bill.getId()}</td>
                     <td onclick="goBill(${bill.getId()});">${bill.getBookingId()}</td>

@@ -1,6 +1,9 @@
 package com.epam.servlets;
 
 import com.epam.domain.Booking;
+import com.epam.domain.enums.RoomClass;
+import com.epam.service.BookingService;
+import com.epam.state.ServiceState;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.RequestDispatcher;
@@ -13,15 +16,7 @@ import java.time.LocalDate;
 @Slf4j
 public class BookingServlet extends BaseServlet  {
 
-    private static Booking getDemoBooking() {
-        Booking booking = Booking.builder()
-                .id(1)
-                .roomId(1)
-                .start(LocalDate.now())
-                .end(LocalDate.now().plusDays(3))
-                .build();
-        return booking;
-    }
+    private BookingService bookingService = ServiceState.getBookingServiceInstance();
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String bookingIdStr = request.getParameter("bookingId");
@@ -31,7 +26,8 @@ public class BookingServlet extends BaseServlet  {
         }
 
         log.debug("Accept bookingId: " + bookingId);
-        Booking booking = getDemoBooking();
+
+        Booking booking = bookingService.findById(bookingId);
 //        log.debug("Send booking: " + booking);
         request.setAttribute("booking", booking);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/booking_page.jsp");

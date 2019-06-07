@@ -33,8 +33,8 @@ public class RoomService {
         if (room.getRoomClass() == null) {
             throw new IllegalArgumentException("Room must have class!");
         }
-        if (room.getBookings() == null) {
-            room.setBookings(Collections.EMPTY_LIST);
+        if (room.getBills() == null) {
+            room.setBills(Collections.emptyList());
         }
     }
 

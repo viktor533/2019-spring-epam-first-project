@@ -16,7 +16,7 @@
 
         <ul class="descriptionList">
             <li> Booking id: ${booking.getId()} </li>
-            <li> <span>Room id:</span> <em>${booking.getRoomId()}</em> </li>
+            <li> <span>Class:</span> <em>${booking.getRoomClass()}</em> </li>
             <li> <span>Start:</span> <em>${booking.getStart()}</em> </li>
             <li> <span>End:</span> <em>${booking.getEnd()}</em> </li>
         </ul>

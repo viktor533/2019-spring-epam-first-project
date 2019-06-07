@@ -89,10 +89,14 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
                 String name = resultSet.getString(NAME_COLUMN_NAME);
                 String location = resultSet.getString(LOCATION_DATE_COLUMN_NAME);
                 int luxury = resultSet.getInt(LUXURY_COLUMN_NAME);
-
                 hotel = Hotel.builder().id(id).name(name).location(location).luxury(luxury).build();
+                addRoomsToHotel(hotel);
             }
 
+
+            if (hotel != null) {
+                addRoomsToHotel(hotel);
+            }
             return hotel;
         }
     }
