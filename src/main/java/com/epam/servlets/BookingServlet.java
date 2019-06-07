@@ -1,7 +1,6 @@
 package com.epam.servlets;
 
 import com.epam.domain.Booking;
-import com.epam.domain.enums.RoomClass;
 import com.epam.service.BookingService;
 import com.epam.state.ServiceState;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +10,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDate;
 
 @Slf4j
 public class BookingServlet extends BaseServlet  {
