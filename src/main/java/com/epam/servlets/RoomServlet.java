@@ -1,12 +1,7 @@
 package com.epam.servlets;
 
-import com.epam.domain.Bill;
 import com.epam.domain.Room;
-import com.epam.domain.enums.BillStatus;
-import com.epam.domain.enums.RoomClass;
-import com.epam.repo.Repository;
-import com.epam.service.RoomServiceImpl;
-import com.epam.state.RepositoryState;
+import com.epam.service.RoomService;
 import com.epam.state.ServiceState;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,12 +10,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 public class RoomServlet extends BaseServlet  {
-    private static RoomServiceImpl roomService = ServiceState.getRoomServiceInstance();
+    private static RoomService roomService = ServiceState.getRoomServiceInstance();
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

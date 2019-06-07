@@ -6,7 +6,7 @@ public class ServiceState {
     private static BookingService bookingService = null;
     private static BillService billService = null;
     private static HotelService hotelService = null;
-    private static RoomServiceImpl roomService = null;
+    private static RoomService roomService = null;
     private static UserService userService = null;
 
     public static BookingService getBookingServiceInstance() {
@@ -30,9 +30,9 @@ public class ServiceState {
         return hotelService;
     }
 
-    public static RoomServiceImpl getRoomServiceInstance() {
+    public static RoomService getRoomServiceInstance() {
         if (roomService == null) {
-            roomService = new RoomServiceImpl();
+            roomService = new RoomService(RepositoryState.getRoomRepositoryInstance(), RepositoryState.getHotelRepositoryInstance());
         }
         return roomService;
     }
