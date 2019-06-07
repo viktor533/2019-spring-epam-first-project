@@ -48,6 +48,15 @@
         <url-pattern>/user</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>RegistrationServlet</servlet-name>
+        <servlet-class>com.epam.servlets.RegistrationServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>RegistrationServlet</servlet-name>
+        <url-pattern>/registration</url-pattern>
+    </servlet-mapping>
 
 
     <error-page>

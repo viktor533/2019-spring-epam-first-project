@@ -3,15 +3,17 @@ package com.epam.service;
 import com.epam.domain.Bill;
 import com.epam.domain.User;
 import com.epam.repo.Repository;
-import com.epam.repo.UserRepoImpl;
 import com.epam.state.RepositoryState;
-import java.util.Collections;
+import com.epam.utils.PrepStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import lombok.SneakyThrows;
 
 public class UserService {
 
     private final Repository<User, Long> userRepo;
     private Repository<Bill, Long> billRepo = RepositoryState.getBillRepositoryInstance();
+    private PreparedStatement preparedStatement = null;
 
     public UserService(Repository<User, Long> userRepo) {
         this.userRepo = userRepo;
@@ -19,6 +21,7 @@ public class UserService {
 
     /**
      * Check user and user fields by null
+     *
      * @param user to check
      * @throws IllegalArgumentException if accepted user or user fields is null
      */
@@ -29,7 +32,7 @@ public class UserService {
         if (findById(user.getId()) != null) {
             throw new IllegalArgumentException("User with same id already exist!");
         }
-        if (user.getLogin() == null){
+        if (user.getLogin() == null) {
             throw new IllegalArgumentException("Login is not correct!");
         }
         if (user.getPassword() == null) {
@@ -45,7 +48,7 @@ public class UserService {
 
     /**
      * Accept user, check by null and save it in repository
-     * @param user
+     *
      * @return saved user
      * @throws IllegalArgumentException if accepted user or user fields is null
      */
@@ -56,7 +59,7 @@ public class UserService {
 
     /**
      * Accepted id and try to delete user with same id
-     * @param id
+     *
      * @return removed user or null, if user with same id does not exist
      * @throws IllegalArgumentException if id is null
      */
@@ -67,7 +70,7 @@ public class UserService {
 
     /**
      * Accept id and try to find user with same id
-     * @param id
+     *
      * @return found user or null, if user with same id does not exist
      * @throws IllegalArgumentException if id is null
      */
@@ -78,7 +81,7 @@ public class UserService {
 
     /**
      * Update user
-     * @param user
+     *
      * @return updated user or null if same user not exist in repository
      * @throws IllegalArgumentException if accepted user or user fields is null
      */
@@ -93,5 +96,23 @@ public class UserService {
     @SneakyThrows
     public Iterable<User> findAll() {
         return userRepo.findAll();
+    }
+
+    @SneakyThrows
+    public boolean checkIfAlreadyExistsInDb(String email) {
+
+        boolean isUnique = true;
+
+        preparedStatement = PrepStatement.getPreparedStatement("SELECT LOGIN FROM USER");
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while (resultSet.next()) {
+            String logInDB = resultSet.getString("LOGIN");
+
+            if (logInDB.equals(email)) {
+                isUnique = false;
+            }
+        }
+        return isUnique;
     }
 }
