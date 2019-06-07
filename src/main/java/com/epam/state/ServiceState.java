@@ -8,6 +8,7 @@ public class ServiceState {
     private static HotelService hotelService = null;
     private static RoomService roomService = null;
     private static UserService userService = null;
+    private static TokenService tokenService = null;
 
     public static BookingService getBookingServiceInstance() {
         if (bookingService == null) {
@@ -42,5 +43,12 @@ public class ServiceState {
             userService = new UserService(RepositoryState.getUserRepositoryInstance());
         }
         return userService;
+    }
+
+    public static TokenService getTokenServiceInstance() {
+        if (tokenService == null) {
+            tokenService = new TokenService(RepositoryState.getTokenRepositoryInstance());
+        }
+        return tokenService;
     }
 }

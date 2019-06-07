@@ -1,7 +1,6 @@
 package com.epam.repo;
 
 import com.epam.domain.Bill;
-import com.epam.domain.Booking;
 import com.epam.domain.Room;
 import com.epam.domain.enums.RoomClass;
 import com.epam.state.RepositoryState;
