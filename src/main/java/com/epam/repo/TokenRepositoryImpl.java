@@ -17,11 +17,11 @@ import java.util.List;
 @Slf4j
 public class TokenRepositoryImpl implements Repository<Token, String> {
 
-    private static final String SAVE_SQL_REQUEST = "INSERT INTO TOKEN (TOKEN, USER_ID, ROLE) VALUES(?, ?, ?);";
-    private static final String DELETE_SQL_REQUEST = "DELETE FROM TOKEN WHERE TOKEN = ?;";
-    private static final String FIND_SQL_REQUEST = "SELECT * TOKEN ROOM WHERE TOKEN = ?;";
-    private static final String UPDATE_SQL_REQUEST = "UPDATE TOKEN SET TOKEN \'?\', USER_ID \'?\', ROLE = \'?\' WHERE TOKEN = ?;";
-    private static final String FIND_ALL_SQL_REQUEST = "SELECT * FROM TOKEN;";
+    private static final String SAVE_SQL_REQUEST = "INSERT INTO TOKEN_TABLE (TOKEN, USER_ID, ROLE) VALUES(?, ?, ?);";
+    private static final String DELETE_SQL_REQUEST = "DELETE FROM TOKEN_TABLE WHERE TOKEN = ?;";
+    private static final String FIND_SQL_REQUEST = "SELECT * TOKEN TOKEN_TABLE WHERE TOKEN = ?;";
+    private static final String UPDATE_SQL_REQUEST = "UPDATE TOKEN_TABLE SET TOKEN \'?\', USER_ID \'?\', ROLE = \'?\' WHERE TOKEN = ?;";
+    private static final String FIND_ALL_SQL_REQUEST = "SELECT * FROM TOKEN_TABLE;";
 
     private static final String TOKEN_COLUMN_NAME = "TOKEN";
     private static final String USER_ID_COLUMN_NAME = "USER_ID";

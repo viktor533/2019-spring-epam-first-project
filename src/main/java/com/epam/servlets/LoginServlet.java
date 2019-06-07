@@ -51,8 +51,9 @@ public class LoginServlet extends BaseServlet {
             response.addCookie(cookie);
 
             if (UserRole.ADMIN.equals(user.getRole())) {
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/hotel_page.jsp");
-                dispatcher.forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/pages/hotel_page.jsp");
+//                RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/hotel_page.jsp");
+//                dispatcher.forward(request, response);
             } else {
                 request.setAttribute("user", user);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/user_page.jsp");
