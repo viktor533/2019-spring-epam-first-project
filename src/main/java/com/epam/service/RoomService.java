@@ -5,11 +5,18 @@ import com.epam.domain.Room;
 import com.epam.repo.Repository;
 import com.epam.state.RepositoryState;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
-public class RoomServiceImpl {
+public class RoomService {
     private Repository<Room, Long> roomRepository = RepositoryState.getRoomRepositoryInstance();
     private Repository<Hotel, Long> hotelRepository = RepositoryState.getHotelRepositoryInstance();
+
+    public RoomService(Repository<Room, Long> roomRepository, Repository<Hotel, Long> hotelRepository) {
+        this.roomRepository = roomRepository;
+        this.hotelRepository = hotelRepository;
+    }
 
     /**
      * Check room and room fields by null
@@ -19,9 +26,6 @@ public class RoomServiceImpl {
     private void checkNulls(Room room) throws IllegalArgumentException {
         if (room == null) {
             throw new IllegalArgumentException("Accepted room is null!");
-        }
-        if (findById(room.getId()) != null) {
-            throw new IllegalArgumentException("Room with same id already exist!");
         }
         if (hotelRepository.findById(room.getHotelId()) == null) {
             throw new IllegalArgumentException("Hotel id not correct: not exist!");
@@ -42,6 +46,9 @@ public class RoomServiceImpl {
      */
     public Room save(Room room) throws IllegalArgumentException {
         checkNulls(room);
+        if (findById(room.getId()) != null) {
+            return null;
+        }
         return roomRepository.save(room);
     }
 
@@ -90,5 +97,51 @@ public class RoomServiceImpl {
      */
     public Iterable<Room> findAll() {
         return roomRepository.findAll();
+    }
+
+    /**
+     * Saves the array of rooms into the database
+     * @param rooms that we want to save in the database
+     * @return Iterable of all Room objects that have been saved in the database
+     */
+    public Iterable<Room> saveAll(Room... rooms) {
+        return Arrays.stream(rooms)
+                .map(this::save)
+                .collect(Collectors.toList());
+//        return roomRepository.saveAll(rooms);
+    }
+
+    /**
+     * Removes all rooms from the database by their ids
+     * @param ids of the rooms that want to remove from the database
+     * @return Iterable of all Room objects that have been removed from the database by their ids
+     */
+    public Iterable<Room> removeAllById(Long... ids) {
+        return Arrays.stream(ids)
+                .map(this::removeById)
+                .collect(Collectors.toList());
+//        return roomRepository.removeAllById(ids);
+    }
+
+    /**
+     * Finds all rooms from the database by their ids
+     * @param ids of the rooms that want to find in the database
+     * @return Iterable of all Room objects by their ids
+     */
+    public Iterable<Room> findAllById(Long... ids) {
+        return Arrays.stream(ids)
+                .map(this::findById)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Updates all rooms that have been passed into the method in the database
+     * @param rooms that we want to update in the database
+     * @return Iterable of all Room objects that have been updated in the database
+     */
+    public Iterable<Room> updateAll(Room... rooms) {
+        return Arrays.stream(rooms)
+                .map(this::update)
+                .collect(Collectors.toList());
     }
 }
