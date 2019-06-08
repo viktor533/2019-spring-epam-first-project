@@ -9,6 +9,8 @@ public class ServiceState {
     private static RoomService roomService = null;
     private static UserService userService = null;
 
+    private ServiceState() {}
+
     public static BookingService getBookingServiceInstance() {
         if (bookingService == null) {
             bookingService = new BookingService(RepositoryState.getBookingRepositoryInstance());

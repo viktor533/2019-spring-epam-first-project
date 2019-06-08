@@ -12,7 +12,7 @@ import java.io.IOException;
 import javax.servlet.*;
 
 public class HotelServlet extends BaseServlet {
-    HotelService hotelService = ServiceState.getHotelServiceInstance();
+    private HotelService hotelService = ServiceState.getHotelServiceInstance();
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Hotel hotel = hotelService.findById(1L);

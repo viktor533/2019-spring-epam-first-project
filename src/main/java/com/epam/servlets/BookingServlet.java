@@ -26,7 +26,7 @@ public class BookingServlet extends BaseServlet  {
         log.debug("Accept bookingId: " + bookingId);
 
         Booking booking = bookingService.findById(bookingId);
-//        log.debug("Send booking: " + booking);
+        log.debug("Send booking: " + booking);
         request.setAttribute("booking", booking);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/booking_page.jsp");
         dispatcher.forward(request, response);
