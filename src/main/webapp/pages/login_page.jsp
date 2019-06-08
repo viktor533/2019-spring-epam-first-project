@@ -15,7 +15,7 @@
 </head>
 <body>
 
-    <form action="${pageContext.request.contextPath}/login?email=" method="get">
+    <form action="${pageContext.request.contextPath}/login?email=" method="post">
         <div class="centralCard">
             <div class="container">
                 <h1>Register</h1>
