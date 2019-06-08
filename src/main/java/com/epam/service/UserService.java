@@ -42,6 +42,19 @@ public class UserService {
         return userRepo.findById(id);
     }
 
+    @SneakyThrows
+    public User findByLogin(String login) throws IllegalArgumentException {
+        Iterable<User> allUsers = userRepo.findAll();
+        for (User user : allUsers) {
+            if (user.getLogin().equals(login)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+
+
     /**
      * Update user
      * @param user - that we need to update
