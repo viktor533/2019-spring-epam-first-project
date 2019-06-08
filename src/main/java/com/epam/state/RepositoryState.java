@@ -11,6 +11,8 @@ public class RepositoryState {
     private static Repository<User, Long> userRepository = null;
     private static Repository<Token, String> tokenRepository = null;
 
+    private RepositoryState() {}
+
     public static Repository<Booking, Long> getBookingRepositoryInstance() {
         if (bookingRepository == null) {
             bookingRepository = new BookingRepositoryImpl();

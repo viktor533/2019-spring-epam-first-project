@@ -23,7 +23,7 @@ public class RoomServiceTest {
     private Repository<Hotel, Long> hotelRepository;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
         roomService = new RoomService(roomRepository, hotelRepository);
     }

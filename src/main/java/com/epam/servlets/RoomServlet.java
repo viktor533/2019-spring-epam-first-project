@@ -24,7 +24,6 @@ public class RoomServlet extends BaseServlet  {
         }
         log.debug("Accept roomId: " + roomId);
         Room room = roomService.findById(roomId);
-//        Room room = getDemoRoom();
         log.debug("Send room: " + room);
 
         request.setAttribute("room", room);

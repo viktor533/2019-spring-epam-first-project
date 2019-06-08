@@ -10,6 +10,8 @@ public class ServiceState {
     private static UserService userService = null;
     private static TokenService tokenService = null;
 
+    private ServiceState() {}
+
     public static BookingService getBookingServiceInstance() {
         if (bookingService == null) {
             bookingService = new BookingService(RepositoryState.getBookingRepositoryInstance());
