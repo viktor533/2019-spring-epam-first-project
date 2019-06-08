@@ -8,7 +8,6 @@ import com.epam.utils.DBConnectionUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,17 +18,17 @@ import lombok.SneakyThrows;
 public class UserRepoImpl implements Repository<User, Long> {
 
 
-    public static final String INSERT_SQL_REQUEST = "INSERT INTO USER (LOGIN, PASSWORD, ROLE) VALUES(?, ?, ?)";
-    public static final String DELETE_SQL_REQUEST = "DELETE FROM USER WHERE ID = ?";
-    public static final String SELECT_FROM_USER_SQL_REQUEST = "SELECT * FROM USER WHERE ID = ?";
-    public static final String UPDATE_SQL_REQUEST = " UPDATE USER SET LOGIN = ?,  PASSWORD = ? , ROLE = ? WHERE ID = ?";
-    public static final String SELECT_ID_SQL_REQUEST = "SELECT ID FROM USER";
+    private static final String INSERT_SQL_REQUEST = "INSERT INTO USER (LOGIN, PASSWORD, ROLE) VALUES(?, ?, ?)";
+    private static final String DELETE_SQL_REQUEST = "DELETE FROM USER WHERE ID = ?";
+    private static final String SELECT_FROM_USER_SQL_REQUEST = "SELECT * FROM USER WHERE ID = ?";
+    private static final String UPDATE_SQL_REQUEST = " UPDATE USER SET LOGIN = ?,  PASSWORD = ? , ROLE = ? WHERE ID = ?";
+    private static final String SELECT_ID_SQL_REQUEST = "SELECT ID FROM USER";
 
     private Repository<Bill, Long> billRepository = RepositoryState.getBillRepositoryInstance();
 
     @SneakyThrows
     @Override
-    public User save(User item) throws IllegalArgumentException{
+    public User save(User item) {
         if (item == null) {
             throw new IllegalArgumentException();
         } else {
@@ -53,7 +52,7 @@ public class UserRepoImpl implements Repository<User, Long> {
 
     @SneakyThrows
     @Override
-    public User removeById(Long id) throws IllegalArgumentException {
+    public User removeById(Long id) {
         User user = null;
 
         if (id == null) {
@@ -73,7 +72,7 @@ public class UserRepoImpl implements Repository<User, Long> {
 
     @SneakyThrows
     @Override
-    public User findById(Long id) throws IllegalArgumentException{
+    public User findById(Long id) {
         ResultSet resultSet = null;
         User user = null;
 
@@ -111,8 +110,7 @@ public class UserRepoImpl implements Repository<User, Long> {
     }
     @SneakyThrows
     @Override
-    public User update(User item) throws IllegalArgumentException {
-        ResultSet resultSet = null;
+    public User update(User item) {
 
         if (item == null) {
             throw new IllegalArgumentException();
@@ -141,14 +139,13 @@ public class UserRepoImpl implements Repository<User, Long> {
     @Override
     public Iterable<User> findAll() {
         List<User> userList = new ArrayList<>();
-        User user;
 
         @Cleanup
         PreparedStatement preparedStatement = getPreparedStatement(SELECT_ID_SQL_REQUEST);
         preparedStatement.execute();
         ResultSet resultSet = preparedStatement.getResultSet();
 
-        while (resultSet != null && resultSet.next()) {
+        while (resultSet.next()) {
             Long tmpId = resultSet.getLong("ID");
             userList.add(findById(tmpId));
         }

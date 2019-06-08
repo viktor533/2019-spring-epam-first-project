@@ -6,7 +6,6 @@ import com.epam.utils.DBConnectionUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Cleanup;
@@ -14,21 +13,21 @@ import lombok.SneakyThrows;
 
 public class BillRepoImpl implements Repository<Bill, Long> {
 
-    public static final String INSERT_SQL_REQUEST = "INSERT INTO BILL ( USER_ID, ROOM_ID, BOOKING_ID, STATUS) VALUES( ?, ?, ?, ?)";
-    public static final String DELETE_SQL_REQUEST = "DELETE FROM BILL WHERE ID = ?";
-    public static final String SELECT_FROM_SQL_REQUEST = "SELECT * FROM BILL WHERE ID = ?";
-    public static final String UPDATE_SQL_REQUEST = " UPDATE BILL SET USER_ID = ?,  ROOM_ID = ?, BOOKING_ID = ? , STATUS = ?, WHERE ID = ?";
-    public static final String SELECT_ID_SQL_REQUEST = "SELECT ID FROM BILL";
+    private static final String INSERT_SQL_REQUEST = "INSERT INTO BILL ( USER_ID, ROOM_ID, BOOKING_ID, STATUS) VALUES( ?, ?, ?, ?)";
+    private static final String DELETE_SQL_REQUEST = "DELETE FROM BILL WHERE ID = ?";
+    private static final String SELECT_FROM_SQL_REQUEST = "SELECT * FROM BILL WHERE ID = ?";
+    private static final String UPDATE_SQL_REQUEST = " UPDATE BILL SET USER_ID = ?,  ROOM_ID = ?, BOOKING_ID = ? , STATUS = ?, WHERE ID = ?";
+    private static final String SELECT_ID_SQL_REQUEST = "SELECT ID FROM BILL";
 
     public static final String ID = "ID";
-    public static final String BOOKING_ID = "BOOKING_ID";
-    public static final String USER_ID = "USER_ID";
-    public static final String STATUS = "STATUS";
-    public static final String ROOM_ID = "ROOM_ID";
+    private static final String BOOKING_ID = "BOOKING_ID";
+    private static final String USER_ID = "USER_ID";
+    private static final String STATUS = "STATUS";
+    private static final String ROOM_ID = "ROOM_ID";
 
     @SneakyThrows
     @Override
-    public Bill save(Bill item) throws IllegalArgumentException{
+    public Bill save(Bill item) {
         if (item == null) {
             throw new IllegalArgumentException();
         } else {
@@ -54,8 +53,8 @@ public class BillRepoImpl implements Repository<Bill, Long> {
 
     @SneakyThrows
     @Override
-    public Bill removeById(Long id) throws IllegalArgumentException{
-        Bill bill = null;
+    public Bill removeById(Long id){
+        Bill bill;
 
         if (id == null) {
             throw new IllegalArgumentException();
@@ -74,8 +73,8 @@ public class BillRepoImpl implements Repository<Bill, Long> {
 
     @SneakyThrows
     @Override
-    public Bill findById(Long id) throws IllegalArgumentException {
-        ResultSet resultSet = null;
+    public Bill findById(Long id) {
+        ResultSet resultSet;
         Bill bill = null;
 
         if (id == null) {
@@ -109,8 +108,7 @@ public class BillRepoImpl implements Repository<Bill, Long> {
 
     @SneakyThrows
     @Override
-    public Bill update(Bill item) throws IllegalArgumentException {
-        ResultSet resultSet = null;
+    public Bill update(Bill item) {
 
         if (item == null) {
             throw new IllegalArgumentException();
@@ -140,14 +138,13 @@ public class BillRepoImpl implements Repository<Bill, Long> {
     @Override
     public Iterable<Bill> findAll() {
         List<Bill> billList = new ArrayList<>();
-        Bill bill;
 
         @Cleanup
         PreparedStatement preparedStatement = getPreparedStatement(SELECT_ID_SQL_REQUEST);
         preparedStatement.execute();
         ResultSet resultSet = preparedStatement.getResultSet();
 
-        while (resultSet != null && resultSet.next()) {
+        while (resultSet.next()) {
             Long tmpId = resultSet.getLong(ID);
             billList.add(findById(tmpId));
         }

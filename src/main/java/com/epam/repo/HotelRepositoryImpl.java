@@ -17,30 +17,24 @@ import java.util.List;
 public class HotelRepositoryImpl implements Repository<Hotel, Long> {
     private Repository <Room, Long> roomRepository = RepositoryState.getRoomRepositoryInstance();
 
-    private final String SAVE_SQL_REQUEST = "INSERT INTO HOTEL (NAME, LOCATION, LUXURY) VALUES (?, ?, ?)";
-    private final String DELETE_SQL_REQUEST = "DELETE FROM HOTEL WHERE ID = ?";
-    private final String FIND_SQL_REQUEST = "SELECT * FROM HOTEL WHERE ID = ?";
-    private final String UPDATE_SQL_REQUEST = "UPDATE HOTEL SET NAME = ?, LOCATION = ?, LUXURY = ? WHERE ID = ?";
-    private final String FIND_ALL_SQL_REQUEST = "SELECT * FROM HOTEL";
+    private static final String NAME_COLUMN_NAME = "NAME";
+    private static final String LOCATION_DATE_COLUMN_NAME = "LOCATION";
+    private static final String LUXURY_COLUMN_NAME = "LUXURY";
 
-    private final String ID_COLUMN_NAME = "ID";
-    private final String NAME_COLUMN_NAME = "NAME";
-    private final String LOCATION_DATE_COLUMN_NAME = "LOCATION";
-    private final String LUXURY_COLUMN_NAME = "LUXURY";
-
-    private final String SAVE_EXCEPTION_MESSAGE = "Passing empty hotel field to save";
-    private final String REMOVE_EXCEPTION_MESSAGE = "Passing empty id field to remove";
-    private final String FIND_EXCEPTION_MESSAGE = "Passing empty id field to find";
-    private final String UPDATE_EXCEPTION_MESSAGE = "Passing empty hotel field to update";
+    private static final String SAVE_EXCEPTION_MESSAGE = "Passing empty hotel field to save";
+    private static final String REMOVE_EXCEPTION_MESSAGE = "Passing empty id field to remove";
+    private static final String FIND_EXCEPTION_MESSAGE = "Passing empty id field to find";
+    private static final String UPDATE_EXCEPTION_MESSAGE = "Passing empty hotel field to update";
 
     @Override
     @SneakyThrows
-    public Hotel save(Hotel hotel) throws IllegalArgumentException {
+    public Hotel save(Hotel hotel) {
         if (hotel == null) {
             throw new IllegalArgumentException(SAVE_EXCEPTION_MESSAGE);
         } else {
+            String saveSqlRequest = "INSERT INTO HOTEL (NAME, LOCATION, LUXURY) VALUES (?, ?, ?)";
             @Cleanup
-            PreparedStatement statement = getPreparedStatement(SAVE_SQL_REQUEST);
+            PreparedStatement statement = getPreparedStatement(saveSqlRequest);
             List<Room> roomList = hotel.getRooms();
             for (Room room : roomList) {
                 roomRepository.save(room);
@@ -57,14 +51,15 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
 
     @Override
     @SneakyThrows
-    public Hotel removeById(Long id) throws IllegalArgumentException {
+    public Hotel removeById(Long id) {
         if (id == null) {
             throw new IllegalArgumentException(REMOVE_EXCEPTION_MESSAGE);
         } else {
             Hotel hotel = findById(id);
 
+            String deleteSqlRequest = "DELETE FROM HOTEL WHERE ID = ?";
             @Cleanup
-            PreparedStatement statement = getPreparedStatement(DELETE_SQL_REQUEST);
+            PreparedStatement statement = getPreparedStatement(deleteSqlRequest);
             statement.setLong(1, id);
             statement.executeUpdate();
 
@@ -74,14 +69,15 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
 
     @Override
     @SneakyThrows
-    public Hotel findById(Long id) throws IllegalArgumentException {
+    public Hotel findById(Long id) {
         if (id == null) {
             throw new IllegalArgumentException(FIND_EXCEPTION_MESSAGE);
         } else {
             Hotel hotel = null;
 
+            String findSqlRequest = "SELECT * FROM HOTEL WHERE ID = ?";
             @Cleanup
-            PreparedStatement statement = getPreparedStatement(FIND_SQL_REQUEST);
+            PreparedStatement statement = getPreparedStatement(findSqlRequest);
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
 
@@ -103,12 +99,13 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
 
     @Override
     @SneakyThrows
-    public Hotel update(Hotel hotel) throws IllegalArgumentException {
+    public Hotel update(Hotel hotel) {
         if (hotel == null) {
             throw new IllegalArgumentException(UPDATE_EXCEPTION_MESSAGE);
         } else {
+            String updateSqlRequest = "UPDATE HOTEL SET NAME = ?, LOCATION = ?, LUXURY = ? WHERE ID = ?";
             @Cleanup
-            PreparedStatement statement = getPreparedStatement(UPDATE_SQL_REQUEST);
+            PreparedStatement statement = getPreparedStatement(updateSqlRequest);
 
             statement.setString(1, hotel.getName());
             statement.setString(2, hotel.getLocation());
@@ -126,12 +123,14 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
         List<Hotel> hotelList = new ArrayList<>();
         Hotel hotel;
 
+        String findAllSqlRequest = "SELECT * FROM HOTEL";
         @Cleanup
-        PreparedStatement statement = getPreparedStatement(FIND_ALL_SQL_REQUEST);
+        PreparedStatement statement = getPreparedStatement(findAllSqlRequest);
         ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-            hotel = Hotel.builder().id(resultSet.getLong(ID_COLUMN_NAME))
+                String idColumnName = "ID";
+                hotel = Hotel.builder().id(resultSet.getLong(idColumnName))
                                    .name(resultSet.getString(NAME_COLUMN_NAME))
                                    .location(resultSet.getString(LOCATION_DATE_COLUMN_NAME))
                                    .luxury(resultSet.getInt(LUXURY_COLUMN_NAME))
