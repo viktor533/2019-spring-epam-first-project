@@ -1,7 +1,6 @@
 package com.epam.service;
 
 import com.epam.domain.Booking;
-import com.epam.repo.BookingRepositoryImpl;
 import com.epam.repo.Repository;
 import lombok.SneakyThrows;
 

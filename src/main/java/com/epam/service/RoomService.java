@@ -3,15 +3,14 @@ package com.epam.service;
 import com.epam.domain.Hotel;
 import com.epam.domain.Room;
 import com.epam.repo.Repository;
-import com.epam.state.RepositoryState;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
 public class RoomService {
-    private Repository<Room, Long> roomRepository = RepositoryState.getRoomRepositoryInstance();
-    private Repository<Hotel, Long> hotelRepository = RepositoryState.getHotelRepositoryInstance();
+    private Repository<Room, Long> roomRepository;
+    private Repository<Hotel, Long> hotelRepository;
 
     public RoomService(Repository<Room, Long> roomRepository, Repository<Hotel, Long> hotelRepository) {
         this.roomRepository = roomRepository;
@@ -21,9 +20,8 @@ public class RoomService {
     /**
      * Check room and room fields by null
      * @param room to check
-     * @throws IllegalArgumentException if accepted room or room fields is null
      */
-    private void checkNulls(Room room) throws IllegalArgumentException {
+    private void checkNulls(Room room) {
         if (room == null) {
             throw new IllegalArgumentException("Accepted room is null!");
         }
@@ -40,11 +38,10 @@ public class RoomService {
 
     /**
      * Accept room, check by null and save it in repository
-     * @param room
+     * @param room - is room we need to save
      * @return saved room
-     * @throws IllegalArgumentException if accepted room or room fields is null
      */
-    public Room save(Room room) throws IllegalArgumentException {
+    public Room save(Room room) {
         checkNulls(room);
         if (findById(room.getId()) != null) {
             return null;
@@ -54,11 +51,10 @@ public class RoomService {
 
     /**
      * Accepted id and try to delete room with same id
-     * @param id
+     * @param id - identifier that we need to delete by
      * @return removed room or null, if room with same id not exist
-     * @throws IllegalArgumentException if id is null
      */
-    public Room removeById(Long id) throws IllegalArgumentException {
+    public Room removeById(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("Accepted id is null!");
         }
@@ -67,11 +63,10 @@ public class RoomService {
 
     /**
      * Accept id and try to find room with same id
-     * @param id
+     * @param id - identifier that we need to get by
      * @return finded room or null, if room with same id not exist
-     * @throws IllegalArgumentException if id is null
      */
-    public Room findById(Long id) throws IllegalArgumentException {
+    public Room findById(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("Accepted id is null!");
         }
@@ -80,11 +75,10 @@ public class RoomService {
 
     /**
      * Try to update room
-     * @param room
+     * @param room - the object that we need to update
      * @return updated room or null if same room not exist in repository
-     * @throws IllegalArgumentException if accepted room or room fields is null
      */
-    public Room update(Room room) throws IllegalArgumentException {
+    public Room update(Room room) {
         checkNulls(room);
         if (findById(room.getId()) == null) {
             return null;
@@ -108,7 +102,6 @@ public class RoomService {
         return Arrays.stream(rooms)
                 .map(this::save)
                 .collect(Collectors.toList());
-//        return roomRepository.saveAll(rooms);
     }
 
     /**
@@ -120,7 +113,6 @@ public class RoomService {
         return Arrays.stream(ids)
                 .map(this::removeById)
                 .collect(Collectors.toList());
-//        return roomRepository.removeAllById(ids);
     }
 
     /**
