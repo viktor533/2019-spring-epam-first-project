@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class BillRepoImpl implements Repository<Bill, Long> {
 
     private static final String INSERT_SQL_REQUEST = "INSERT INTO BILL ( USER_ID, ROOM_ID, BOOKING_ID, STATUS) VALUES( ?, ?, ?, ?)";
@@ -29,6 +31,7 @@ public class BillRepoImpl implements Repository<Bill, Long> {
     @Override
     public Bill save(Bill item) {
         if (item == null) {
+            log.error("item is null");
             throw new IllegalArgumentException();
         } else {
 
@@ -57,6 +60,7 @@ public class BillRepoImpl implements Repository<Bill, Long> {
         Bill bill;
 
         if (id == null) {
+            log.error("id is null");
             throw new IllegalArgumentException();
         } else {
             bill = findById(id);
@@ -74,33 +78,34 @@ public class BillRepoImpl implements Repository<Bill, Long> {
     @SneakyThrows
     @Override
     public Bill findById(Long id) {
-        ResultSet resultSet;
         Bill bill = null;
 
         if (id == null) {
+            log.error("id is null");
             throw new IllegalArgumentException();
         } else {
 
             PreparedStatement preparedStatement = getPreparedStatement(
                 SELECT_FROM_SQL_REQUEST);
             preparedStatement.setLong(1, id);
-            resultSet = preparedStatement.executeQuery();
+            try (ResultSet resultSet = preparedStatement.executeQuery()){
 
-            while (resultSet.next()) {
-                Long tmpId = Long.parseLong(resultSet.getString(ID));
-                if (tmpId.equals(id)) {
+                while (resultSet.next()) {
+                    Long tmpId = Long.parseLong(resultSet.getString(ID));
+                    if (tmpId.equals(id)) {
 
-                    long bookingId = Long.parseLong(resultSet.getString(BOOKING_ID));
-                    long userId = Long.parseLong(resultSet.getString(USER_ID));
-                    long roomId = Long.parseLong(resultSet.getString(ROOM_ID));
+                        long bookingId = Long.parseLong(resultSet.getString(BOOKING_ID));
+                        long userId = Long.parseLong(resultSet.getString(USER_ID));
+                        long roomId = Long.parseLong(resultSet.getString(ROOM_ID));
 
-                    String status = resultSet.getString(STATUS);
+                        String status = resultSet.getString(STATUS);
 
-                    bill = Bill.builder().id(tmpId).bookingId(bookingId).roomId(roomId)
-                        .userId(userId).status(Enum.valueOf(BillStatus.class, status)).build();
+                        bill = Bill.builder().id(tmpId).bookingId(bookingId).roomId(roomId)
+                            .userId(userId).status(Enum.valueOf(BillStatus.class, status)).build();
+
+                    }
 
                 }
-
             }
         }
         return bill;
@@ -111,6 +116,7 @@ public class BillRepoImpl implements Repository<Bill, Long> {
     public Bill update(Bill item) {
 
         if (item == null) {
+            log.error("item is null");
             throw new IllegalArgumentException();
         } else {
 
@@ -142,11 +148,12 @@ public class BillRepoImpl implements Repository<Bill, Long> {
         @Cleanup
         PreparedStatement preparedStatement = getPreparedStatement(SELECT_ID_SQL_REQUEST);
         preparedStatement.execute();
-        ResultSet resultSet = preparedStatement.getResultSet();
+        try (ResultSet resultSet = preparedStatement.getResultSet()) {
 
-        while (resultSet.next()) {
-            Long tmpId = resultSet.getLong(ID);
-            billList.add(findById(tmpId));
+            while (resultSet.next()) {
+                Long tmpId = resultSet.getLong(ID);
+                billList.add(findById(tmpId));
+            }
         }
 
         return billList;

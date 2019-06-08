@@ -12,7 +12,9 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class BookingRepositoryImpl implements Repository<Booking, Long> {
 
     private static final String SAVE_SQL_REQUEST = "INSERT INTO BOOKING (CLASS, START_DATE, END_DATE) VALUES (?, ?, ?)";
@@ -53,6 +55,7 @@ public class BookingRepositoryImpl implements Repository<Booking, Long> {
     @SneakyThrows
     public Booking removeById(Long id) {
         if (id == null) {
+            log.error("id is null");
             throw new IllegalArgumentException(REMOVE_EXCEPTION_MESSAGE);
         } else {
             Booking booking = findById(id);
@@ -70,6 +73,7 @@ public class BookingRepositoryImpl implements Repository<Booking, Long> {
     @SneakyThrows
     public Booking findById(Long id) {
         if (id == null) {
+            log.error("id is null");
             throw new IllegalArgumentException(FIND_EXCEPTION_MESSAGE);
         } else {
             Booking booking = null;
@@ -77,13 +81,16 @@ public class BookingRepositoryImpl implements Repository<Booking, Long> {
             @Cleanup
             PreparedStatement statement = getPreparedStatement(FIND_SQL_REQUEST);
             statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
+            try (ResultSet resultSet = statement.executeQuery()) {
 
-            while (resultSet.next()) {
-                RoomClass roomClass = RoomClass.valueOf(resultSet.getString(ROOM_CLASS_COLUMN_NAME));
-                LocalDate start = LocalDate.parse(resultSet.getString(START_DATE_COLUMN_NAME));
-                LocalDate end = LocalDate.parse(resultSet.getString(END_DATE_COLUMN_NAME));
-                booking = Booking.builder().id(id).roomClass(roomClass).start(start).end(end).build();
+                while (resultSet.next()) {
+                    RoomClass roomClass = RoomClass
+                        .valueOf(resultSet.getString(ROOM_CLASS_COLUMN_NAME));
+                    LocalDate start = LocalDate.parse(resultSet.getString(START_DATE_COLUMN_NAME));
+                    LocalDate end = LocalDate.parse(resultSet.getString(END_DATE_COLUMN_NAME));
+                    booking = Booking.builder().id(id).roomClass(roomClass).start(start).end(end)
+                        .build();
+                }
             }
 
             return booking;
@@ -117,16 +124,17 @@ public class BookingRepositoryImpl implements Repository<Booking, Long> {
 
         @Cleanup
         PreparedStatement statement = getPreparedStatement(FIND_ALL_SQL_REQUEST);
-        ResultSet resultSet = statement.executeQuery();
+        try (ResultSet resultSet = statement.executeQuery()) {
 
-        while (resultSet.next()) {
-            booking = Booking.builder().id(resultSet.getLong(ID_COLUMN_NAME))
-                             .roomClass(RoomClass.valueOf(resultSet.getString(ROOM_CLASS_COLUMN_NAME)))
-                             .start(LocalDate.parse(resultSet.getString(START_DATE_COLUMN_NAME)))
-                             .end(LocalDate.parse(resultSet.getString(END_DATE_COLUMN_NAME)))
-                             .build();
+            while (resultSet.next()) {
+                booking = Booking.builder().id(resultSet.getLong(ID_COLUMN_NAME))
+                    .roomClass(RoomClass.valueOf(resultSet.getString(ROOM_CLASS_COLUMN_NAME)))
+                    .start(LocalDate.parse(resultSet.getString(START_DATE_COLUMN_NAME)))
+                    .end(LocalDate.parse(resultSet.getString(END_DATE_COLUMN_NAME)))
+                    .build();
 
-            bookingList.add(booking);
+                bookingList.add(booking);
+            }
         }
 
         return bookingList;

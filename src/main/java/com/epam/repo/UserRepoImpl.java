@@ -13,8 +13,10 @@ import java.util.Collections;
 import java.util.List;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 
+@Slf4j
 public class UserRepoImpl implements Repository<User, Long> {
 
 
@@ -30,6 +32,7 @@ public class UserRepoImpl implements Repository<User, Long> {
     @Override
     public User save(User item) {
         if (item == null) {
+            log.error("item is null");
             throw new IllegalArgumentException();
         } else {
             String login = item.getLogin();
@@ -53,9 +56,10 @@ public class UserRepoImpl implements Repository<User, Long> {
     @SneakyThrows
     @Override
     public User removeById(Long id) {
-        User user = null;
+        User user;
 
         if (id == null) {
+            log.error("id is null");
             throw new IllegalArgumentException();
         } else {
             user = findById(id);
@@ -73,31 +77,33 @@ public class UserRepoImpl implements Repository<User, Long> {
     @SneakyThrows
     @Override
     public User findById(Long id) {
-        ResultSet resultSet = null;
         User user = null;
 
         if (id == null) {
+            log.error("id is null");
             throw new IllegalArgumentException();
         } else {
 
             PreparedStatement preparedStatement = getPreparedStatement(
                 SELECT_FROM_USER_SQL_REQUEST);
             preparedStatement.setLong(1, id);
-            resultSet = preparedStatement.executeQuery();
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
 
-            while (resultSet.next()) {
-                Long tmpId = Long.parseLong(resultSet.getString("ID"));
+                while (resultSet.next()) {
+                    Long tmpId = Long.parseLong(resultSet.getString("ID"));
 
-                if (tmpId.equals(id)) {
+                    if (tmpId.equals(id)) {
 
-                    String login = resultSet.getString("LOGIN");
-                    String password = resultSet.getString("PASSWORD");
-                    String role = resultSet.getString("ROLE");
-                    UserRole userRole = Enum.valueOf(UserRole.class, role);
+                        String login = resultSet.getString("LOGIN");
+                        String password = resultSet.getString("PASSWORD");
+                        String role = resultSet.getString("ROLE");
+                        UserRole userRole = Enum.valueOf(UserRole.class, role);
 
-                    user = User.builder().id(tmpId).login(login).password(password).role(userRole)
-                        .build();
+                        user = User.builder().id(tmpId).login(login).password(password)
+                            .role(userRole)
+                            .build();
 
+                    }
                 }
             }
         }
@@ -113,6 +119,7 @@ public class UserRepoImpl implements Repository<User, Long> {
     public User update(User item) {
 
         if (item == null) {
+            log.error("item is null");
             throw new IllegalArgumentException();
         } else {
 
@@ -143,11 +150,12 @@ public class UserRepoImpl implements Repository<User, Long> {
         @Cleanup
         PreparedStatement preparedStatement = getPreparedStatement(SELECT_ID_SQL_REQUEST);
         preparedStatement.execute();
-        ResultSet resultSet = preparedStatement.getResultSet();
+        try (ResultSet resultSet = preparedStatement.getResultSet()) {
 
-        while (resultSet.next()) {
-            Long tmpId = resultSet.getLong("ID");
-            userList.add(findById(tmpId));
+            while (resultSet.next()) {
+                Long tmpId = resultSet.getLong("ID");
+                userList.add(findById(tmpId));
+            }
         }
 
         return userList;
@@ -160,7 +168,7 @@ public class UserRepoImpl implements Repository<User, Long> {
     }
 
     private void addBillsToUser(User user) {
-        List<Bill> bills = null;
+        List<Bill> bills;
         Iterable<Bill> allBookings =  billRepository.findAll();
         if (allBookings != null) {
             bills = new ArrayList<>();

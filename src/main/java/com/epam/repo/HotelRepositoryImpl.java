@@ -13,7 +13,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class HotelRepositoryImpl implements Repository<Hotel, Long> {
     private Repository <Room, Long> roomRepository = RepositoryState.getRoomRepositoryInstance();
 
@@ -30,6 +32,7 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
     @SneakyThrows
     public Hotel save(Hotel hotel) {
         if (hotel == null) {
+            log.error("hotel is null");
             throw new IllegalArgumentException(SAVE_EXCEPTION_MESSAGE);
         } else {
             String saveSqlRequest = "INSERT INTO HOTEL (NAME, LOCATION, LUXURY) VALUES (?, ?, ?)";
@@ -53,6 +56,7 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
     @SneakyThrows
     public Hotel removeById(Long id) {
         if (id == null) {
+            log.error("id is null");
             throw new IllegalArgumentException(REMOVE_EXCEPTION_MESSAGE);
         } else {
             Hotel hotel = findById(id);
@@ -71,6 +75,7 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
     @SneakyThrows
     public Hotel findById(Long id) {
         if (id == null) {
+            log.error("id is null");
             throw new IllegalArgumentException(FIND_EXCEPTION_MESSAGE);
         } else {
             Hotel hotel = null;
@@ -79,14 +84,16 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
             @Cleanup
             PreparedStatement statement = getPreparedStatement(findSqlRequest);
             statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
+            try (ResultSet resultSet = statement.executeQuery()) {
 
-            while (resultSet.next()) {
-                String name = resultSet.getString(NAME_COLUMN_NAME);
-                String location = resultSet.getString(LOCATION_DATE_COLUMN_NAME);
-                int luxury = resultSet.getInt(LUXURY_COLUMN_NAME);
-                hotel = Hotel.builder().id(id).name(name).location(location).luxury(luxury).build();
-                addRoomsToHotel(hotel);
+                while (resultSet.next()) {
+                    String name = resultSet.getString(NAME_COLUMN_NAME);
+                    String location = resultSet.getString(LOCATION_DATE_COLUMN_NAME);
+                    int luxury = resultSet.getInt(LUXURY_COLUMN_NAME);
+                    hotel = Hotel.builder().id(id).name(name).location(location).luxury(luxury)
+                        .build();
+                    addRoomsToHotel(hotel);
+                }
             }
 
 
@@ -101,6 +108,7 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
     @SneakyThrows
     public Hotel update(Hotel hotel) {
         if (hotel == null) {
+            log.error("hotel is null");
             throw new IllegalArgumentException(UPDATE_EXCEPTION_MESSAGE);
         } else {
             String updateSqlRequest = "UPDATE HOTEL SET NAME = ?, LOCATION = ?, LUXURY = ? WHERE ID = ?";
@@ -126,17 +134,18 @@ public class HotelRepositoryImpl implements Repository<Hotel, Long> {
         String findAllSqlRequest = "SELECT * FROM HOTEL";
         @Cleanup
         PreparedStatement statement = getPreparedStatement(findAllSqlRequest);
-        ResultSet resultSet = statement.executeQuery();
+        try (ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
                 String idColumnName = "ID";
                 hotel = Hotel.builder().id(resultSet.getLong(idColumnName))
-                                   .name(resultSet.getString(NAME_COLUMN_NAME))
-                                   .location(resultSet.getString(LOCATION_DATE_COLUMN_NAME))
-                                   .luxury(resultSet.getInt(LUXURY_COLUMN_NAME))
-                                   .build();
-            addRoomsToHotel(hotel);
-            hotelList.add(hotel);
+                    .name(resultSet.getString(NAME_COLUMN_NAME))
+                    .location(resultSet.getString(LOCATION_DATE_COLUMN_NAME))
+                    .luxury(resultSet.getInt(LUXURY_COLUMN_NAME))
+                    .build();
+                addRoomsToHotel(hotel);
+                hotelList.add(hotel);
+            }
         }
 
         return hotelList;
