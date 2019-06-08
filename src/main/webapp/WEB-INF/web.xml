@@ -48,6 +48,16 @@
         <url-pattern>/user</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>BillServlet</servlet-name>
+        <servlet-class>com.epam.servlets.BillServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>BillServlet</servlet-name>
+        <url-pattern>/bill</url-pattern>
+    </servlet-mapping>
+
 
 
     <error-page>
