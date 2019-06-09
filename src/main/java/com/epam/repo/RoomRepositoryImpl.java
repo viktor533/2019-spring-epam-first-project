@@ -1,7 +1,6 @@
 package com.epam.repo;
 
 import com.epam.domain.Bill;
-import com.epam.domain.Booking;
 import com.epam.domain.Room;
 import com.epam.domain.enums.RoomClass;
 import com.epam.state.RepositoryState;
@@ -43,6 +42,7 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
     @SneakyThrows
     public Room save(Room room) {
         if (room == null) {
+            log.error("room is null");
             throw new IllegalArgumentException("Accepted room is null!");
         }
 
@@ -61,6 +61,7 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
     @SneakyThrows
     public Room removeById(Long id) {
         if (id == null) {
+            log.error("id is null");
             throw new IllegalArgumentException("Accepted id is null!");
         }
         Room room = findById(id);
@@ -84,6 +85,7 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
     @SneakyThrows
     public Room findById(Long id) {
         if (id == null) {
+            log.error("id is null");
             throw new IllegalArgumentException("Accepted id is null!");
         }
 
@@ -94,16 +96,17 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
 
         try {
             statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                room = Room.builder()
-                        .id(resultSet.getLong(ID_COLUMN_NAME))
-                        .hotelId(resultSet.getLong(HOTEL_ID_COLUMN_NAME))
-                        .number(resultSet.getInt(NUMBER_COLUMN_NAME))
-                        .numOfGuests(resultSet.getInt(NUM_OF_GUESTS_COLUMN_NAME))
-                        .pricePerNight(resultSet.getInt(PRICE_PER_NIGHT_COLUMN_NAME))
-                        .roomClass(RoomClass.valueOf(resultSet.getString(CLASS_COLUMN_NAME)))
-                        .build();
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    room = Room.builder()
+                            .id(resultSet.getLong(ID_COLUMN_NAME))
+                            .hotelId(resultSet.getLong(HOTEL_ID_COLUMN_NAME))
+                            .number(resultSet.getInt(NUMBER_COLUMN_NAME))
+                            .numOfGuests(resultSet.getInt(NUM_OF_GUESTS_COLUMN_NAME))
+                            .pricePerNight(resultSet.getInt(PRICE_PER_NIGHT_COLUMN_NAME))
+                            .roomClass(RoomClass.valueOf(resultSet.getString(CLASS_COLUMN_NAME)))
+                            .build();
+                }
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
@@ -120,6 +123,7 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
     @SneakyThrows
     public Room update(Room room) {
         if (room == null) {
+            log.error("room is null");
             throw new IllegalArgumentException("Accepted room is null!");
         }
 
@@ -141,26 +145,28 @@ public class RoomRepositoryImpl implements Repository<Room, Long> {
     public Iterable<Room> findAll() {
         @Cleanup
         PreparedStatement statement = getPreparedStatement(FIND_ALL_SQL_REQUEST);
-        ResultSet resultSet = statement.executeQuery();
-        List<Room> roomsList = new ArrayList<>();
-        while (resultSet.next()) {
-            Room room = Room.builder()
-                    .id(resultSet.getLong(ID_COLUMN_NAME))
-                    .hotelId(resultSet.getLong(HOTEL_ID_COLUMN_NAME))
-                    .number(resultSet.getInt(NUMBER_COLUMN_NAME))
-                    .numOfGuests(resultSet.getInt(NUM_OF_GUESTS_COLUMN_NAME))
-                    .pricePerNight(resultSet.getInt(PRICE_PER_NIGHT_COLUMN_NAME))
-                    .roomClass(RoomClass.valueOf(resultSet.getString(CLASS_COLUMN_NAME)))
-                    .build();
+        List<Room> roomsList;
+        try (ResultSet resultSet = statement.executeQuery()) {
+            roomsList = new ArrayList<>();
+            while (resultSet.next()) {
+                Room room = Room.builder()
+                        .id(resultSet.getLong(ID_COLUMN_NAME))
+                        .hotelId(resultSet.getLong(HOTEL_ID_COLUMN_NAME))
+                        .number(resultSet.getInt(NUMBER_COLUMN_NAME))
+                        .numOfGuests(resultSet.getInt(NUM_OF_GUESTS_COLUMN_NAME))
+                        .pricePerNight(resultSet.getInt(PRICE_PER_NIGHT_COLUMN_NAME))
+                        .roomClass(RoomClass.valueOf(resultSet.getString(CLASS_COLUMN_NAME)))
+                        .build();
 
-            addBillsToRoom(room);
-            roomsList.add(room);
+                addBillsToRoom(room);
+                roomsList.add(room);
+            }
         }
         return roomsList;
     }
 
     private void addBillsToRoom(Room room) {
-        List<Bill> bills = null;
+        List<Bill> bills;
         Iterable<Bill> allBookings =  billRepository.findAll();
         if (allBookings != null) {
             bills = new ArrayList<>();

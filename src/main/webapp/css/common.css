@@ -1,4 +1,14 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #9C57FF;
+}
+
+* {
+    box-sizing: border-box;
+}
+
 .table_grizzly {
+    width: 100%;
 }
 .table_grizzly table {
     font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
@@ -41,7 +51,7 @@
 .descriptionList {
     list-style: none;
     padding: 0;
-    width: 400px;
+    width: 100%;
 }
 .descriptionList li {
     overflow: hidden;
@@ -71,13 +81,18 @@
 }
 
 .centralCard {
+    width: auto;
     background: #e8e8e8;
     border-radius: 40px 40px;
     border: 15px solid #adc3da;
     height: auto;
-    width: 400px;
     margin: 10% 15%;
     padding: 16px;
     display: inline-block;
     box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.container {
+    background: white;
+    padding: 16px;
 }

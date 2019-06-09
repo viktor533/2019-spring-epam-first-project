@@ -9,6 +9,9 @@ public class RepositoryState {
     private static Repository<Hotel, Long> hotelRepository = null;
     private static Repository<Room, Long> roomRepository = null;
     private static Repository<User, Long> userRepository = null;
+    private static Repository<Token, String> tokenRepository = null;
+
+    private RepositoryState() {}
 
     public static Repository<Booking, Long> getBookingRepositoryInstance() {
         if (bookingRepository == null) {
@@ -43,5 +46,12 @@ public class RepositoryState {
             userRepository = new UserRepoImpl();
         }
         return userRepository;
+    }
+
+    public static Repository<Token, String> getTokenRepositoryInstance() {
+        if (tokenRepository == null) {
+            tokenRepository = new TokenRepositoryImpl();
+        }
+        return tokenRepository;
     }
 }

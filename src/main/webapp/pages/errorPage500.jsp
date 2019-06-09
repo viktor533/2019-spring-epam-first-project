@@ -17,6 +17,6 @@
     </style>
 </head>
 <body>
-    <img src="/2019_spring_epam_first_project_war/resources/error500.png" alt="error500"  class="fullscreen">
+    <img src="resources/error500.png" alt="error500"  class="fullscreen">
 </body>
 </html>
