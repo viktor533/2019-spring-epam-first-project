@@ -6,34 +6,44 @@
 <fmt:setLocale value="${param.lang}"/>
 <fmt:setBundle basename="labels"/>
 
-<html lang="${param.lang}>
+<html lang="${param.lang}">
 <head>
     <title>Dolphin Hotel</title>
-    <link rel="stylesheet" type="text/css" href="/css/common.css'/">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/common.css"/>
+    <script>
+        function goUser(id) {
+            location.href = '${pageContext.request.contextPath}/user?userId='+id;
+        }
+    </script>
 </head>
 
 <body link="#000000" vlink="#006600" class="h-page-bg">
-<center>
     <table width="100%">
         <tr>
             <td width="100%">
                 <div align="center">
-                    <table width="100%" bgcolor="#8feda0">
+                    <table width="1000" height="176" bgcolor="#8feda0">
                         <tr>
-                            <td valign="top"><img
+                            <td width="100%" valign="top">
+                                <a href="${pageContext.request.contextPath}">
+                                    <img
                                     src="resources/logo.png"
                                     width="300" height="176">
+                                </a>
                             </td>
 
-                            <td valign="top"><img
+                            <td width="100%" valign="top">
+                                <a href="${pageContext.request.contextPath}">
+                                <img
                                     src="resources/pets.png"
                                     width="559" height="176">
+                                </a>
                             </td>
                         </tr>
                         <tr>
-                            <td width="100%" height="50">
-                                <a href="?lang=en_US"><fmt:message key="language_eng" /></a></li>
-                                <a href="?lang=ru_RU"><fmt:message key="language_rus" /></a></li>
+                            <td height="50">
+                                <a href="?lang=en_US"><fmt:message key="language_eng"/></a></li>
+                                <a href="?lang=ru_RU"><fmt:message key="language_rus"/></a></li>
                             </td>
                         </tr>
                         <tr>
@@ -41,37 +51,49 @@
                                 <ul>
                                     <li>
                                         <p align="left" class="h-links"><a
-                                                href="${pageContext.request.contextPath}/hotel"
-                                                target="_blank"><fmt:message key="hotel"/></a>
-                                    </li>
-                                    <li>
-                                        <p align="left" class="h-links"><a
-                                                href="${pageContext.request.contextPath}/login.jsp"
-                                                target="_blank"><fmt:message key="login"/></a>
+                                                href="${pageContext.request.contextPath}/login"
+                                                target="_self"><fmt:message key="login"/></a>
                                     </li>
                                     <li>
                                         <p align="left" class="h-links"><a
                                                 href="${pageContext.request.contextPath}/registration_page.jsp"
-                                                target="_blank"><fmt:message key="registration"/></a>
+                                                target="_self"><fmt:message key="registration"/></a>
                                     </li>
                                     <li>
                                         <p align="left" class="h-links"><a
-                                                href="${pageContext.request.contextPath}/user"
-                                                target="_blank"><fmt:message key="profile"/></a>
+                                                href="${pageContext.request.contextPath}/hotel"
+                                                target="_self"><fmt:message key="hotel"/></a>
                                     </li>
-                                    <p class="h-hotel" align="center">Pet Hotel,
-                                        Saint-Petersburg,
-                                        8-800-555-35-35
+                                    <p align="center">Pet Hotel, New York, 8-800-555-35-35</p>
                                 </ul>
                             </td>
-                        </tr>
+                            <td>
+                                <dev class="centralCard">
+                                    <ul class="descriptionList">
+                                        <li> <fmt:message key="users"/> </li>
+                                    </ul>
 
+                                    <table class="table_grizzly">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th><fmt:message key="role"/></th>
+                                            <th><fmt:message key="accountName"/></th>
+                                        </tr>
+                                        <c:forEach items="${users}" var="user">
+                                            <tr>
+                                                <td onclick="goUser(${user.getId()});">${user.getId()}</td>
+                                                <td onclick="goUser(${user.getId()});">${user.getRole()}</td>
+                                                <td onclick="goUser(${user.getId()});">${user.getLogin()}</td>
+                                            </tr>
+                                        </c:forEach>
+                                    </table>
+                                </dev>
+                            </td>
+                        </tr>
                     </table>
                 </div>
             </td>
         </tr>
     </table>
-</center>
-
 </body>
 </html>

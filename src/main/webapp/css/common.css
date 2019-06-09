@@ -81,7 +81,7 @@ body {
 }
 
 .centralCard {
-    width: 450px;
+    width: auto;
     background: #e8e8e8;
     border-radius: 40px 40px;
     border: 15px solid #adc3da;

@@ -1,6 +1,5 @@
 package com.epam.servlets;
 
-
 import com.epam.domain.Bill;
 import com.epam.domain.User;
 import com.epam.service.BillService;
@@ -19,7 +18,7 @@ public class BillServlet extends BaseServlet {
         BillService billService = new BillService(RepositoryState.getBillRepositoryInstance());
         Bill bill = billService.findById(1L);
         request.setAttribute("bill", bill);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/bill.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/bill_bage.jsp");
         dispatcher.forward(request, response);
     }
 }
