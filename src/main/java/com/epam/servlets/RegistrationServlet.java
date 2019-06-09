@@ -4,7 +4,11 @@ import com.epam.domain.User;
 import com.epam.domain.enums.UserRole;
 import com.epam.service.UserService;
 import com.epam.state.RepositoryState;
+
+import java.io.IOException;
 import java.util.Random;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,6 +36,10 @@ public class RegistrationServlet extends HttpServlet {
     } else {
       request.getRequestDispatcher("pages/registration_page.jsp").forward(request, response);
     }
+  }
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/registration_page.jsp");
+    dispatcher.forward(request, response);
   }
 
 }

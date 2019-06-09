@@ -1,5 +1,6 @@
 package com.epam.servlets;
 
+import com.epam.domain.Hotel;
 import com.epam.domain.Token;
 import com.epam.domain.User;
 import com.epam.domain.enums.UserRole;
@@ -60,5 +61,9 @@ public class LoginServlet extends BaseServlet {
                 dispatcher.forward(request, response);
             }
         }
+    }
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/login_page.jsp");
+        dispatcher.forward(request, response);
     }
 }
