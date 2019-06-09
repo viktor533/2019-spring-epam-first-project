@@ -69,7 +69,6 @@
                         </td>
                         <td>
                             <dev class="centralCard">
-
                                 <ul class="descriptionList">
                                     <li> <fmt:message key="room"/> ${room.getId()} </li>
                                     <li> <span><fmt:message key="number"/>:</span> <em>${room.getNumber()}</em> </li>
@@ -77,6 +76,7 @@
                                     <li> <span><fmt:message key="price"/>:</span> <em>${room.getPricePerNight()}</em> </li>
                                     <li> <span><fmt:message key="service"/>:</span> <em>${room.getRoomClass()}</em> </li>
                                 </ul>
+                                <button type="submit">+</button>
                                 <table class="table_grizzly">
                                     <tr>
                                         <th>ID</th>
@@ -84,6 +84,8 @@
                                         <th><fmt:message key="userId"/></th>
                                         <th><fmt:message key="roomId"/></th>
                                         <th><fmt:message key="status"/></th>
+                                        <th></th>
+                                        <th></th>
                                     </tr>
                                     <c:forEach items="${room.getBills()}" var ="user">
                                         <tr>
@@ -92,6 +94,20 @@
                                             <td onclick="goBill(${user.getId()});">${user.getUserId()}</td>
                                             <td onclick="goBill(${user.getId()});">${user.getRoomId()}</td>
                                             <td onclick="goBill(${user.getId()});">${user.getStatus()}</td>
+                                            <td>
+                                                <form>
+                                                    <button>
+                                                        <fmt:message key="delete"/>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <form>
+                                                    <button>
+                                                        <fmt:message key="update"/>
+                                                    </button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     </c:forEach>
                                 </table>

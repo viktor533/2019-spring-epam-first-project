@@ -3,7 +3,9 @@ package com.epam.service;
 import com.epam.domain.User;
 import com.epam.repo.Repository;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class UserService {
 
     private final Repository<User, Long> userRepo;
@@ -29,6 +31,7 @@ public class UserService {
      */
     @SneakyThrows
     public User removeById(Long id) {
+        log.debug("removeById User");
         return userRepo.removeById(id);
     }
 

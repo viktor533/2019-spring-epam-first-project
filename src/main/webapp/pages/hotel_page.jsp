@@ -75,20 +75,36 @@
                                     <li><span><fmt:message key="location"/>:</span> <em>${hotel.getLocation()}</em></li>
                                     <li><span><fmt:message key="stars"/>:</span> <em>${hotel.getLuxury()}</em></li>
                                 </ul>
-
+                                <button type="submit">+</button>
                                 <table class="table_grizzly">
                                     <tr>
                                         <th><fmt:message key="number"/></th>
                                         <th><fmt:message key="places"/></th>
                                         <th><fmt:message key="price"/></th>
                                         <th><fmt:message key="service"/></th>
+                                        <th></th>
+                                        <th></th>
                                     </tr>
-                                    <c:forEach items="${hotel.getRooms()}" var="user">
+                                    <c:forEach items="${hotel.getRooms()}" var="room">
                                         <tr>
-                                            <td onclick="goRoom(${user.getId()});">${user.getNumber()}</td>
-                                            <td onclick="goRoom(${user.getId()});">${user.getNumOfGuests()}</td>
-                                            <td onclick="goRoom(${user.getId()});">${user.getPricePerNight()}</td>
-                                            <td onclick="goRoom(${user.getId()});">${user.getRoomClass()}</td>
+                                            <td onclick="goRoom(${room.getId()});">${room.getNumber()}</td>
+                                            <td onclick="goRoom(${room.getId()});">${room.getNumOfGuests()}</td>
+                                            <td onclick="goRoom(${room.getId()});">${room.getPricePerNight()}</td>
+                                            <td onclick="goRoom(${room.getId()});">${room.getRoomClass()}</td>
+                                            <td>
+                                                <form>
+                                                    <button>
+                                                        <fmt:message key="delete"/>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <form>
+                                                    <button>
+                                                        <fmt:message key="update"/>
+                                                    </button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     </c:forEach>
                                 </table>

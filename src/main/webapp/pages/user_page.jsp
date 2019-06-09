@@ -69,14 +69,13 @@
                         </td>
                         <td>
                             <dev class="centralCard">
-
                                 <ul class="descriptionList">
                                     <li> <fmt:message key="user"/> ${user.getId()} </li>
                                     <li> <span><fmt:message key="role"/>:</span> <em>${user.getRole()}</em> </li>
                                     <li> <span><fmt:message key="accountName"/>:</span> <em>${user.getLogin()}</em> </li>
                                     <li> <span><fmt:message key="password"/>:</span> <em>${user.getPassword()}</em> </li>
                                 </ul>
-
+                                <button type="submit">+</button>
                                 <table class="table_grizzly">
                                     <tr>
                                         <th>ID</th>
@@ -84,6 +83,8 @@
                                         <th><fmt:message key="userId"/></th>
                                         <th><fmt:message key="roomId"/></th>
                                         <th><fmt:message key="status"/></th>
+                                        <th>/th>
+                                        <th>/th>
                                     </tr>
                                     <c:forEach items="${user.getBills()}" var ="user">
                                         <tr>
@@ -92,6 +93,20 @@
                                             <td onclick="goBill(${user.getId()});">${user.getUserId()}</td>
                                             <td onclick="goBill(${user.getId()});">${user.getRoomId()}</td>
                                             <td onclick="goBill(${user.getId()});">${user.getStatus()}</td>
+                                            <td>
+                                                <form>
+                                                    <button>
+                                                        <fmt:message key="delete"/>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <form>
+                                                    <button>
+                                                        <fmt:message key="update"/>
+                                                    </button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     </c:forEach>
                                 </table>
