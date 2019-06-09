@@ -9,25 +9,20 @@
             font-family: Arial, Helvetica, sans-serif;
             background-color: #9C57FF;
         }
-
-
     </style>
 </head>
 <body>
-
     <form action="${pageContext.request.contextPath}/login?email=" method="post">
         <div class="centralCard">
             <div class="container">
                 <h1>Register</h1>
                 <p>Please fill in this form to create an account.</p>
                 <hr>
-
                 <label><b>Email</b></label>
                 <input type="text" placeholder="Enter Email" name="email" required></input>
 
                 <label><b>Password</b></label>
                 <input type="password" placeholder="Enter Password" name="password" required></input>
-
 
                 <label class="badMessage"><b>${message}</b></label>
 
@@ -39,7 +34,6 @@
             </div>
         </div>
     </form>
-
 </body>
 </html>
 

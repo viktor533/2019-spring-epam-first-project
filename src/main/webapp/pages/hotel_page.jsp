@@ -51,12 +51,12 @@
                             <ul>
                                 <li>
                                     <p align="left" class="h-links"><a
-                                            href="${pageContext.request.contextPath}/login_page.jsp"
+                                            href="${pageContext.request.contextPath}/login"
                                             target="_self"><fmt:message key="login"/></a>
                                 </li>
                                 <li>
                                     <p align="left" class="h-links"><a
-                                            href="${pageContext.request.contextPath}/registration_page.jsp"
+                                            href="${pageContext.request.contextPath}/registration"
                                             target="_self"><fmt:message key="registration"/></a>
                                 </li>
                                 <li>
