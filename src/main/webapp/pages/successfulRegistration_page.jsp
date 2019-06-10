@@ -60,14 +60,14 @@
 
     <script>
       function goLogin() {
-        location.href = '${pageContext.request.contextPath}/user';
+        location.href = '${pageContext.request.contextPath}/login';
       }
     </script>
 
 </head>
 <body>
 
-<form action="${pageContext.request.contextPath}/user" method="get">
+<form action="${pageContext.request.contextPath}/login" method="get">
     <div class="container">
         <h1>Successful Registration</h1>
         <p>You have successfully registered! Now you can go to Log In page</p>

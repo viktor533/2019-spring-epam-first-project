@@ -76,10 +76,11 @@
         <input type="text" placeholder="Enter Email" name="email" required>
 
         <label><b>Password</b></label>
-        <input type="text" placeholder="Enter Password" name="psw" required>
+        <input type="password" placeholder="Enter Password" name="psw" required>
 
         <label><b>Repeat Password</b></label>
-        <input type="text" placeholder="Repeat Password" name="psw-repeat" required>
+        <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
+        <label class="badMessage" style="color:Tomato"><b>${message}</b></label>
         <hr>
         <button type="submit" value="register" class="registerbtn">Register</button>
     </div>

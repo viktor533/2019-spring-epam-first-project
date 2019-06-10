@@ -11,9 +11,9 @@
     <title>Dolphin Hotel</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/common.css"/>
     <script>
-        function goBill(id) {
-            location.href = '${pageContext.request.contextPath}/bill?billId='+id;
-        }
+      function goBill(id) {
+        location.href = '${pageContext.request.contextPath}/bill?billId='+id;
+      }
     </script>
 </head>
 
@@ -42,8 +42,10 @@
                     </tr>
                     <tr>
                         <td height="50">
-                            <a href="?lang=en_US"><fmt:message key="language_eng"/></a></li>
-                            <a href="?lang=ru_RU"><fmt:message key="language_rus"/></a></li>
+                            <a href="${pageContext.request.contextPath}?lang=en_US"><fmt:message key="language_eng"/></a></li>
+                            <a href="${pageContext.request.contextPath}?lang=ru_RU"><fmt:message key="language_rus"/></a></li>
+                            <a href="${pageContext.request.contextPath}?lang=cat_CAT"><fmt:message key="language_cat"/></a></li>
+                            <a href="${pageContext.request.contextPath}?lang=dog_DOG"><fmt:message key="language_dog"/></a></li>
                         </td>
                     </tr>
                     <tr>
@@ -109,7 +111,7 @@
                                             </td>
                                         </tr>
                                     </c:forEach>
-                                </table>
+                                </table
 
                             </dev>
                         </td>
@@ -121,4 +123,3 @@
 </table>
 </body>
 </html>
-

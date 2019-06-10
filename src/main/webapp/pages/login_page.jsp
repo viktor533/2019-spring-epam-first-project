@@ -30,7 +30,7 @@
             </div>
 
             <div class="container signin">
-                <p>Do not have an account? <a href="/pages/registrate.jsp">Sign up</a>.</p>
+                <p>Do not have an account? <a href="/pages/registration_page.jsp">Sign up</a>.</p>
             </div>
         </div>
     </form>
