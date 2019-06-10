@@ -23,7 +23,6 @@ public class DBConnectionUtils {
         Class.forName("org.h2.Driver");
         connection = DriverManager.getConnection("jdbc:h2:./db/test", "sa", "");
         log.debug("connection with name " + connection.toString() + " was established");
-        log.debug("data tables removed;");
         RunScript.execute(connection, new FileReader(Objects
             .requireNonNull(getClass().getClassLoader().getResource("db/schema.sql")).getFile()));
         log.debug("init schema was created");
