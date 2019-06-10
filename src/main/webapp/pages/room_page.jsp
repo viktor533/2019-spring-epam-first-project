@@ -42,8 +42,10 @@
                     </tr>
                     <tr>
                         <td height="50">
-                            <a href="?lang=en_US"><fmt:message key="language_eng"/></a></li>
-                            <a href="?lang=ru_RU"><fmt:message key="language_rus"/></a></li>
+                            <a href="${pageContext.request.contextPath}?lang=en_US"><fmt:message key="language_eng"/></a></li>
+                            <a href="${pageContext.request.contextPath}?lang=ru_RU"><fmt:message key="language_rus"/></a></li>
+                            <a href="${pageContext.request.contextPath}?lang=cat_CAT"><fmt:message key="language_cat"/></a></li>
+                            <a href="${pageContext.request.contextPath}?lang=dog_DOG"><fmt:message key="language_dog"/></a></li>
                         </td>
                     </tr>
                 </table>

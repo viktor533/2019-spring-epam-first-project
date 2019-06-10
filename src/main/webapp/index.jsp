@@ -82,28 +82,13 @@
                                 <th>ID</th>
                                 <th><fmt:message key="role"/></th>
                                 <th><fmt:message key="accountName"/></th>
-                                <th></th>
-                                <th></th>
                             </tr>
                             <c:forEach items="${users}" var="bill">
                                 <tr>
                                     <td onclick="goUser(${bill.getId()});">${bill.getId()}</td>
                                     <td onclick="goUser(${bill.getId()});">${bill.getRole()}</td>
                                     <td onclick="goUser(${bill.getId()});">${bill.getLogin()}</td>
-                                    <td>
-                                        <form action="" method="post">
-                                            <button type="submit" name=”delete” value=${bill.getLogin()}>
-                                                <fmt:message key="delete"/>
-                                            </button>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <form>
-                                            <button>
-                                                <fmt:message key="update"/>
-                                            </button>
-                                        </form>
-                                    </td>
+
                                 </tr>
                             </c:forEach>
                         </table>
