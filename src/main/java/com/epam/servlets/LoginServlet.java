@@ -71,18 +71,8 @@ public class LoginServlet extends BaseServlet {
 
             if (UserRole.ADMIN.equals(user.getRole())) {
                 response.sendRedirect(request.getContextPath() + "/hotel");
-
-//                Hotel hotel = hotelService.findById(1L);
-//                request.setAttribute("hotel", hotel);
-//                RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/hotel_page.jsp");
-//                dispatcher.forward(request, response);
             } else {
                 response.sendRedirect(request.getContextPath() + "/user?userId="+user.getId());
-
-//                request.setAttribute("user", user);
-//                RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/user_page.jsp");
-//                RequestDispatcher dispatcher = request.getRequestDispatcher("/user?userId="+user.getId());
-//                dispatcher.forward(request, response);
             }
         }
     }

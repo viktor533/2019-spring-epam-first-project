@@ -95,7 +95,7 @@
                                         <td onclick="goBill(${bill.getId()});">${bill.getRoomId()}</td>
                                         <td onclick="goBill(${bill.getId()});">${bill.getStatus()}</td>
                                         <td>
-                                            <form>
+                                            <form action="${pageContext.request.contextPath}/removeBill?billId=${bill.getId()}" method="post">
                                                 <button>
                                                     <fmt:message key="delete"/>
                                                 </button>

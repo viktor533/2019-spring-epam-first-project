@@ -3,7 +3,6 @@ package com.epam.servlets;
 import com.epam.domain.Bill;
 import com.epam.domain.User;
 import com.epam.service.BillService;
-import com.epam.service.UserService;
 import com.epam.state.RepositoryState;
 
 import javax.servlet.RequestDispatcher;
@@ -14,7 +13,7 @@ import java.io.IOException;
 
 public class BillServlet extends BaseServlet {
 
-    private boolean haveRoom(User user, Long billId) {
+    public static boolean haveBill(User user, Long billId) {
         for (Bill bill : user.getBills()) {
             if (bill.getId() == billId) {
                 return true;
@@ -28,7 +27,7 @@ public class BillServlet extends BaseServlet {
         long billId = Long.parseLong(request.getParameter("billId"));
 
         User user = LoginServlet.checkToken(request);
-        if (user == null || !haveRoom(user, billId)) {
+        if (user == null || !haveBill(user, billId)) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/bad_session_page.jsp");
             dispatcher.forward(request, response);
             return;

@@ -28,8 +28,9 @@ public class RoomDeleteServlet extends BaseServlet  {
         if (user == null || !UserRole.ADMIN.equals(user.getRole())) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/bad_session_page.jsp");
             dispatcher.forward(request, response);
-            return;
+
         }
         roomService.removeById(roomId);
+        response.sendRedirect(request.getContextPath() + "/hotel");
     }
 }

@@ -25,11 +25,6 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>RoomServlet</servlet-name>
-        <servlet-class>com.epam.servlets.RoomServlet</servlet-class>
-    </servlet>
-
-    <servlet>
         <servlet-name>RoomDeleteServlet</servlet-name>
         <servlet-class>com.epam.servlets.RoomDeleteServlet</servlet-class>
     </servlet>
@@ -39,6 +34,11 @@
         <url-pattern>/removeRoom</url-pattern>
     </servlet-mapping>
 
+
+    <servlet>
+        <servlet-name>RoomServlet</servlet-name>
+        <servlet-class>com.epam.servlets.RoomServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>RoomServlet</servlet-name>
@@ -74,7 +74,18 @@
         <servlet-name>BillServlet</servlet-name>
         <url-pattern>/bill</url-pattern>
     </servlet-mapping>
-    
+
+
+    <servlet>
+        <servlet-name>BillDeleteServlet</servlet-name>
+        <servlet-class>com.epam.servlets.BillDeleteServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>BillDeleteServlet</servlet-name>
+        <url-pattern>/removeBill</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>com.epam.servlets.LoginServlet</servlet-class>

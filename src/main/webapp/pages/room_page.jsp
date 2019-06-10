@@ -98,15 +98,14 @@
                                             <td onclick="goBill(${bill.getId()});">${bill.getRoomId()}</td>
                                             <td onclick="goBill(${bill.getId()});">${bill.getStatus()}</td>
                                             <td>
-                                                <%--<form action="${pageContext.request.contextPath}/removeRoom?roomId=${bill.getId()}" method="post">--%>
-                                                <form>
+                                                <form action="${pageContext.request.contextPath}/removeBill?billId=${bill.getId()}" method="post">
                                                     <button>
                                                         <fmt:message key="delete"/>
                                                     </button>
                                                 </form>
                                             </td>
                                             <td>
-                                                <form> <%--action="${pageContext.request.contextPath}/updateRoom" method="post">--%>
+                                                <form>
                                                     <button>
                                                         <fmt:message key="update"/>
                                                     </button>

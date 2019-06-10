@@ -91,8 +91,8 @@
                                     <td onclick="goRoom(${room.getId()});">${room.getPricePerNight()}</td>
                                     <td onclick="goRoom(${room.getId()});">${room.getRoomClass()}</td>
                                     <td>
-                                        <form>
-                                            <button  action="${pageContext.request.contextPath}/removeRoom?roomId=${items.getId()}" method="post">
+                                        <form action="${pageContext.request.contextPath}/removeRoom?roomId=${room.getId()}" method="post">
+                                            <button>
                                                 <fmt:message key="delete"/>
                                             </button>
                                         </form>
