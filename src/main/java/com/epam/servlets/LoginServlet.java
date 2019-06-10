@@ -19,9 +19,9 @@ import java.io.IOException;
 import java.security.SecureRandom;
 
 public class LoginServlet extends BaseServlet {
-    private UserService userService = ServiceState.getUserServiceInstance();
+    static private UserService userService = ServiceState.getUserServiceInstance();
     static private TokenService tokenService = ServiceState.getTokenServiceInstance();
-    private HotelService hotelService = ServiceState.getHotelServiceInstance();
+    static private HotelService hotelService = ServiceState.getHotelServiceInstance();
 
     private String generateToken() {
         SecureRandom random = new SecureRandom();
@@ -30,20 +30,20 @@ public class LoginServlet extends BaseServlet {
         return bytes.toString();
     }
 
-    public static boolean checkToken(HttpServletRequest request, long userId) {
+    public static User checkToken(HttpServletRequest request) {
         boolean isGoodToken = false;
         if (request.getCookies().length > 0) {
             for (Cookie cookie : request.getCookies()) {
                 if (Constants.COOKIE_PARAM.equals(cookie.getName())) {
                     String tokenId = request.getCookies()[0].getValue();
                     Token token = tokenService.findById(tokenId);
-                    if (token != null && token.getUserId() == userId) {
-                        isGoodToken = true;
+                    if (token != null) {
+                        return userService.findById(token.getUserId());
                     }
                 }
             }
         }
-        return isGoodToken;
+        return null;
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

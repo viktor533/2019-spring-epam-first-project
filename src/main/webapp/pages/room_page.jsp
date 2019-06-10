@@ -92,8 +92,23 @@
                                             <td onclick="goBill(${user.getId()});">${user.getUserId()}</td>
                                             <td onclick="goBill(${user.getId()});">${user.getRoomId()}</td>
                                             <td onclick="goBill(${user.getId()});">${user.getStatus()}</td>
+                                            <td>
+                                                <form>
+                                                    <button>
+                                                        <fmt:message key="delete"/>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <form>
+                                                    <button>
+                                                        <fmt:message key="update"/>
+                                                    </button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     </c:forEach>
+
                                 </table>
                             </dev>
                         </td>

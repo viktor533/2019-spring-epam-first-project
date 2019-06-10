@@ -28,13 +28,12 @@ public class UserServlet extends BaseServlet {
         }
         log.debug("Accept userId: " + userId);
 
-        if (LoginServlet.checkToken(request, userId)) {
-            response.sendRedirect(request.getContextPath() + "/index.jsp");
+        User user = LoginServlet.checkToken(request);
+        if (user == null || user.getId() != userId) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/bad_session_page.jsp");
+            dispatcher.forward(request, response);
             return;
         }
-
-        User user = userService.findById(userId);
-        log.debug("Send user: " + user);
 
         request.setAttribute("user", user);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/user_page.jsp");
