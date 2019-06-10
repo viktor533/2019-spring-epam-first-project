@@ -12,11 +12,11 @@
     </style>
 </head>
 <body>
-    <form action="${pageContext.request.contextPath}/login?email=" method="post">
+    <form action="${pageContext.request.contextPath}/login" method="post">
         <div class="centralCard">
             <div class="container">
-                <h1>Register</h1>
-                <p>Please fill in this form to create an account.</p>
+                <h1>Login</h1>
+                <p>Please fill in this form to login an account.</p>
                 <hr>
                 <label><b>Email</b></label>
                 <input type="text" placeholder="Enter Email" name="email" required></input>
@@ -30,7 +30,7 @@
             </div>
 
             <div class="container signin">
-                <p>Do not have an account? <a href="/pages/registrate.jsp">Sign up</a>.</p>
+                <p>Do not have an account? <a href="${pageContext.request.contextPath}/registration">Sign up</a>.</p>
             </div>
         </div>
     </form>
