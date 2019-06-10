@@ -21,7 +21,7 @@
         <div align="center">
             <table width="1000" height="176" bgcolor="#8feda0">
                 <tr>
-                    <td width="100%" valign="top">
+                    <td width="20%" valign="top">
                         <a href="${pageContext.request.contextPath}">
                             <img
                                     src="resources/logo.png"
@@ -43,8 +43,10 @@
                         <a href="?lang=ru_RU"><fmt:message key="language_rus"/></a></li>
                     </td>
                 </tr>
+            </table>
+            <table width="1000" height="176" bgcolor="#8feda0">
                 <tr>
-                    <td width="100%" valign="middle">
+                    <td width="100px">
                         <ul>
                             <li>
                                 <p align="left" class="h-links"><a
@@ -72,7 +74,7 @@
                                 <li> <span><fmt:message key="accountName"/>:</span> <em>${user.getLogin()}</em> </li>
                                 <li> <span><fmt:message key="password"/>:</span> <em>${user.getPassword()}</em> </li>
                             </ul>
-
+                            <button type="submit">+</button>
                             <table class="table_grizzly">
                                 <tr>
                                     <th>ID</th>
@@ -80,14 +82,30 @@
                                     <th><fmt:message key="userId"/></th>
                                     <th><fmt:message key="roomId"/></th>
                                     <th><fmt:message key="status"/></th>
+                                    <th><fmt:message key="delete"/></th>
+                                    <th><fmt:message key="update"/></th>
                                 </tr>
-                                <c:forEach items="${user.getBills()}" var ="user">
+                                <c:forEach items="${user.getBills()}" var ="bill">
                                     <tr>
-                                        <td onclick="goBill(${user.getId()});">${user.getId()}</td>
-                                        <td onclick="goBill(${user.getId()});">${user.getBookingId()}</td>
-                                        <td onclick="goBill(${user.getId()});">${user.getUserId()}</td>
-                                        <td onclick="goBill(${user.getId()});">${user.getRoomId()}</td>
-                                        <td onclick="goBill(${user.getId()});">${user.getStatus()}</td>
+                                        <td onclick="goBill(${bill.getId()});">${bill.getId()}</td>
+                                        <td onclick="goBill(${bill.getId()});">${bill.getBookingId()}</td>
+                                        <td onclick="goBill(${bill.getId()});">${bill.getUserId()}</td>
+                                        <td onclick="goBill(${bill.getId()});">${bill.getRoomId()}</td>
+                                        <td onclick="goBill(${bill.getId()});">${bill.getStatus()}</td>
+                                        <td>
+                                            <form>
+                                                <button>
+                                                    <fmt:message key="delete"/>
+                                                </button>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <form>
+                                                <button>
+                                                    <fmt:message key="update"/>
+                                                </button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 </c:forEach>
                             </table>
@@ -95,12 +113,9 @@
                         </dev>
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        <p align="center">Pet Hotel, New York, 8-800-555-35-35</p>
-                    </td>
-                </tr>
             </table>
+            <p align="center">Pet Hotel, New York, 8-800-555-35-35</p>
+
         </div>
     </body>
 </html>

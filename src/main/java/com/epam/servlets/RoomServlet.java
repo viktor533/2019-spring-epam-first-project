@@ -19,6 +19,7 @@ public class RoomServlet extends BaseServlet  {
     private static RoomService roomService = ServiceState.getRoomServiceInstance();
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int a=3;
         String roomIdStr = request.getParameter("roomId");
         Long roomId = null;
         if (roomIdStr != null) {
@@ -33,7 +34,6 @@ public class RoomServlet extends BaseServlet  {
         }
         Room room = roomService.findById(roomId);
         log.debug("Send room: " + room);
-
         request.setAttribute("room", room);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/room_page.jsp");
         dispatcher.forward(request, response);
