@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/css/common.css'/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
-            background-color: black;
+            background-color: #9C57FF;
         }
         * {
             box-sizing: border-box;
@@ -65,30 +66,30 @@
     </script>
 </head>
 <body>
+    <div class="centralCard">
+        <form action="${pageContext.request.contextPath}/registration" method="post">
+            <div class="container">
+                <h1>Register</h1>
+                <p>Please fill in this form to create an account.</p>
+                <hr>
 
-<form action="${pageContext.request.contextPath}/registration" method="post">
-    <div class="container">
-        <h1>Register</h1>
-        <p>Please fill in this form to create an account.</p>
-        <hr>
+                <label><b>Email</b></label>
+                <input type="text" placeholder="Enter Email" name="email" required>
 
-        <label><b>Email</b></label>
-        <input type="text" placeholder="Enter Email" name="email" required>
+                <label><b>Password</b></label>
+                <input type="text" placeholder="Enter Password" name="psw" required>
 
-        <label><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="psw" required>
+                <label><b>Repeat Password</b></label>
+                <input type="text" placeholder="Repeat Password" name="psw-repeat" required>
+                <hr>
+                <button type="submit" value="register" class="registerbtn">Register</button>
+            </div>
 
-        <label><b>Repeat Password</b></label>
-        <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
-        <label class="badMessage" style="color:Tomato"><b>${message}</b></label>
-        <hr>
-        <button type="submit" value="register" class="registerbtn">Register</button>
+            <div class="container signin">
+                <p>Already have an account? <a href="hotel_page.jsp">Sign in</a>.</p>
+            </div>
+        </form>
     </div>
-
-    <div class="container signin">
-        <p>Already have an account? <a href="hotel_page.jsp">Sign in</a>.</p>
-    </div>
-</form>
 
 </body>
 </html>

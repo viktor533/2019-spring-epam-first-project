@@ -48,8 +48,10 @@
                             <a href="${pageContext.request.contextPath}?lang=dog_DOG"><fmt:message key="language_dog"/></a></li>
                         </td>
                     </tr>
+                </table>
+                <table width="1000" height="176" bgcolor="#8feda0">
                     <tr>
-                        <td width="100%" valign="middle">
+                        <td width="100px" valign="middle">
                             <ul>
                                 <li>
                                     <p align="left" class="h-links"><a
@@ -66,7 +68,6 @@
                                             href="${pageContext.request.contextPath}/hotel"
                                             target="_self"><fmt:message key="hotel"/></a>
                                 </li>
-                                <p align="center">Pet Hotel, New York, 8-800-555-35-35</p>
                             </ul>
                         </td>
                         <td>
@@ -86,17 +87,18 @@
                                         <th><fmt:message key="userId"/></th>
                                         <th><fmt:message key="roomId"/></th>
                                         <th><fmt:message key="status"/></th>
-                                        <th></th>
-                                        <th></th>
+                                        <th><fmt:message key="delete"/></th>
+                                        <th><fmt:message key="update"/></th>
                                     </tr>
-                                    <c:forEach items="${room.getBills()}" var ="user">
+                                    <c:forEach items="${room.getBills()}" var ="bill">
                                         <tr>
-                                            <td onclick="goBill(${user.getId()});">${user.getId()}</td>
-                                            <td onclick="goBill(${user.getId()});">${user.getBookingId()}</td>
-                                            <td onclick="goBill(${user.getId()});">${user.getUserId()}</td>
-                                            <td onclick="goBill(${user.getId()});">${user.getRoomId()}</td>
-                                            <td onclick="goBill(${user.getId()});">${user.getStatus()}</td>
+                                            <td onclick="goBill(${bill.getId()});">${bill.getId()}</td>
+                                            <td onclick="goBill(${bill.getId()});">${bill.getBookingId()}</td>
+                                            <td onclick="goBill(${bill.getId()});">${bill.getUserId()}</td>
+                                            <td onclick="goBill(${bill.getId()});">${bill.getRoomId()}</td>
+                                            <td onclick="goBill(${bill.getId()});">${bill.getStatus()}</td>
                                             <td>
+                                                <%--<form action="${pageContext.request.contextPath}/removeRoom?roomId=${bill.getId()}" method="post">--%>
                                                 <form>
                                                     <button>
                                                         <fmt:message key="delete"/>
@@ -104,7 +106,7 @@
                                                 </form>
                                             </td>
                                             <td>
-                                                <form>
+                                                <form> <%--action="${pageContext.request.contextPath}/updateRoom" method="post">--%>
                                                     <button>
                                                         <fmt:message key="update"/>
                                                     </button>
@@ -112,11 +114,14 @@
                                             </td>
                                         </tr>
                                     </c:forEach>
+
                                 </table>
                             </dev>
                         </td>
                     </tr>
                 </table>
+                <p align="center">Pet Hotel, New York, 8-800-555-35-35</p>
+
             </div>
         </td>
     </tr>

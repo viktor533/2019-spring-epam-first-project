@@ -11,6 +11,6 @@
     </style>
 </head>
 <body>
-    <img src="resources/error404.jpeg" alt="error404"  class="fullscreen">
+    <img src="${pageContext.request.contextPath}/resources/error404.jpeg" alt="error404"  class="fullscreen">
 </body>
 </html>

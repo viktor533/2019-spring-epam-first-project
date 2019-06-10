@@ -4,6 +4,7 @@ import com.epam.domain.Hotel;
 import com.epam.domain.Token;
 import com.epam.domain.User;
 import com.epam.domain.enums.UserRole;
+import com.epam.service.HotelService;
 import com.epam.service.TokenService;
 import com.epam.service.UserService;
 import com.epam.state.Constants;
@@ -18,14 +19,31 @@ import java.io.IOException;
 import java.security.SecureRandom;
 
 public class LoginServlet extends BaseServlet {
-    private UserService userService = ServiceState.getUserServiceInstance();
-    private TokenService tokenService = ServiceState.getTokenServiceInstance();
+    static private UserService userService = ServiceState.getUserServiceInstance();
+    static private TokenService tokenService = ServiceState.getTokenServiceInstance();
+    static private HotelService hotelService = ServiceState.getHotelServiceInstance();
 
     private String generateToken() {
         SecureRandom random = new SecureRandom();
         byte bytes[] = new byte[Constants.TOKEN_SIZE];
         random.nextBytes(bytes);
         return bytes.toString();
+    }
+
+    public static User checkToken(HttpServletRequest request) {
+        boolean isGoodToken = false;
+        if (request.getCookies().length > 0) {
+            for (Cookie cookie : request.getCookies()) {
+                if (Constants.COOKIE_PARAM.equals(cookie.getName())) {
+                    String tokenId = request.getCookies()[0].getValue();
+                    Token token = tokenService.findById(tokenId);
+                    if (token != null) {
+                        return userService.findById(token.getUserId());
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -48,20 +66,27 @@ public class LoginServlet extends BaseServlet {
                     .userId(user.getId())
                     .role(user.getRole())
                     .build());
-            Cookie cookie = new Cookie("token", token);
+            Cookie cookie = new Cookie(Constants.COOKIE_PARAM, token);
             response.addCookie(cookie);
 
             if (UserRole.ADMIN.equals(user.getRole())) {
-                response.sendRedirect(request.getContextPath() + "/pages/hotel_page.jsp");
+                response.sendRedirect(request.getContextPath() + "/hotel");
+
+//                Hotel hotel = hotelService.findById(1L);
+//                request.setAttribute("hotel", hotel);
 //                RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/hotel_page.jsp");
 //                dispatcher.forward(request, response);
             } else {
-                request.setAttribute("user", user);
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/user_page.jsp");
-                dispatcher.forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/user?userId="+user.getId());
+
+//                request.setAttribute("user", user);
+//                RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/user_page.jsp");
+//                RequestDispatcher dispatcher = request.getRequestDispatcher("/user?userId="+user.getId());
+//                dispatcher.forward(request, response);
             }
         }
     }
+
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/login_page.jsp");
         dispatcher.forward(request, response);

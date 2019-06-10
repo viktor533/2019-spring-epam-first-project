@@ -17,6 +17,6 @@
     </style>
 </head>
 <body>
-    <img src="resources/error500.png" alt="error500"  class="fullscreen">
+    <img src="${pageContext.request.contextPath}/resources/error500.png" alt="error500"  class="fullscreen">
 </body>
 </html>

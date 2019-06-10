@@ -29,6 +29,17 @@
         <servlet-class>com.epam.servlets.RoomServlet</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>RoomDeleteServlet</servlet-name>
+        <servlet-class>com.epam.servlets.RoomDeleteServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>RoomDeleteServlet</servlet-name>
+        <url-pattern>/removeRoom</url-pattern>
+    </servlet-mapping>
+
+
     <servlet-mapping>
         <servlet-name>RoomServlet</servlet-name>
         <url-pattern>/room</url-pattern>

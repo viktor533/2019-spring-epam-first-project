@@ -1,7 +1,5 @@
 package com.epam.servlets;
 
-import com.epam.domain.Bill;
-import com.epam.domain.Room;
 import com.epam.domain.User;
 import com.epam.domain.enums.UserRole;
 import com.epam.service.RoomService;
@@ -15,11 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-public class RoomServlet extends BaseServlet  {
+public class RoomDeleteServlet extends BaseServlet  {
+
     private static RoomService roomService = ServiceState.getRoomServiceInstance();
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int a=3;
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String roomIdStr = request.getParameter("roomId");
         Long roomId = null;
         if (roomIdStr != null) {
@@ -32,10 +30,6 @@ public class RoomServlet extends BaseServlet  {
             dispatcher.forward(request, response);
             return;
         }
-        Room room = roomService.findById(roomId);
-        log.debug("Send room: " + room);
-        request.setAttribute("room", room);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/room_page.jsp");
-        dispatcher.forward(request, response);
+        roomService.removeById(roomId);
     }
 }
