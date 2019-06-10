@@ -37,19 +37,29 @@ public class RegistrationServlet extends HttpServlet {
 
         boolean isAlreadyExists = userService.checkIfAlreadyExistsInDb(email);
 
-            if (savedUser != null && psw.equals(pswRepeat) && !isAlreadyExists) {
-                PreparedStatement preparedStatement = PrepStatement.getPreparedStatement(
-                    INSERT_INTO_USER);
-                preparedStatement.setString(1, email);
-                preparedStatement.setString(2, psw);
-                preparedStatement.setString(3, UserRole.USER.name());
+        if (isAlreadyExists) {
+            request.setAttribute("message", "Username is already exists");
+            request.getRequestDispatcher("pages/registration_page.jsp")
+                .forward(request, response);
 
-                preparedStatement.executeUpdate();
+        } else if (!psw.equals(pswRepeat)) {
+            request.setAttribute("message", "Passwords do not match");
+            request.getRequestDispatcher("pages/registration_page.jsp")
+                .forward(request, response);
+
+        } else if (savedUser != null) {
+
+            PreparedStatement preparedStatement = PrepStatement.getPreparedStatement(
+                INSERT_INTO_USER);
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, psw);
+            preparedStatement.setString(3, UserRole.USER.name());
+
+            preparedStatement.executeUpdate();
 
             request.getRequestDispatcher("pages/successfulRegistration_page.jsp")
                 .forward(request, response);
-        } else {
-            request.getRequestDispatcher("pages/registration_page.jsp").forward(request, response);
+
         }
     }
 

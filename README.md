@@ -1,4 +1,4 @@
-# Epam stedeut's project Hotel
+# Epam student's project Hotel
 
 ## Техническое задание:
 

@@ -80,6 +80,7 @@
 
         <label><b>Repeat Password</b></label>
         <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
+        <label class="badMessage" style="color:Tomato"><b>${message}</b></label>
         <hr>
         <button type="submit" value="register" class="registerbtn">Register</button>
     </div>
