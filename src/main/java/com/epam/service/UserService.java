@@ -2,6 +2,9 @@ package com.epam.service;
 
 import com.epam.domain.User;
 import com.epam.repo.Repository;
+import com.epam.utils.PrepStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,6 +19,7 @@ public class UserService {
 
     /**
      * Accept user, check by null and save it in repository
+     *
      * @param user that we need to save
      * @return saved user
      */
@@ -26,6 +30,7 @@ public class UserService {
 
     /**
      * Accepted id and try to delete user with same id
+     *
      * @param id - param the we need to remove by
      * @return removed user or null, if user with same id does not exist
      */
@@ -37,6 +42,7 @@ public class UserService {
 
     /**
      * Accept id and try to find user with same id
+     *
      * @param id - param the we need to remove by
      * @return found user or null, if user with same id does not exist
      */
@@ -57,9 +63,9 @@ public class UserService {
     }
 
 
-
     /**
      * Update user
+     *
      * @param user - that we need to update
      * @return updated user or null if same user not exist in repository
      */
@@ -74,5 +80,25 @@ public class UserService {
     @SneakyThrows
     public Iterable<User> findAll() {
         return userRepo.findAll();
+    }
+
+    @SneakyThrows
+    public boolean checkIfAlreadyExistsInDb(String email) {
+        boolean isUnique = false;
+
+        PreparedStatement preparedStatement = PrepStatement
+            .getPreparedStatement("SELECT LOGIN FROM USER");
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while (resultSet.next()) {
+            String loginInDB = resultSet.getString("LOGIN");
+
+            if (loginInDB.equals(email)) {
+                isUnique = true;
+                System.out.println("THIS USERNAME IS TAKEN");
+            }
+        }
+
+        return isUnique;
     }
 }
