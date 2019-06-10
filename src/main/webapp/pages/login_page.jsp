@@ -15,8 +15,8 @@
     <form action="${pageContext.request.contextPath}/login?email=" method="post">
         <div class="centralCard">
             <div class="container">
-                <h1>Register</h1>
-                <p>Please fill in this form to create an account.</p>
+                <h1>Login</h1>
+                <p>Please fill in this form to log in.</p>
                 <hr>
                 <label><b>Email</b></label>
                 <input type="text" placeholder="Enter Email" name="email" required></input>
